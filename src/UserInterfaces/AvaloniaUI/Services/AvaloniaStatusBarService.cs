@@ -50,27 +50,31 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public int ProgressPercentage
         {
-            get => field;
-            set => this.RaiseAndSetIfChanged(ref field, value);
+            get => progressPercentage;
+            set => this.RaiseAndSetIfChanged(ref progressPercentage, value);
         }
+        private int progressPercentage;
 
         public string? Text
         {
-            get { return field; }
-            set { this.RaiseAndSetIfChanged(ref field, value, nameof(Text)); }
+            get { return text; }
+            set { this.RaiseAndSetIfChanged(ref text, value, nameof(Text)); }
         }
+        private string? text;
 
         public string? Subtext
         {
-            get { return field; }
-            set { this.RaiseAndSetIfChanged(ref field, value); }
+            get { return subtext; }
+            set { this.RaiseAndSetIfChanged(ref subtext, value); }
         }
+        private string? subtext;
 
         public string? SelectedAddressRange
         {
-            get { return field; }
-            set { this.RaiseAndSetIfChanged(ref field, value); }
+            get { return selectedAddressRange; }
+            set { this.RaiseAndSetIfChanged(ref selectedAddressRange, value); }
         }
+        private string? selectedAddressRange;
 
         public void SetText(string text)
         {

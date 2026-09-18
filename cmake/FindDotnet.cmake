@@ -119,6 +119,15 @@ IF(DOTNET_FOUND)
 ENDIF()
 
 SET(NUGET_CACHE_PATH "~/.nuget/packages")
+# Prefer a dotnet explicitly handed to CMake (e.g. -DDOTNET_EXE=... from the
+# MSBuild BuildTargets project) or the one indicated by DOTNET_ROOT, so nested
+# builds use the exact same SDK as the driving build. FIND_PROGRAM only runs
+# if neither is set; note it will not overwrite an existing cache entry.
+IF(NOT DOTNET_EXE)
+    IF(DEFINED ENV{DOTNET_ROOT})
+        FIND_PROGRAM(DOTNET_EXE dotnet PATHS "$ENV{DOTNET_ROOT}" NO_DEFAULT_PATH)
+    ENDIF()
+ENDIF()
 FIND_PROGRAM(DOTNET_EXE dotnet)
 SET(DOTNET_MODULE_DIR ${CMAKE_CURRENT_LIST_DIR})
 

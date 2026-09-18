@@ -303,11 +303,14 @@
       <BuildDependency Project="ImageLoaders/AOut/AOut.csproj" />
       <BuildDependency Project="ImageLoaders/DiskImages/DiskImages.csproj" />
       <BuildDependency Project="Libraries/MacsBug/MacsBug.csproj" />
+      <BuildDependency Project="Native/NativeProxy.csproj" />
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
       <Platform Solution="*|ARM64" Project="ARM64" />
       <Platform Solution="*|x64" Project="x64" />
-      <Platform Solution="Debug|Any CPU" Project="x86" />
+      <Platform Solution="Debug|Any CPU" Project="x64" />
+      <Platform Solution="UnixDebug|Any CPU" Project="x64" />
+      <Platform Solution="UnixRelease|Any CPU" Project="x64" />
     </Project>
     <Project Path="Drivers/CmdLine/CmdLine.csproj">
       <BuildDependency Project="Arch/Alpha/Alpha.csproj" />
@@ -974,18 +977,15 @@
     <BuildType Solution="UnixRelease|x86" Project="Release" />
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
-    <Platform Solution="Debug|Any CPU" Project="x86" />
-    <Platform Solution="Debug|ARM64" Project="x86" />
+    <Platform Solution="Debug|Any CPU" Project="x64" />
+    <Platform Solution="Debug|ARM64" Project="x64" />
     <Platform Solution="Release|Any CPU" Project="x64" />
     <Platform Solution="Release|ARM64" Project="x86" />
-    <Platform Solution="UnixDebug|Any CPU" Project="x86" />
+    <Platform Solution="UnixDebug|Any CPU" Project="x64" />
     <Platform Solution="UnixDebug|ARM64" Project="x64" />
-    <Platform Solution="UnixRelease|Any CPU" Project="x86" />
+    <Platform Solution="UnixRelease|Any CPU" Project="x64" />
     <Platform Solution="UnixRelease|ARM64" Project="x64" />
     <Build Solution="*|ARM64" Project="false" />
-    <Build Solution="Debug|Any CPU" Project="false" />
-    <Build Solution="UnixDebug|Any CPU" Project="false" />
-    <Build Solution="UnixRelease|Any CPU" Project="false" />
   </Project>
   <Properties Name="MonoDevelopProperties">
     <Property Name="StartupItem" Value="Drivers\WindowsDecompiler\WindowsDecompiler.csproj" />
