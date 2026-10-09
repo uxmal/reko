@@ -25,16 +25,13 @@
   */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Reko.Core;
-using System.Diagnostics;
 using Reko.Core.Expressions;
-using Reko.Core.Services;
-using Reko.Core.Memory;
 using Reko.Core.Loading;
+using Reko.Core.Memory;
+using Reko.Core.Services;
+using System;
+using System.Diagnostics;
 
 namespace Reko.Environments.Msdos
 {

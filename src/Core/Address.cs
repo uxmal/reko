@@ -660,8 +660,8 @@ namespace Reko.Core
         MachineOperand
     {
         // 63-bit offset                  |0  - 64bithex
-        //  offset | offset size |x|0|0|1  - flat hex
-        //  offset | offset size |x|0|1|1  - flat octal
+        //  offset | offset size          |x|0|0|1  - flat hex
+        //  offset | offset size          |x|0|1|1  - flat octal
         // segment | offset | offset size |x|1|0|1  - segmented
         // segment | offset | offset size |1|1|1|1  - protected mode
         private const uint TypeMask = 0b111;

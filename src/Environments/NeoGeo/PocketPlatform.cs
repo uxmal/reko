@@ -22,9 +22,7 @@ using Reko.Arch.Tlcs;
 using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Memory;
-using Reko.Core.Rtl;
 using System;
-using System.Collections.Generic;
 
 namespace Reko.Environments.NeoGeo
 {

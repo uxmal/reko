@@ -24,11 +24,7 @@ using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Environments.Msdos
 {
@@ -36,7 +32,7 @@ namespace Reko.Environments.Msdos
     {
         public MsdosEmulator()
         {
-            this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>();
+            this.InterceptedCalls = [];
         }
 
         public Dictionary<Address, ExternalProcedure> InterceptedCalls { get; }

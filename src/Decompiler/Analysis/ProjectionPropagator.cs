@@ -37,21 +37,41 @@ namespace Reko.Analysis;
 /// The purpose of this class is to resolve projections to make for cleaner
 /// code. We have widening projections and narrowing projections to take care of.
 /// Widening projections come in two kinds:
-/// * Sequences where we use adjacent pieces of the same register:
+/// <list type="bullet">
+/// <item>
+/// Sequences where we use adjacent pieces of the same register:
+/// <code>
 ///     de = SEQ(h, l)
-/// * Sequences where we use two separate registers as a whole register.
+/// </code>
+/// </item>
+/// <item>
+/// Sequences where we use two separate registers as a whole register.
+/// <code>
 ///     es_bx = SEQ(dx, ax)
-/// * Sequences where we use adjacent parts of the stack:
+/// </code>
+/// </item>
+/// <item>
+/// Sequences where we use adjacent parts of the stack:
+/// <code>
 ///     dwLoc0010 = SEQ(wLoc0012, wLoc0010)
-/// * Sequences where we use adjacent parts of memory
+/// </code>
+/// </item>
+/// <item>
+/// Sequences where we use adjacent parts of memory
+/// <code>
 ///     es_bx = SEQ(Mem11[0x0234:word16],Mem11[0x0232:word16])
-/// We convert SEQ(reg1,reg2) to either the widened register (i.e. hl)
-/// the combined register dx_ax, or a widenened memory access, then "push" the widened
-/// register to all the statements that use both halves.
+/// </code>
+/// </item>
+/// </list>
+/// We convert <c>SEQ(reg1,reg2)</c> to either the widened register (i.e. <c>hl</c>)
+/// the combined register sequence <c>dx_ax</c>, or a widenened memory access,
+/// then "push" the widened identifier to all the statements that use both halves.
 /// 
 /// Narrowing projections are casts or slices:
+/// <code>
 ///     al = (byte) rax
 ///     bh = SLICE(rbx, 8, 8)
+/// </code>
 /// </summary>
 public class ProjectionPropagator : IAnalysis<SsaState>
 {
