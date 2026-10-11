@@ -1,0 +1,1482 @@
+ CPD1802 CROSS-ASSEMBLER                DATE MAR 4, 2002
+ LOC     CODE        CYC    STM  SOURCE
+                              1  * SPACE INVADERS FOR THE RCA COSMAC ELF
+                              2  * CREATED BY CHARLIE BRINT IN 1980
+                              3  * NOT COPYRIGHTED BUT PLEASE LEAVE MY NAME ON THIS WORK OF ART
+ 0000                         4  DMAPTR   EQU   0
+ 0001                         5  INTPC    EQU   1
+ 0001                         6  ZERO     EQU   1    HIGH ORDER ALWAYS ZERO
+ 0002                         7  STK      EQU   2
+ 0003                         8  PC       EQU   3
+ 0004                         9  CALLR    EQU   4
+ 0005                        10  EXITR    EQU   5
+ 0006                        11  PARM     EQU   6
+ 0007                        12  RAM      EQU   7     ALWAYS POINTS TO RAM
+ 0008                        13  ACC      EQU   8
+ 0009                        14  TIMER    EQU   9
+ 000A                        15  RA       EQU   10
+ 000B                        16  RB       EQU   11
+ 000C                        17  RC       EQU   12
+ 000D                        18  RD       EQU   13
+ 000E                        19  RE       EQU   14
+ 000F                        20  RF       EQU   15
+ 0300                        21  VIDEO    EQU   #0300
+ F000                        22  MONITOR  EQU   #F000         ROM MONITOR ADDRESS
+                             23  *SAVSTK = 0DFF
+ 0FFF                        24  STACKLOC EQU   #0FFF
+ 
+ 
+ 0000    C0F000      3       26           LBR   MONITOR       SKIP TO ROM MONITOR
+ 0003    F800        2       27           LDI   0
+ 0005    B3          2       28           PHI   PC
+ 0006    F801        2       29           LDI   (CALL/#100)
+ 0008    B4          2       30           PHI   CALLR
+ 0009    F801        2       31           LDI   (EXIT/#100)
+ 000B    B5          2       32           PHI   EXITR
+ 000C    F800        2       33           LDI   0
+ 000E    B7          2       34           PHI   RAM
+ 000F    B9          2       35           PHI   TIMER
+ 0010    F814        2       36           LDI   NEWPC
+ 0012    A3          2       37           PLO   PC
+ 0013    D3          2       38           SEP   PC
+ 0014    F80F        2       39  NEWPC    LDI   #0F
+ 0016    B2          2       40           PHI   STK
+ 0017    F802        2       41           LDI   (INTERUPT/#100)
+ 0019    B1          2       42           PHI   INTPC
+ 001A    F802        2       43           LDI   INTERUPT
+ 001C    A1          2       44           PLO   INTPC
+ 001D    F8D7        2       45           LDI   CALL
+ 001F    A4          2       46           PLO   CALLR
+ 0020    F8E7        2       47           LDI   EXIT
+ 0022    A5          2       48           PLO   EXITR
+ 0023    F8FF        2       49           LDI   #FF
+ 0025    A2          2       50           PLO   STK
+ 0026    E2          2       51           SEX   STK
+ 0027    C00400      3       52           LBR   STARTPGM
+ 
+ 
+ 2A03                        54  UFO      EQU   ((**#100)+3)
+ 002A    60C060              55           DA3   #60C060
+ 2D03                        56  GUN      EQU   ((**#100)+3)
+ 002D    80C080              57           DA3   #80C080
+ 3007                        58  ROCK     EQU   ((**#100)+7)
+ 0030    E0F0F8FC            59           DA4   #E0F0F8FC
+ 0034    F8F0E000            60           DA4   #F8F0E000
+ 3803                        61  EXPLODE  EQU   ((**#100)+3)
+ 0038    A0D0B0              62           DA3   #A0D0B0
+ 003B    80402010            63  DOTTAB   DA4   #80402010
+ 003F    08040201            64           DA4   #08040201
+ 4303                        65  BLOCK    EQU   ((**#100)+3)
+ 0043    F0F0F0              66           DA3   #F0F0F0
+ 
+ 
+ 0046    00                  68  NUFO     DA1   0
+ 0047    00                  69  SHOTS    DA1   0
+ 0048    00                  70  GUNY     DA1   0
+ 0049    00                  71  GUNRX    DA1   0
+ 004A    00                  72  GUNRY    DA1   0
+ 004B    00                  73  UFOR1X   DA1   0
+ 004C    00                  74  UFOR1Y   DA1   0
+ 004D    00                  75  UFOR2X   DA1   0
+ 004E    00                  76  UFOR2Y   DA1   0
+ 004F    00                  77  ACTION   DA1   0
+ 0050    00                  78  NEXTACTN DA1   0
+ 0051    00                  79  LASTSHFT DA1   0
+ 0052    00                  80  FIELDX   DA1   0
+ 0053    0000                81  SCORE    DA2   0
+ 0055    35A7                82  SEED     DA2   #35A7
+ 0057    FF                  83  SAVSTK   DA1   #FF
+ 0058    00                  84  CURNTX   DA1   0
+ 0070                        85           ORG   (#100-(2*72))
+ 0070                        86  POSNVEC  EQU   *
+ 
+ 
+ 0100                        88           ORG   #100
+                             89  * RAND: I/P IS INLINE 1 BYTE MODULUS
+                             90  *       O/P- ACC.0=0->MOD,ACC.1=RANDBITS
+ 0100    D4023E      2       91  RAND     CALL  SAVE
+ 0103    46          2       92           LDA   PARM
+ 0104    AF          2       93           PLO   RF
+ 0105    F855        2       94  RAND1    LDI   SEED
+ 0107    A7          2       95           PLO   RAM            POINT TO SEED.1
+ 0108    47          2       96           LDA   RAM
+ 0109    B8          2       97           PHI   ACC
+ 010A    07          2       98           LDN   RAM
+ 010B    A8          2       99           PLO   ACC
+ 010C    F808        2      100           LDI   #08           # OF SHIFTS TO DO
+ 010E    AB          2      101           PLO   RB
+ 010F                       102  RNDSHLOP EQU   *             SHIFT LOOP
+ 010F    8B          2      103           GLO   RB
+ 0110    322E        2      104           BZ    RNDSHEND      FINISHED 16 SHIFTS ?
+ 0112    2B          2      105           DEC   RB            NO
+ 0113    98          2      106           GHI   ACC           GET SEED.1
+ 0114    F6          2      107           SHR                 PUT IN BIT 4 LOC'N
+ 0115    52          2      108           STR   STK           PUT ON STK   TEMP
+ 0116    88          2      109           GLO   ACC           GET SEED.0
+ 0117    F3          2      110           XOR                 XOR WITH BIT 4 ON STK
+ 0118    52          2      111           STR   STK
+ 0119    88          2      112           GLO   ACC           GET SEED.0
+ 011A    FE          2      113           SHL                 PUT IN BIT 4 LOC'N
+ 011B    F3          2      114           XOR
+ 011C    52          2      115           STR   STK
+ 011D    88          2      116           GLO   ACC
+ 011E    FE          2      117           SHL
+ 011F    FE          2      118           SHL
+ 0120    FE          2      119           SHL                 MOVE BIT 1 TO 4
+ 0121    F3          2      120           XOR
+ 0122    76          2      121           RSHR
+ 0123    76          2      122           RSHR
+ 0124    76          2      123           RSHR
+ 0125    76          2      124           RSHR                GET XOR RESULT IN DF
+ 0126    98          2      125           GHI   ACC           GET SEED.1
+ 0127    76          2      126           RSHR                DF->MSB, LSB -> DF
+ 0128    B8          2      127           PHI   ACC           SAVE SHIFTED SEED.1
+ 0129    88          2      128           GLO   ACC
+ 012A    76          2      129           RSHR
+ 012B    A8          2      130           PLO   ACC           SHIFT DONE
+ 012C    300F        2      131           BR    RNDSHLOP      CONTINUE LOOP
+ 012E                       132  RNDSHEND EQU   *
+ 012E    88          2      133           GLO   ACC
+ 012F    57          2      134           STR   RAM
+ 0130    98          2      135           GHI   ACC
+ 0131    27          2      136           DEC   RAM
+ 0132    57          2      137           STR   RAM            SEED REPLACED ON RAM
+ 0133    91          2      138           GHI   ZERO            GET ZEROS
+ 0134    AA          2      139           PLO   RA            RA COUNTS BITS
+ 0135    8F          2      140           GLO   RF            GET NN (MODULUS)
+ 0136    3256        2      141           BZ    RNDBAD        ZERO MODULUS NOT OK
+ 0138                       142  RNDFIND  EQU   *
+ 0138    7E          2      143           RSHL                FIND MSB OF MODULUS
+ 
+ 
+ 0139    333E        2      144           BDF   RNDFDONE
+ 013B    1A          2      145           INC   RA
+ 013C    3038        2      146           BR    RNDFIND
+ 013E                       147  RNDFDONE EQU   *
+ 013E    F8FF        2      148           LDI   #FF
+ 0140                       149  RNDSTOR  EQU   *
+ 0140    52          2      150           STR   STK           PUT (SHIFTED) FF ON STK
+ 0141    8A          2      151           GLO   RA
+ 0142    3249        2      152           BZ    RNDSTKOK      GOT GOOD MASK ON STK   ?
+ 0144    2A          2      153           DEC   RA            NO, SHIFT MASK
+ 0145    02          2      154           LDN   STK
+ 0146    F6          2      155           SHR
+ 0147    3040        2      156           BR    RNDSTOR
+ 0149                       157  RNDSTKOK EQU   *
+ 0149    88          2      158           GLO   ACC           GET SEED.0
+ 014A    F2          2      159           AND                 MASK IT
+ 014B    52          2      160           STR   STK           SAVE ON STK
+ 014C    8F          2      161           GLO   RF            GET NN
+ 014D    F7          2      162           SM                  D=NN-RAND
+ 014E    3B05        2      163           BM    RAND1         OUT OF RANGE, TRY AGAIN
+ 0150    02          2      164           LDN   STK
+ 0151    A8          2      165           PLO   ACC
+ 0152    D4026A      2      166           CALL  REST
+ 0155    D5          2      167           EXIT
+ 0156    F801        2      168  RNDBAD   LDI   1
+ 0158    AF          2      169           PLO   RF
+ 0159    3038        2      170           BR    RNDFIND
+ 
+ 
+                            172  * DSPL: I/P INLINE 1 BYTE RAM ADDR OF PATT, 1 BYTE PATTLENG
+                            173  *            ACC.1= X COORD         ACC.0= X COORD
+                            174  * RE.0  MODIFIED TO CONTAIN N+1
+                            175  * RA.0     BYTE # IN VIDEO
+                            176  *   .1     BIT  #  '' ''
+                            177  * RB       PATTERN ADDRESS
+                            178  * RC       VIDEO ADDRESS
+                            179  * RD       WORK REG FOR PATTERN SHIFT
+                            180  * RF.0     # OF BITS TO SHIFT
+                            181  *
+ 015B    D4023E      2      182  DSPL     CALL  SAVE
+ 015E    88          2      183           GLO   ACC
+ 015F    FA1F        2      184           ANI   #1F           ENSURE PROPER RANGE
+ 0161    FE          2      185           SHL
+ 0162    FE          2      186           SHL
+ 0163    FE          2      187           SHL                 MULTIPLY BY 8 TO GET ACTUAL VALUE
+ 0164    AA          2      188           PLO   RA            & SAVE
+ 0165    98          2      189           GHI   ACC
+ 0166    FA3F        2      190           ANI   #3F           ENSURE PROPER X RANGE
+ 0168    BD          2      191           PHI   RD            SAVE COPY
+ 0169    F6          2      192           SHR
+ 016A    F6          2      193           SHR
+ 016B    F6          2      194           SHR                 GET X/8
+ 016C    52          2      195           STR   STK           SAVE
+ 016D    8A          2      196           GLO   RA            GET ADDRESS
+ 016E    F4          2      197           ADD                 ADD X OFFSET
+ 016F    AA          2      198           PLO   RA            AND SAVE
+ 0170    9D          2      199           GHI   RD            GET X AGAIN
+ 0171    FA07        2      200           ANI   #07           GET REMAINDER
+ 0173    BA          2      201           PHI   RA            AND SAVE
+ 0174    F803        2      202           LDI   (VIDEO/256)   GET VIDEO PAGE
+ 0176    BC          2      203           PHI   RC
+ 0177    8A          2      204           GLO   RA
+ 0178    AC          2      205           PLO   RC            RC -> VIDEO ADDRESS
+ 0179    91          2      206           GHI   ZERO
+ 017A    BB          2      207           PHI   RB
+ 017B    46          2      208           LDA   PARM                GET -> PATT
+ 017C    AB          2      209           PLO   RB            RB -> PATT
+ 017D    91          2      210           GHI   ZERO
+ 017E    A8          2      211           PLO   ACC       SET NOHIT CODE
+ 017F    46          2      212           LDA   PARM                GET N
+ 0180    AE          2      213           PLO   RE            SAVE IT
+ 0181                       214  DSNLOOP  EQU   *             MAIN LOOP TO GO THRU BYTES IN PATTERN
+ 0181    32BA        2      215           BZ    DSYOVFL       FINISHED ALL BTYES IN PATTERN
+ 0183    9A          2      216           GHI   RA
+ 0184    AF          2      217           PLO   RF            GET # OF BITS TO SHIFT
+ 0185    91          2      218           GHI   ZERO
+ 0186    AD          2      219           PLO   RD            SET UP RD (PATTERN || 00)
+ 0187    4B          2      220           LDA   RB            FOR SHIFT
+ 0188    BD          2      221           PHI   RD            TO ALLIGN WITH VIDEO BYTES
+ 0189    8F          2      222  DSSHFTL  GLO   RF            SHIFT LOOP, GET SHIFT COUNT
+ 018A    3297        2      223           BZ    DSENSHF       SHIFTING FINISHED
+ 018C    2F          2      224           DEC   RF            DECREMENT BITS
+ 018D    91          2      225           GHI   ZERO
+ 018E    76          2      226           RSHR                ENSURE DF=0
+ 018F    9D          2      227           GHI   RD            GET PATTERN
+ 0190    76          2      228           RSHR                SHIFT RIGHT 0-> MSB
+ 0191    BD          2      229           PHI   RD            SAVE
+ 0192    8D          2      230           GLO   RD
+ 0193    76          2      231           RSHR                DROP 0 OFF END & GET LSB OF RD.1
+ 0194    AD          2      232           PLO   RD            THATS IT, SHIFT DONE
+ 0195    3089        2      233           BR    DSSHFTL       LOOP BACK 4 MORE
+ 0197    EC          2      234  DSENSHF  SEX   RC            POINT TO VIDEO ADDRESS
+ 0198    9D          2      235           GHI   RD            GET 1'ST 1/2 OF SHIFTED PATT
+ 0199    F2          2      236           AND                 CRASH ?
+ 019A    329D        2      237           BZ    DSNOCRS1      NO, SKIP
+ 019C    18          2      238           INC   ACC           YES, SET ACC NON-ZERO
+ 019D    9D          2      239  DSNOCRS1 GHI   RD            GET PATTERN
+ 019E    F3          2      240           XOR                 & MIX WITH CURRENT
+ 019F    5C          2      241           STR   RC            STORE IN VIDEO
+ 01A0    1C          2      242           INC   RC            -> NEXT VIDEO
+ 01A1    8C          2      243           GLO   RC
+ 01A2    32BA        2      244           BZ    DSYOVFL       RESET TO 0 (Y OVERFLOW) ?
+                            245  *        IS THERE HORIZONTAL WRAPAROUND ?
+ 01A4    FA07        2      246           ANI   #07
+ 01A6    32B0        2      247           BZ    DSXOVFL       YES, SKIP
+ 01A8    8D          2      248           GLO   RD            GET 2'ND 1/2 SHFTD PATT
+ 01A9    F2          2      249           AND                 CRASH ?
+ 01AA    32AD        2      250           BZ    DSNOCRS2      NO, SKIP
+ 01AC    18          2      251           INC   ACC           YES, SET ACC NON-ZERO
+ 01AD    8D          2      252  DSNOCRS2 GLO   RD            GET PATTERN AGAIN
+ 01AE    F3          2      253           XOR                 & MIX
+ 01AF    5C          2      254           STR   RC            SAVE IN VIDEO
+ 01B0    2E          2      255  DSXOVFL  DEC   RE
+ 01B1    8C          2      256           GLO   RC            GET VIDEO PTR
+ 01B2    FC07        2      257           ADI   #07           SKP TO NEXT LINE
+ 01B4    33BA        2      258           BDF   DSYOVFL       ANY Y OVERFLOW (WRAPAROUND) ?
+ 01B6    AC          2      259           PLO   RC            NO, SAVE
+ 01B7    8E          2      260           GLO   RE            GET # BYTES LEFT
+ 01B8    3081        2      261           BR    DSNLOOP       GO BACK TO MAIN LOOP
+ 01BA    E2          2      262  DSYOVFL  SEX   STK           Y OVERFLOW OR END OF PATT, FIX X
+ 01BB    D4026A      2      263           CALL  REST
+ 01BE    D5          2      264           EXIT
+ 
+ 
+                            266  * WAIT: INLINE 1 BYTE WAIT COUNT (146+200*N INSTR/CALL)
+ 01BF    D4023E      2      267  WAIT     CALL  SAVE
+ 01C2    46          2      268           LDA   PARM
+ 01C3    AA          2      269           PLO   RA
+ 01C4    32D2        2      270           BZ    WAITX
+ 01C6    F81F        2      271  FF2XLUP1 LDI   #1F           **** TIME ADJUSTMENT ****
+ 01C8    AB          2      272  FF2XLUP  PLO   RB            TIMER LOOP
+ 01C9    AB          2      273           PLO   RB
+ 01CA    2B          2      274           DEC   RB
+ 01CB    8B          2      275           GLO   RB
+ 01CC    3AC8        2      276           BNZ   FF2XLUP
+ 01CE    2A          2      277           DEC   RA
+ 01CF    8A          2      278           GLO   RA
+ 01D0    3AC6        2      279           BNZ   FF2XLUP1
+ 01D2    D4026A      2      280  WAITX    CALL  REST
+ 01D5    D5          2      281           EXIT
+                            282  *
+ 01D6    D3          2      283  CALLX    SEP   PC
+ 01D7    E2          2      284  CALL     SEX   STK
+ 01D8    96          2      285           GHI   PARM
+ 01D9    73          2      286           STXD
+ 01DA    86          2      287           GLO   PARM
+ 01DB    73          2      288           STXD
+ 01DC    93          2      289           GHI   PC
+ 01DD    B6          2      290           PHI   PARM
+ 01DE    83          2      291           GLO   PC
+ 01DF    A6          2      292           PLO   PARM
+ 01E0    46          2      293           LDA   PARM
+ 01E1    B3          2      294           PHI   PC
+ 01E2    46          2      295           LDA   PARM
+ 01E3    A3          2      296           PLO   PC
+ 01E4    30D6        2      297           BR    CALLX
+ 01E6    D3          2      298  EXITX    SEP   PC
+ 01E7    96          2      299  EXIT     GHI   PARM
+ 01E8    B3          2      300           PHI   PC
+ 01E9    86          2      301           GLO   PARM
+ 01EA    A3          2      302           PLO   PC
+ 01EB    E2          2      303           SEX   STK
+ 01EC    12          2      304           INC   STK
+ 01ED    72          2      305           LDXA
+ 01EE    A6          2      306           PLO   PARM
+ 01EF    F0          2      307           LDX
+ 01F0    B6          2      308           PHI   PARM
+ 01F1    30E6        2      309           BR    EXITX
+ 
+ 
+ 0200                       311           ORG   #0200
+                            312  * VIDEO INTERUPT & TIMER RTN
+ 0200    72          2      313  ENDINTR  LDXA           RESTORE D
+ 0201    70          2      314           RET            RESTORE XP
+ 0202                       315  INTERUPT EQU   *
+ 0202    22          2      316           DEC   STK         SAVE X P & D ON STK
+ 0203    78          2      317           SAV                 (DON'T ASSUME STK  -> FREE LOC'N)
+ 0204    22          2      318           DEC   STK
+ 0205    52          2      319           STR   STK
+ 0206    C4          3      320           NOP
+ 0207    99          2      321           GHI   TIMER
+ 0208    3A23        2      322           BNZ   DECTIM03      WASTE A CYCLE & DECREMENT TIMER
+ 020A    89          2      323           GLO   TIMER
+ 020B    3225        2      324           BZ    NODECTIM      WASTE TIME, NO DECREMENT
+ 020D    29          2      325           DEC   TIMER         ELSE, DECREMENT TIMER
+ 020E                       326  INTRCONT EQU   *
+ 020E    F800        2      327           LDI   VIDEO
+ 0210    A0          2      328           PLO   DMAPTR
+ 0211    80          2      329  REFRESH  GLO   DMAPTR       LOOP TO REPEAT VIDEO LINES
+ 0212    E2          2      330           SEX   STK
+ 0213    E2          2      331           SEX   STK
+ 0214    20          2      332           DEC   DMAPTR
+ 0215    A0          2      333           PLO   DMAPTR
+ 0216    E2          2      334           SEX   STK
+ 0217    20          2      335           DEC   DMAPTR
+ 0218    A0          2      336           PLO   DMAPTR
+ 0219    E2          2      337           SEX   STK
+ 021A    20          2      338           DEC   DMAPTR
+ 021B    A0          2      339           PLO   DMAPTR
+ 021C    3C11        2      340           BN1   REFRESH
+ 021E    F803        2      341           LDI   (VIDEO/256)
+ 0220    B0          2      342           PHI   DMAPTR        FIX DMA POINTER
+ 0221    3000        2      343           BR    ENDINTR
+ 0223                       344  DECTIM03 EQU   *
+ 0223    29          2      345           DEC   TIMER
+ 0224    E2          2      346           SEX   STK           WASTE TIME
+ 0225    300E        2      347  NODECTIM BR    INTRCONT
+                            348  *
+ 
+ 
+ 0227    8A          2      350  ERASE    GLO   RA
+ 0228    73          2      351           STXD
+ 0229    87          2      352           GLO   RAM
+ 022A    52          2      353           STR   STK
+ 022B    F8FF        2      354           LDI   #FF
+ 022D    AA          2      355           PLO   RA
+ 022E    F803        2      356           LDI   (VIDEO/#100)
+ 0230    BA          2      357           PHI   RA
+ 0231    91          2      358  ERSLUP   GHI   ZERO
+ 0232    5A          2      359           STR   RA
+ 0233    8A          2      360           GLO   RA
+ 0234    3239        2      361           BZ    ERSEND
+ 0236    2A          2      362           DEC   RA
+ 0237    3031        2      363           BR    ERSLUP
+ 0239    72          2      364  ERSEND   LDXA
+ 023A    A7          2      365           PLO   RAM
+ 023B    02          2      366           LDN   STK
+ 023C    AA          2      367           PLO   RA
+ 023D    D5          2      368           EXIT
+                            369  *
+ 
+ 
+ 023E    87          2      371  SAVE     GLO   RAM        SAVE RAM.0,RA-RF ON SAVSTK
+ 023F    73          2      372           STXD            RAM.0 & RF ALTERED ON EXIT
+ 0240    9F          2      373           GHI   RF
+ 0241    73          2      374           STXD
+ 0242    8F          2      375           GLO   RF
+ 0243    52          2      376           STR   STK
+ 0244    F857        2      377           LDI   SAVSTK
+ 0246    A7          2      378           PLO   RAM
+ 0247    07          2      379           LDN   RAM
+ 0248    AF          2      380           PLO   RF
+ 0249    F80D        2      381           LDI   #0D
+ 024B    BF          2      382           PHI   RF
+ 024C    EF          2      383           SEX   RF
+ 024D    42          2      384           LDA   STK
+ 024E    73          2      385           STXD
+ 024F    42          2      386           LDA   STK
+ 0250    73          2      387           STXD
+ 0251    02          2      388           LDN   STK
+ 0252    73          2      389           STXD
+ 0253    9E          2      390           GHI   RE
+ 0254    73          2      391           STXD
+ 0255    8E          2      392           GLO   RE
+ 0256    73          2      393           STXD
+ 0257    9D          2      394           GHI   RD
+ 0258    73          2      395           STXD
+ 0259    8D          2      396           GLO   RD
+ 025A    73          2      397           STXD
+ 025B    9C          2      398           GHI   RC
+ 025C    73          2      399           STXD
+ 025D    8C          2      400           GLO   RC
+ 025E    73          2      401           STXD
+ 025F    9B          2      402           GHI   RB
+ 0260    73          2      403           STXD
+ 0261    8B          2      404           GLO   RB
+ 0262    73          2      405           STXD
+ 0263    9A          2      406           GHI   RA
+ 0264    73          2      407           STXD
+ 0265    8A          2      408           GLO   RA
+ 0266    73          2      409           STXD
+ 0267    8F          2      410           GLO   RF
+ 0268    57          2      411           STR   RAM        NEW SAVSTK
+ 0269    D5          2      412           EXIT
+ 
+ 
+ 026A    F857        2      414  REST     LDI   SAVSTK
+ 026C    A7          2      415           PLO   RAM
+ 026D    07          2      416           LDN   RAM
+ 026E    AF          2      417           PLO   RF
+ 026F    F80D        2      418           LDI   #0D
+ 0271    BF          2      419           PHI   RF
+ 0272    EF          2      420           SEX   RF
+ 0273    1F          2      421           INC   RF
+ 0274    72          2      422           LDXA
+ 0275    AA          2      423           PLO   RA
+ 0276    72          2      424           LDXA
+ 0277    BA          2      425           PHI   RA
+ 0278    72          2      426           LDXA
+ 0279    AB          2      427           PLO   RB
+ 027A    72          2      428           LDXA
+ 027B    BB          2      429           PHI   RB
+ 027C    72          2      430           LDXA
+ 027D    AC          2      431           PLO   RC
+ 027E    72          2      432           LDXA
+ 027F    BC          2      433           PHI   RC
+ 0280    72          2      434           LDXA
+ 0281    AD          2      435           PLO   RD
+ 0282    72          2      436           LDXA
+ 0283    BD          2      437           PHI   RD
+ 0284    72          2      438           LDXA
+ 0285    AE          2      439           PLO   RE
+ 0286    72          2      440           LDXA
+ 0287    BE          2      441           PHI   RE
+ 0288    72          2      442           LDXA
+ 0289    E2          2      443           SEX   STK
+ 028A    73          2      444           STXD
+ 028B    4F          2      445           LDA   RF
+ 028C    73          2      446           STXD
+ 028D    0F          2      447           LDN   RF
+ 028E    52          2      448           STR   STK
+ 028F    8F          2      449           GLO   RF
+ 0290    57          2      450           STR   RAM        NEW SAVSTK
+ 0291    42          2      451           LDA   STK
+ 0292    AF          2      452           PLO   RF
+ 0293    72          2      453           LDXA
+ 0294    BF          2      454           PHI   RF
+ 0295    02          2      455           LDN   STK
+ 0296    A7          2      456           PLO   RAM
+ 0297    D5          2      457           EXIT
+ 
+ 
+ 0298                       459  SHOWDOT  EQU   *         RAM -> X,Y FOR DOT, ACC=0/^0 ON EXIT
+ 0298    87          2      460           GLO   RAM
+ 0299    73          2      461           STXD
+ 029A    47          2      462           LDA   RAM
+ 029B    B8          2      463           PHI   ACC
+ 029C    F6          2      464           SHR
+ 029D    F6          2      465           SHR
+ 029E    F6          2      466           SHR
+ 029F    52          2      467           STR   STK       X/8
+ 02A0    07          2      468           LDN   RAM
+ 02A1    FE          2      469           SHL
+ 02A2    FE          2      470           SHL
+ 02A3    FE          2      471           SHL             Y*8
+ 02A4    F4          2      472           ADD
+ 02A5    A8          2      473           PLO   ACC       BYTE # IN PAGE
+ 02A6    F83B        2      474           LDI   DOTTAB
+ 02A8    52          2      475           STR   STK
+ 02A9    98          2      476           GHI   ACC
+ 02AA    FA07        2      477           ANI   #07
+ 02AC    F4          2      478           ADD
+ 02AD    A7          2      479           PLO   RAM        RAM-> PATTERN
+ 02AE    F803        2      480           LDI   (VIDEO/#100)
+ 02B0    B8          2      481           PHI   ACC       -> VIDEO BYTE
+ 02B1    E8          2      482           SEX   ACC
+ 02B2    07          2      483           LDN   RAM
+ 02B3    F2          2      484           AND
+ 02B4    3ABF        2      485           BNZ   DOTHIT
+ 02B6    07          2      486           LDN   RAM
+ 02B7    F3          2      487           XOR
+ 02B8    58          2      488           STR   ACC       SHOW
+ 02B9    91          2      489           GHI   ZERO
+ 02BA    A8          2      490  DOT10    PLO   ACC       SET R.C.
+ 02BB    12          2      491           INC   STK
+ 02BC    02          2      492           LDN   STK
+ 02BD    A7          2      493           PLO   RAM
+ 02BE    D5          2      494           EXIT
+ 02BF    07          2      495  DOTHIT   LDN   RAM
+ 02C0    F3          2      496           XOR
+ 02C1    58          2      497           STR   ACC       SHOW
+ 02C2    F801        2      498           LDI   1
+ 02C4    30BA        2      499           BR    DOT10
+ 
+ 
+ 0400                       501           ORG   #0400
+ 0400    69          2      502  STARTPGM INP   1         VIDON
+ 0401    3F01        2      503           BN4   *
+ 0403    3703        2      504           B4    *                   WAIT RESET
+ 0405    D40512      2      505  START    CALL  RESET
+ 0408    D40500      2      506  NEWGUN   CALL  SHOWGUN
+ 040B    88          2      507           GLO   ACC
+ 040C    3A83        2      508           BNZ   HIT
+ 040E    D401BF      2      509           CALL  WAIT
+ 0411    F0                 510           DA1   #F0
+ 0412    F806        2      511  CYCLE    LDI   6
+ 0414    A9          2      512           PLO   TIMER
+ 0415    D40600      2      513           CALL  GUNRAY
+ 0418    D40700      2      514           CALL  UFORAY1
+ 041B    88          2      515           GLO   ACC
+ 041C    3A83        2      516           BNZ   HIT
+ 041E    D4084F      2      517           CALL  UFOSHIFT
+ 0421    88          2      518           GLO   ACC
+ 0422    3AC1        2      519           BNZ   DEAD
+ 0424    D40600      2      520           CALL  GUNRAY
+ 0427    D4071E      2      521           CALL  UFORAY2
+ 042A    88          2      522           GLO   ACC
+ 042B    3A83        2      523           BNZ   HIT
+ 042D    D40960      2      524           CALL  MOVEGUN
+ 0430    88          2      525           GLO   ACC
+ 0431    3A83        2      526           BNZ   HIT
+ 0433    D40600      2      527           CALL  GUNRAY
+ 0436    D40700      2      528           CALL  UFORAY1
+ 0439    88          2      529           GLO   ACC
+ 043A    3A83        2      530           BNZ   HIT
+ 043C    D4084F      2      531           CALL  UFOSHIFT
+ 043F    88          2      532           GLO   ACC
+ 0440    3AC1        2      533           BNZ   DEAD
+ 0442    D40600      2      534           CALL  GUNRAY
+ 0445    D40960      2      535           CALL  MOVEGUN
+ 0448    88          2      536           GLO   ACC
+ 0449    3A83        2      537           BNZ   HIT
+ 044B    D4071E      2      538           CALL  UFORAY2
+ 044E    88          2      539           GLO   ACC
+ 044F    3A83        2      540           BNZ   HIT
+ 0451    D40600      2      541           CALL  GUNRAY
+ 0454    D4084F      2      542           CALL  UFOSHIFT
+ 0457    88          2      543           GLO   ACC
+ 0458    3AC1        2      544           BNZ   DEAD
+ 045A    F846        2      545           LDI   NUFO
+ 045C    A7          2      546           PLO   RAM
+ 045D    07          2      547           LDN   RAM
+ 045E    326C        2      548           BZ    MOREUFO
+ 0460    89          2      549  TIMLUP   GLO   TIMER
+ 0461    3212        2      550           BZ    CYCLE
+ 0463    D40900      2      551           CALL  SHOSCORE  REAL TIME EQUIL
+ 0466    3060        2      552           BR    TIMLUP
+ 
+ 
+ 0468    00000000           554           DA4   0
+ 046C    D404CC      2      555  MOREUFO  CALL  RESTRAYS
+ 046F    F846        2      556           LDI   NUFO
+ 0471    A7          2      557           PLO   RAM
+ 0472    91          2      558           GHI   ZERO
+ 0473    57          2      559           STR   RAM
+ 0474    D4084F      2      560           CALL  UFOSHIFT  RESET SHIFT ROUTINE
+ 0477    F852        2      561           LDI   FIELDX
+ 0479    A7          2      562           PLO   RAM
+ 047A    07          2      563           LDN   RAM
+ 047B    FF02        2      564           SMI   2
+ 047D    57          2      565           STR   RAM
+ 047E    D40577      2      566           CALL  SETUPUFO
+ 0481    3012        2      567           BR    CYCLE
+ 0483    D404CC      2      568  HIT      CALL  RESTRAYS
+ 0486    F848        2      569           LDI   GUNY
+ 0488    A7          2      570           PLO   RAM
+ 0489    07          2      571           LDN   RAM
+ 048A    A8          2      572           PLO   ACC
+ 048B    91          2      573           GHI   ZERO
+ 048C    B8          2      574           PHI   ACC
+ 048D    D4015B      2      575           CALL  DSPL      EXPLODE
+ 0490    3803               576           DA2   EXPLODE
+ 0492    D401BF      2      577           CALL  WAIT
+ 0495    C0                 578           DA1   #C0
+ 0496    D40500      2      579           CALL  SHOWGUN
+ 0499    D401BF      2      580           CALL  WAIT
+ 049C    C0                 581           DA1   #C0
+ 049D    F848        2      582           LDI   GUNY
+ 049F    A7          2      583           PLO   RAM
+ 04A0    07          2      584           LDN   RAM
+ 04A1    A8          2      585           PLO   ACC
+ 04A2    91          2      586           GHI   ZERO
+ 04A3    B8          2      587           PHI   ACC
+ 04A4    D4015B      2      588           CALL  DSPL      ERASE EXPL
+ 04A7    3803               589           DA2   EXPLODE
+ 04A9    D401BF      2      590           CALL  WAIT
+ 04AC    C0                 591           DA1   #C0
+ 04AD    F847        2      592           LDI   SHOTS
+ 04AF    A7          2      593           PLO   RAM
+ 04B0    07          2      594           LDN   RAM
+ 04B1    FF01        2      595           SMI   1
+ 04B3    57          2      596           STR   RAM
+ 04B4    32C1        2      597           BZ    DEAD      DEC & CHK SHOTS
+ 04B6    D40100      2      598           CALL  RAND
+ 04B9    1D                 599           DA1   #1D
+ 04BA    F848        2      600           LDI   GUNY
+ 04BC    A7          2      601           PLO   RAM
+ 04BD    88          2      602           GLO   ACC
+ 04BE    57          2      603           STR   RAM
+ 04BF    3008        2      604           BR    NEWGUN    WITH RAND GUNY
+ 04C1    D40900      2      605  DEAD     CALL  SHOSCORE
+ 04C4    37C4        2      606           B4    *
+ 04C6    3FC6        2      607           BN4   *
+ 04C8    37C8        2      608           B4    *         WAIT RESET
+ 04CA    3005        2      609           BR    START
+ 
+ 
+ 04CC    F84A        2      611  RESTRAYS LDI   GUNRY     RESET ANY RAYS
+ 04CE    A7          2      612           PLO   RAM
+ 04CF    07          2      613           LDN   RAM
+ 04D0    32DA        2      614           BZ    RST1
+ 04D2    27          2      615           DEC   RAM
+ 04D3    D40298      2      616           CALL  SHOWDOT
+ 04D6    91          2      617           GHI   ZERO
+ 04D7    57          2      618           STR   RAM
+ 04D8    17          2      619           INC   RAM
+ 04D9    57          2      620           STR   RAM
+ 04DA    F84C        2      621  RST1     LDI   UFOR1Y
+ 04DC    A7          2      622           PLO   RAM
+ 04DD    07          2      623           LDN   RAM
+ 04DE    32E8        2      624           BZ    RST2
+ 04E0    27          2      625           DEC   RAM
+ 04E1    D40298      2      626           CALL  SHOWDOT
+ 04E4    91          2      627           GHI   ZERO
+ 04E5    57          2      628           STR   RAM
+ 04E6    17          2      629           INC   RAM
+ 04E7    57          2      630           STR   RAM
+ 04E8    F84E        2      631  RST2     LDI   UFOR2Y
+ 04EA    A7          2      632           PLO   RAM
+ 04EB    07          2      633           LDN   RAM
+ 04EC    32F6        2      634           BZ    RST3
+ 04EE    27          2      635           DEC   RAM
+ 04EF    D40298      2      636           CALL  SHOWDOT
+ 04F2    91          2      637           GHI   ZERO
+ 04F3    57          2      638           STR   RAM
+ 04F4    17          2      639           INC   RAM
+ 04F5    57          2      640           STR   RAM
+ 04F6    D5          2      641  RST3     EXIT
+ 
+ 
+ 0500                       643           ORG   #0500
+ 0500    87          2      644  SHOWGUN  GLO   RAM        SHOW GUN,KEEP RAM.0,ACC=HIT/NO
+ 0501    73          2      645           STXD
+ 0502    91          2      646           GHI   ZERO
+ 0503    B8          2      647           PHI   ACC
+ 0504    F848        2      648           LDI   GUNY
+ 0506    A7          2      649           PLO   RAM
+ 0507    07          2      650           LDN   RAM
+ 0508    A8          2      651           PLO   ACC
+ 0509    D4015B      2      652           CALL  DSPL
+ 050C    2D03               653           DA2   GUN
+ 050E    12          2      654           INC   STK
+ 050F    02          2      655           LDN   STK
+ 0510    A7          2      656           PLO   RAM
+ 0511    D5          2      657           EXIT
+ 
+ 
+ 0512    D40227      2      659  RESET    CALL  ERASE     RESET EVERYTHING
+ 0515    D4055B      2      660           CALL  ROCKS
+ 0518    F847        2      661           LDI   SHOTS
+ 051A    A7          2      662           PLO   RAM
+ 051B    F803        2      663           LDI   3
+ 051D    57          2      664           STR   RAM
+ 051E    F848        2      665           LDI   GUNY
+ 0520    A7          2      666           PLO   RAM
+ 0521    D40100      2      667           CALL  RAND
+ 0524    1D                 668           DA1   #1D
+ 0525    88          2      669           GLO   ACC
+ 0526    57          2      670           STR   RAM
+ 0527    F84A        2      671           LDI   GUNRY
+ 0529    A7          2      672           PLO   RAM
+ 052A    91          2      673           GHI   ZERO
+ 052B    57          2      674           STR   RAM
+ 052C    27          2      675           DEC   RAM
+ 052D    57          2      676           STR   RAM
+ 052E    F84C        2      677           LDI   UFOR1Y
+ 0530    A7          2      678           PLO   RAM
+ 0531    91          2      679           GHI   ZERO
+ 0532    57          2      680           STR   RAM
+ 0533    27          2      681           DEC   RAM
+ 0534    57          2      682           STR   RAM
+ 0535    F84E        2      683           LDI   UFOR2Y
+ 0537    A7          2      684           PLO   RAM
+ 0538    91          2      685           GHI   ZERO
+ 0539    57          2      686           STR   RAM
+ 053A    27          2      687           DEC   RAM
+ 053B    57          2      688           STR   RAM
+ 053C    F852        2      689           LDI   FIELDX
+ 053E    A7          2      690           PLO   RAM
+ 053F    F80F        2      691           LDI   15
+ 0541    57          2      692           STR   RAM
+ 0542    F858        2      693           LDI   CURNTX
+ 0544    A7          2      694           PLO   RAM
+ 0545    F80F        2      695           LDI   15
+ 0547    57          2      696           STR   RAM
+ 0548    F853        2      697           LDI   SCORE
+ 054A    A7          2      698           PLO   RAM
+ 054B    91          2      699           GHI   ZERO
+ 054C    57          2      700           STR   RAM
+ 054D    17          2      701           INC   RAM
+ 054E    57          2      702           STR   RAM
+ 054F    F846        2      703           LDI   NUFO
+ 0551    A7          2      704           PLO   RAM
+ 0552    91          2      705           GHI   ZERO
+ 0553    57          2      706           STR   RAM
+ 0554    D4084F      2      707           CALL  UFOSHIFT  RESET SHFT RTN
+ 0557    D40577      2      708           CALL  SETUPUFO
+ 055A    D5          2      709           EXIT
+ 
+ 
+ 055B    F803        2      711  ROCKS    LDI   3
+ 055D    AA          2      712           PLO   RA
+ 055E    F804        2      713           LDI   4
+ 0560    B8          2      714           PHI   ACC
+ 0561    BB          2      715           PHI   RB
+ 0562    F805        2      716           LDI   5
+ 0564    AB          2      717           PLO   RB
+ 0565    A8          2      718           PLO   ACC
+ 0566    D4015B      2      719  ROCK1    CALL  DSPL
+ 0569    3007               720           DA2   ROCK
+ 056B    8B          2      721           GLO   RB
+ 056C    FC09        2      722           ADI   9
+ 056E    A8          2      723           PLO   ACC
+ 056F    AB          2      724           PLO   RB
+ 0570    9B          2      725           GHI   RB
+ 0571    B8          2      726           PHI   ACC
+ 0572    2A          2      727           DEC   RA
+ 0573    8A          2      728           GLO   RA
+ 0574    3A66        2      729           BNZ   ROCK1
+ 0576    D5          2      730           EXIT
+ 
+ 
+ 0577    F848        2      732  SETUPUFO LDI   72
+ 0579    AE          2      733           PLO   RE
+ 057A    F80C        2      734           LDI   12
+ 057C    AB          2      735           PLO   RB
+ 057D    F870        2      736           LDI   POSNVEC
+ 057F    AD          2      737           PLO   RD
+ 0580    91          2      738           GHI   ZERO
+ 0581    BD          2      739           PHI   RD
+ 0582    F852        2      740           LDI   FIELDX
+ 0584    A7          2      741           PLO   RAM
+ 0585    07          2      742           LDN   RAM
+ 0586    B8          2      743           PHI   ACC
+ 0587    F858        2      744           LDI   CURNTX
+ 0589    A7          2      745           PLO   RAM
+ 058A    98          2      746           GHI   ACC
+ 058B    57          2      747           STR   RAM
+ 058C    FC2C        2      748           ADI   #2C
+ 058E    B8          2      749           PHI   ACC
+ 058F    BC          2      750           PHI   RC
+ 0590    F802        2      751  SET1     LDI   2
+ 0592    A8          2      752           PLO   ACC       ROW STRT
+ 0593    AC          2      753           PLO   RC
+ 0594    F806        2      754           LDI   6
+ 0596    AA          2      755           PLO   RA        #COL
+ 0597    D4015B      2      756  SET2     CALL  DSPL
+ 059A    2A03               757           DA2   UFO
+ 059C    88          2      758           GLO   ACC
+ 059D    3ABF        2      759           BNZ   SETHIT
+ 059F    9C          2      760           GHI   RC
+ 05A0    5D          2      761           STR   RD
+ 05A1    1D          2      762           INC   RD
+ 05A2    8C          2      763           GLO   RC
+ 05A3    5D          2      764           STR   RD
+ 05A4    1D          2      765           INC   RD        UPDATE POSNVEC
+ 05A5    8C          2      766  SET3     GLO   RC
+ 05A6    FC05        2      767           ADI   5
+ 05A8    AC          2      768           PLO   RC
+ 05A9    A8          2      769           PLO   ACC       NEW Y
+ 05AA    9C          2      770           GHI   RC
+ 05AB    B8          2      771           PHI   ACC       OLD X
+ 05AC    2A          2      772           DEC   RA
+ 05AD    8A          2      773           GLO   RA
+ 05AE    3A97        2      774           BNZ   SET2      LOOP TO END OF ROW
+ 05B0    9C          2      775           GHI   RC
+ 05B1    FF04        2      776           SMI   4
+ 05B3    BC          2      777           PHI   RC
+ 05B4    B8          2      778           PHI   ACC       NEW X
+ 05B5    2B          2      779           DEC   RB
+ 05B6    8B          2      780           GLO   RB
+ 05B7    3A90        2      781           BNZ   SET1      LOOP TO END OF COLS
+ 05B9    F846        2      782           LDI   NUFO
+ 05BB    A7          2      783           PLO   RAM
+ 05BC    8E          2      784           GLO   RE
+ 05BD    57          2      785           STR   RAM        SET # UFO
+ 05BE    D5          2      786           EXIT
+ 05BF    8C          2      787  SETHIT   GLO   RC        ERASE UFO
+ 05C0    A8          2      788           PLO   ACC
+ 05C1    9C          2      789           GHI   RC
+ 05C2    B8          2      790           PHI   ACC
+ 05C3    D4015B      2      791           CALL  DSPL
+ 05C6    2A03               792           DA2   UFO
+ 05C8    F8FF        2      793           LDI   #FF
+ 05CA    5D          2      794           STR   RD
+ 05CB    1D          2      795           INC   RD
+ 05CC    5D          2      796           STR   RD
+ 05CD    1D          2      797           INC   RD        UPDATE NULL POSNVEC ELM
+ 05CE    2E          2      798           DEC   RE        DEC #UFO
+ 05CF    30A5        2      799           BR    SET3
+ 
+ 
+ 0600                       801           ORG   #0600
+ 0600    F84A        2      802  GUNRAY   LDI   GUNRY
+ 0602    A7          2      803           PLO   RAM
+ 0603    07          2      804           LDN   RAM
+ 0604    321E        2      805           BZ    GR30      NO DOT,SKIP
+ 0606    27          2      806           DEC   RAM
+ 0607    D40298      2      807           CALL  SHOWDOT   ERASE
+ 060A    07          2      808           LDN   RAM
+ 060B    FC01        2      809           ADI   1
+ 060D    57          2      810           STR   RAM
+ 060E    FF40        2      811           SMI   #40
+ 0610    32AE        2      812           BZ    GR70      OFF END
+ 0612    D40298      2      813           CALL  SHOWDOT    NEWDOT
+ 0615    88          2      814           GLO   ACC
+ 0616    3A3D        2      815           BNZ   GR40
+ 0618    D5          2      816  GRXIT    EXIT
+ 0619    D401BF      2      817  GRWASTE  CALL  WAIT
+ 061C    00                 818           DA1   0
+ 061D    D5          2      819           EXIT
+ 061E    3F19        2      820  GR30     BN4   GRWASTE
+ 0620    F846        2      821           LDI   NUFO
+ 0622    A7          2      822           PLO   RAM
+ 0623    07          2      823           LDN   RAM
+ 0624    3218        2      824           BZ    GRXIT     NO UFOS
+ 0626    F848        2      825           LDI   GUNY
+ 0628    A7          2      826           PLO   RAM
+ 0629    07          2      827           LDN   RAM
+ 062A    FC01        2      828           ADI   1
+ 062C    A8          2      829           PLO   ACC
+ 062D    F849        2      830           LDI   GUNRX
+ 062F    A7          2      831           PLO   RAM
+ 0630    F802        2      832           LDI   2
+ 0632    57          2      833           STR   RAM        NEW GUNRX&Y
+ 0633    17          2      834           INC   RAM
+ 0634    88          2      835           GLO   ACC
+ 0635    57          2      836           STR   RAM
+ 0636    27          2      837           DEC   RAM
+ 0637    D40298      2      838           CALL  SHOWDOT   NEW GUNDOT
+ 063A    88          2      839           GLO   ACC
+ 063B    3218        2      840           BZ    GRXIT
+ 063D    F84B        2      841  GR40     LDI   UFOR1X
+ 063F    AA          2      842           PLO   RA
+ 0640    91          2      843           GHI   ZERO
+ 0641    BA          2      844           PHI   RA
+ 0642    EA          2      845           SEX   RA
+ 0643    47          2      846           LDA   RAM
+ 0644    F7          2      847           SM
+ 0645    1A          2      848           INC   RA
+ 0646    3A4C        2      849           BNZ   GR50
+ 0648    07          2      850           LDN   RAM
+ 0649    F7          2      851           SM
+ 064A    32B6        2      852           BZ    GR60      HIT UFOR1
+ 064C    1A          2      853  GR50     INC   RA
+ 064D    27          2      854           DEC   RAM
+ 064E    47          2      855           LDA   RAM
+ 064F    F7          2      856           SM
+ 0650    1A          2      857           INC   RA
+ 0651    3A57        2      858           BNZ   GR55
+ 0653    07          2      859           LDN   RAM
+ 0654    F7          2      860           SM
+ 0655    32B6        2      861           BZ    GR60      HIT UFOR2
+ 0657    27          2      862  GR55     DEC   RAM
+ 0658    47          2      863           LDA   RAM
+ 0659    AB          2      864           PLO   RB        GUNRX
+ 065A    07          2      865           LDN   RAM
+ 065B    AA          2      866           PLO   RA        GUNRY
+ 065C    F870        2      867           LDI   POSNVEC
+ 065E    A8          2      868           PLO   ACC
+ 065F    91          2      869           GHI   ZERO
+ 0660    B8          2      870           PHI   ACC
+ 0661    E8          2      871           SEX   ACC       X-> POSNVEC
+ 0662    8B          2      872  WH10     GLO   RB
+ 0663    F7          2      873           SM              GUNRX-UFOX
+ 0664    3B76        2      874           BM    WH20
+ 0666    FF03        2      875           SMI   3
+ 0668    3376        2      876           BPZ   WH20
+ 066A    18          2      877           INC   ACC
+ 066B    8A          2      878           GLO   RA
+ 066C    F7          2      879           SM              GUNRY-UFOY
+ 066D    3B77        2      880           BM    WH30
+ 066F    FF03        2      881           SMI   3
+ 0671    3377        2      882           BPZ   WH30
+ 0673    28          2      883           DEC   ACC
+ 0674    307D        2      884           BR    GR551     FOUND UFO
+ 0676    18          2      885  WH20     INC   ACC       NEXT ELEM
+ 0677    18          2      886  WH30     INC   ACC
+ 0678    88          2      887           GLO   ACC
+ 0679    3A62        2      888           BNZ   WH10      DO ALL
+ 067B    30AE        2      889           BR    GR70      ELSE WASN'T A UFO
+ 067D    7B          2      890  GR551    SEQ
+ 067E    88          2      891           GLO   ACC
+ 067F    A7          2      892           PLO   RAM        -> ELEM
+ 0680    AB          2      893           PLO   RB
+ 0681    47          2      894           LDA   RAM
+ 0682    B8          2      895           PHI   ACC
+ 0683    07          2      896           LDN   RAM
+ 0684    A8          2      897           PLO   ACC
+ 0685    D4015B      2      898           CALL  DSPL
+ 0688    2A03               899           DA2   UFO       ERASE
+ 068A    7A          2      900           REQ
+ 068B    8B          2      901           GLO   RB
+ 068C    A7          2      902           PLO   RAM
+ 068D    F8FF        2      903           LDI   #FF
+ 068F    57          2      904           STR   RAM
+ 0690    17          2      905           INC   RAM
+ 0691    57          2      906           STR   RAM        CLEAR ELEM
+ 0692    F854        2      907           LDI   (SCORE+1)
+ 0694    A7          2      908           PLO   RAM
+ 0695    07          2      909           LDN   RAM
+ 0696    FC01        2      910           ADI   1
+ 0698    57          2      911           STR   RAM
+ 0699    3BA0        2      912           BNF   GR56
+ 069B    27          2      913           DEC   RAM
+ 069C    07          2      914           LDN   RAM
+ 069D    FC01        2      915           ADI   1
+ 069F    57          2      916           STR   RAM        INC SCORE
+ 06A0    F846        2      917  GR56     LDI   NUFO
+ 06A2    A7          2      918           PLO   RAM
+ 06A3    07          2      919           LDN   RAM
+ 06A4    FF01        2      920           SMI   1
+ 06A6    57          2      921           STR   RAM        DEC NUFO
+ 06A7    F849        2      922           LDI   GUNRX
+ 06A9    A7          2      923           PLO   RAM
+ 06AA    D40298      2      924           CALL  SHOWDOT   ERASE
+ 06AD    7B          2      925           SEQ
+ 06AE    F84A        2      926  GR70     LDI   GUNRY
+ 06B0    A7          2      927           PLO   RAM
+ 06B1    91          2      928           GHI   ZERO
+ 06B2    57          2      929           STR   RAM        RESET GUNRY
+ 06B3    27          2      930           DEC   RAM
+ 06B4    57          2      931           STR   RAM
+ 06B5    D5          2      932           EXIT
+ 06B6    27          2      933  GR60     DEC   RAM        RE-SHOW UFORAY
+ 06B7    D40298      2      934           CALL  SHOWDOT
+ 06BA    30AE        2      935           BR    GR70      GO RESET GUNRAY
+ 
+ 
+ 0700                       937           ORG   #0700
+ 0700    F84C        2      938  UFORAY1  LDI   UFOR1Y
+ 0702    A7          2      939           PLO   RAM
+ 0703    07          2      940           LDN   RAM
+ 0704    3212        2      941           BZ    UF110     SKP NO RAY
+ 0706    27          2      942           DEC   RAM
+ 0707    D40298      2      943           CALL  SHOWDOT   ERASE
+ 070A    07          2      944           LDN   RAM
+ 070B    3212        2      945           BZ    UF110     OFF END
+ 070D    FF01        2      946           SMI   1
+ 070F    57          2      947           STR   RAM        NEW X
+ 0710    30FF        2      948           BR    NEWUFDOT
+ 0712    F846        2      949  UF110    LDI   NUFO
+ 0714    A7          2      950           PLO   RAM
+ 0715    07          2      951           LDN   RAM
+ 0716    3A3C        2      952           BNZ   UFO1FIRE
+ 0718    A8          2      953           PLO   ACC
+ 0719    D5          2      954           EXIT            NO UFOS LEFT
+ 
+ 
+ 071A    00000000           956           DA4   0
+                            957  *
+ 071E    F84E        2      958  UFORAY2  LDI   UFOR2Y
+ 0720    A7          2      959           PLO   RAM
+ 0721    07          2      960           LDN   RAM
+ 0722    3230        2      961           BZ    UF210
+ 0724    27          2      962           DEC   RAM
+ 0725    D40298      2      963           CALL  SHOWDOT
+ 0728    07          2      964           LDN   RAM
+ 0729    3230        2      965           BZ    UF210
+ 072B    FF01        2      966           SMI   1
+ 072D    57          2      967           STR   RAM
+ 072E    30FF        2      968           BR    NEWUFDOT
+ 0730    F846        2      969  UF210    LDI   NUFO
+ 0732    A7          2      970           PLO   RAM
+ 0733    07          2      971           LDN   RAM
+ 0734    3A73        2      972           BNZ   UFO2FIRE
+ 0736    A8          2      973           PLO   ACC
+ 0737    D5          2      974           EXIT
+ 0738    00000000           975           DA4   0
+ 
+ 
+                            977  *
+ 073C    F84B        2      978  UFO1FIRE LDI   UFOR1X
+ 073E    AE          2      979           PLO   RE
+ 073F    91          2      980           GHI   ZERO
+ 0740    BC          2      981           PHI   RC
+ 0741    AC          2      982           PLO   RC        CLEAR AIM
+ 0742    F848        2      983           LDI   GUNY
+ 0744    A7          2      984           PLO   RAM
+ 0745    E7          2      985           SEX   RAM
+ 0746    91          2      986           GHI   ZERO
+ 0747    B8          2      987           PHI   ACC
+ 0748    F870        2      988           LDI   POSNVEC
+ 074A    A8          2      989           PLO   ACC       -> ELEM X
+ 074B    F806        2      990  UFA10    LDI   6
+ 074D    AD          2      991           PLO   RD        #COLS
+ 074E    48          2      992  UFA20    LDA   ACC
+ 074F    BC          2      993           PHI   RC        AIM X
+ 0750    FFFF        2      994           SMI   #FF
+ 0752    3265        2      995           BZ    UFA30     NO UFO
+ 0754    88          2      996           GLO   ACC
+ 0755    BE          2      997           PHI   RE        -> LAST Y
+ 0756    08          2      998           LDN   ACC
+ 0757    AC          2      999           PLO   RC        AIM Y
+ 0758    FF02        2     1000           SMI   2
+ 075A    F7          2     1001           SM
+ 075B    3365        2     1002           BPZ   UFA30     NOT IN RANGE
+ 075D    F4          2     1003           ADD
+ 075E    FC04        2     1004           ADI   4
+ 0760    F7          2     1005           SM
+ 0761    3B65        2     1006           BM    UFA30     NOT IN RANGE
+ 0763    30AE        2     1007           BR    CHKCOL
+ 0765    18          2     1008  UFA30    INC   ACC
+ 0766    2D          2     1009           DEC   RD
+ 0767    8D          2     1010           GLO   RD
+ 0768    3A4E        2     1011           BNZ   UFA20
+ 076A    8C          2     1012           GLO   RC        ANY FOUND?
+ 076B    3AAE        2     1013           BNZ   CHKCOL    CHECK COL
+ 076D    304B        2     1014           BR    UFA10     EMPTY ROW
+ 
+ 
+ 076F    00000000          1016           DA4   0
+                           1017  *
+ 0773    F84D        2     1018  UFO2FIRE LDI   UFOR2X
+ 0775    AE          2     1019           PLO   RE
+ 0776    91          2     1020           GHI   ZERO
+ 0777    BC          2     1021           PHI   RC
+ 0778    AC          2     1022           PLO   RC
+ 0779    F848        2     1023           LDI   GUNY
+ 077B    A7          2     1024           PLO   RAM
+ 077C    E7          2     1025           SEX   RAM
+ 077D    91          2     1026           GHI   ZERO
+ 077E    B8          2     1027           PHI   ACC
+ 077F    F870        2     1028           LDI   POSNVEC
+ 0781    A8          2     1029           PLO   ACC
+ 0782    88          2     1030           GLO   ACC
+ 0783    FC01        2     1031           ADI   1
+ 0785    A8          2     1032  UFB15    PLO   ACC
+ 0786    F806        2     1033           LDI   6
+ 0788    AD          2     1034           PLO   RD
+ 0789    48          2     1035  UFB20    LDA   ACC
+ 078A    BC          2     1036           PHI   RC
+ 078B    FFFF        2     1037           SMI   #FF
+ 078D    32A0        2     1038           BZ    UFB30
+ 078F    88          2     1039           GLO   ACC
+ 0790    BE          2     1040           PHI   RE
+ 0791    08          2     1041           LDN   ACC
+ 0792    AC          2     1042           PLO   RC
+ 0793    FF03        2     1043           SMI   3
+ 0795    F7          2     1044           SM
+ 0796    33A0        2     1045           BPZ   UFB30
+ 0798    F4          2     1046           ADD
+ 0799    FC04        2     1047           ADI   4
+ 079B    F7          2     1048           SM
+ 079C    3BA0        2     1049           BM    UFB30
+ 079E    30AE        2     1050           BR    CHKCOL
+ 07A0    28          2     1051  UFB30    DEC   ACC
+ 07A1    28          2     1052           DEC   ACC
+ 07A2    2D          2     1053           DEC   RD
+ 07A3    8D          2     1054           GLO   RD
+ 07A4    3A89        2     1055           BNZ   UFB20
+ 07A6    8C          2     1056           GLO   RC
+ 07A7    3AAE        2     1057           BNZ   CHKCOL
+ 07A9    88          2     1058           GLO   ACC
+ 07AA    FC17        2     1059           ADI   23
+ 07AC    3085        2     1060           BR    UFB15
+ 
+ 
+ 07AE    9E          2     1062  CHKCOL   GHI   RE
+ 07AF    A8          2     1063           PLO   ACC       -> ELEMENT Y
+ 07B0    F80B        2     1064           LDI   11
+ 07B2    AF          2     1065           PLO   RF
+ 07B3    88          2     1066  CC10     GLO   ACC
+ 07B4    FC0C        2     1067           ADI   12
+ 07B6    33C7        2     1068           BDF   CC30      END OF TAB
+ 07B8    A8          2     1069           PLO   ACC       NEXT ROW SAME COL
+ 07B9    08          2     1070           LDN   ACC
+ 07BA    FFFF        2     1071           SMI   #FF
+ 07BC    32C3        2     1072           BZ    CC20
+ 07BE    28          2     1073           DEC   ACC
+ 07BF    48          2     1074           LDA   ACC
+ 07C0    BC          2     1075           PHI   RC
+ 07C1    08          2     1076           LDN   ACC
+ 07C2    AC          2     1077           PLO   RC
+ 07C3    2F          2     1078  CC20     DEC   RF
+ 07C4    8F          2     1079           GLO   RF
+ 07C5    3AB3        2     1080           BNZ   CC10      LOOP 4 ROWS
+ 07C7    8E          2     1081  CC30     GLO   RE
+ 07C8    A7          2     1082           PLO   RAM
+ 07C9    9C          2     1083           GHI   RC
+ 07CA    FF01        2     1084           SMI   1
+ 07CC    57          2     1085           STR   RAM
+ 07CD    17          2     1086           INC   RAM        NEW UFOR X,Y
+ 07CE    8C          2     1087           GLO   RC
+ 07CF    FC01        2     1088           ADI   1
+ 07D1    57          2     1089           STR   RAM
+ 07D2    27          2     1090           DEC   RAM        -> X OF RAY CO-ORDS
+ 07D3    D409B0      2     1091           CALL  CHEKUFO   *CHK FOR EROR*
+ 07D6    30FF        2     1092           BR    NEWUFDOT  SKIP OVER PAGE BOUNDRY
+                           1093  *
+                           1094  *
+ 07FF                      1095           ORG   #07FF
+ 07FF    D40298      2     1096  NEWUFDOT CALL  SHOWDOT
+ 0802    88          2     1097           GLO   ACC
+ 0803    3A06        2     1098           BNZ   ND10      HIT
+ 0805    D5          2     1099           EXIT
+ 0806    F849        2     1100  ND10     LDI   GUNRX
+ 0808    AB          2     1101           PLO   RB
+ 0809    91          2     1102           GHI   ZERO
+ 080A    BB          2     1103           PHI   RB
+ 080B    EB          2     1104           SEX   RB
+ 080C    47          2     1105           LDA   RAM
+ 080D    F7          2     1106           SM
+ 080E    1B          2     1107           INC   RB
+ 080F    3A17        2     1108           BNZ   ND20
+ 0811    07          2     1109           LDN   RAM
+ 0812    F7          2     1110           SM
+ 0813    27          2     1111           DEC   RAM
+ 0814    3236        2     1112           BZ    ND40      HIT GUNRAY
+ 0816    17          2     1113           INC   RAM
+ 0817    27          2     1114  ND20     DEC   RAM        ->X
+ 0818    07          2     1115           LDN   RAM
+ 0819    FF02        2     1116           SMI   2
+ 081B    3B3E        2     1117           BM    ND50      HIT GUN
+ 081D    1B          2     1118           INC   RB        ->UFOR1X
+ 081E    4B          2     1119           LDA   RB
+ 081F    1B          2     1120           INC   RB
+ 0820    F7          2     1121           SM
+ 0821    3A29        2     1122           BNZ   ND30
+ 0823    2B          2     1123           DEC   RB
+ 0824    4B          2     1124           LDA   RB
+ 0825    1B          2     1125           INC   RB
+ 0826    F7          2     1126           SM
+ 0827    3236        2     1127           BZ    ND40      UFORAYS COINCIDE
+ 0829    F858        2     1128  ND30     LDI   CURNTX
+ 082B    AB          2     1129           PLO   RB
+ 082C    07          2     1130           LDN   RAM
+ 082D    F7          2     1131           SM              UFORAYRX-MIN UFO X
+ 082E    334C        2     1132           BPZ   ND60      HIT UFO
+ 0830    91          2     1133           GHI   ZERO
+ 0831    57          2     1134           STR   RAM
+ 0832    17          2     1135           INC   RAM
+ 0833    57          2     1136           STR   RAM        RESET RAY
+ 0834    A8          2     1137           PLO   ACC
+ 0835    D5          2     1138           EXIT            IT WAS ROCK
+ 0836    91          2     1139  ND40     GHI   ZERO        HIT GUNRAY OR RAYS CO-INCIDE
+ 0837    57          2     1140           STR   RAM
+ 0838    17          2     1141           INC   RAM
+ 0839    57          2     1142           STR   RAM        UFORAY RESET
+ 083A    AC          2     1143           PLO   RC
+ 083B    27          2     1144           DEC   RAM
+ 083C    3046        2     1145           BR    ND55
+ 083E    F804        2     1146  ND50     LDI   4         HIT GUN
+ 0840    AC          2     1147           PLO   RC
+ 0841    91          2     1148           GHI   ZERO
+ 0842    57          2     1149           STR   RAM
+ 0843    17          2     1150           INC   RAM
+ 0844    57          2     1151           STR   RAM
+ 0845    27          2     1152           DEC   RAM
+ 0846    D40298      2     1153  ND55     CALL  SHOWDOT   RE-SHOW DOT
+ 0849    8C          2     1154           GLO   RC        0/4 R.C.
+ 084A    A8          2     1155           PLO   ACC
+ 084B    D5          2     1156           EXIT
+ 084C    91          2     1157  ND60     GHI   ZERO        UFORAY HIT UFO
+ 084D    3046        2     1158           BR    ND55
+ 
+ 
+                           1160  *
+ 084F    F846        2     1161  UFOSHIFT LDI   NUFO
+ 0851    A7          2     1162           PLO   RAM
+ 0852    07          2     1163           LDN   RAM
+ 0853    AC          2     1164           PLO   RC
+ 0854    32D8        2     1165           BZ    US60      RESET
+ 0856    F851        2     1166  US05     LDI   LASTSHFT
+ 0858    A7          2     1167           PLO   RAM
+ 0859    07          2     1168           LDN   RAM
+ 085A    A8          2     1169           PLO   ACC
+ 085B    91          2     1170           GHI   ZERO
+ 085C    B8          2     1171           PHI   ACC       ->LAST ELEM SHFTED
+ 085D    18          2     1172           INC   ACC
+ 085E    18          2     1173  USLUP1   INC   ACC
+ 085F    88          2     1174           GLO   ACC
+ 0860    AB          2     1175           PLO   RB
+ 0861    57          2     1176           STR   RAM
+ 0862    32DF        2     1177           BZ    US70      NO MORE TO SHFT
+ 0864    48          2     1178           LDA   ACC
+ 0865    BA          2     1179           PHI   RA
+ 0866    FFFF        2     1180           SMI   #FF
+ 0868    325E        2     1181           BZ    USLUP1    FIND GUD 1
+ 086A    08          2     1182           LDN   ACC
+ 086B    AA          2     1183           PLO   RA
+ 086C    A8          2     1184           PLO   ACC
+ 086D    9A          2     1185           GHI   RA
+ 086E    B8          2     1186           PHI   ACC
+ 086F    D4015B      2     1187           CALL  DSPL
+ 0872    2A03              1188           DA2   UFO       ERASE
+ 0874    F84F        2     1189           LDI   ACTION
+ 0876    A7          2     1190           PLO   RAM
+ 0877    47          2     1191           LDA   RAM        ->NEWACTN
+ 0878    FF04        2     1192           SMI   4
+ 087A    3B8D        2     1193           BM    USMVLFT
+ 087C    3298        2     1194           BZ    USMVRGT
+ 087E    9A          2     1195           GHI   RA
+ 087F    FF01        2     1196           SMI   1
+ 0881    BA          2     1197           PHI   RA        DOWN
+ 0882    FF02        2     1198           SMI   2
+ 0884    33A3        2     1199           BPZ   US10
+ 0886    D409A6      2     1200           CALL  SHOBLK    UFO HIT BOTTOM LINE
+ 0889    F804        2     1201           LDI   4
+ 088B    A8          2     1202           PLO   ACC
+ 088C    D5          2     1203           EXIT            HIT GUN
+ 088D    8A          2     1204  USMVLFT  GLO   RA
+ 088E    FF01        2     1205           SMI   1
+ 0890    AA          2     1206           PLO   RA
+ 0891    3AA3        2     1207           BNZ   US10
+ 0893    F80C        2     1208           LDI   12
+ 0895    57          2     1209           STR   RAM        NEWACTN
+ 0896    30A3        2     1210           BR    US10
+ 0898    8A          2     1211  USMVRGT  GLO   RA
+ 0899    FC01        2     1212           ADI   1
+ 089B    AA          2     1213           PLO   RA
+ 089C    FF1D        2     1214           SMI   #1D
+ 089E    3BA3        2     1215           BM    US10
+ 08A0    F808        2     1216           LDI   8
+ 08A2    57          2     1217           STR   RAM        NEWACTN
+ 08A3    9A          2     1218  US10     GHI   RA
+ 08A4    B8          2     1219           PHI   ACC
+ 08A5    8A          2     1220           GLO   RA
+ 08A6    A8          2     1221           PLO   ACC
+ 08A7    D4015B      2     1222           CALL  DSPL
+ 08AA    2A03              1223           DA2   UFO       SHO SHFTD UFO
+ 08AC    88          2     1224           GLO   ACC
+ 08AD    3AC3        2     1225           BNZ   US30      WOOPS, HIT
+ 08AF    8B          2     1226  US20     GLO   RB
+ 08B0    A7          2     1227           PLO   RAM
+ 08B1    9A          2     1228           GHI   RA
+ 08B2    57          2     1229           STR   RAM
+ 08B3    17          2     1230           INC   RAM
+ 08B4    8A          2     1231           GLO   RA
+ 08B5    57          2     1232           STR   RAM        UPDATE ELEM
+ 08B6    F858        2     1233           LDI   CURNTX
+ 08B8    A7          2     1234           PLO   RAM
+ 08B9    E7          2     1235           SEX   RAM
+ 08BA    9A          2     1236           GHI   RA
+ 08BB    F7          2     1237           SM
+ 08BC    33C0        2     1238           BPZ   US22
+ 08BE    9A          2     1239           GHI   RA
+ 08BF    57          2     1240           STR   RAM        UPDT CURNTX
+ 08C0    91          2     1241  US22     GHI   ZERO
+ 08C1    A8          2     1242           PLO   ACC
+ 08C2    D5          2     1243           EXIT
+ 08C3    9A          2     1244  US30     GHI   RA
+ 08C4    B8          2     1245           PHI   ACC
+ 08C5    8A          2     1246           GLO   RA
+ 08C6    A8          2     1247           PLO   ACC
+ 08C7    D4015B      2     1248           CALL  DSPL
+ 08CA    2A03              1249           DA2   UFO       ERASE UFO
+ 08CC    F846        2     1250           LDI   NUFO
+ 08CE    A7          2     1251           PLO   RAM
+ 08CF    2C          2     1252           DEC   RC
+ 08D0    8C          2     1253           GLO   RC
+ 08D1    57          2     1254           STR   RAM
+ 08D2    F8FF        2     1255           LDI   #FF
+ 08D4    BA          2     1256           PHI   RA
+ 08D5    AA          2     1257           PLO   RA
+ 08D6    30AF        2     1258           BR    US20      GO SAVE ELEM
+ 08D8    F84F        2     1259  US60     LDI   ACTION
+ 08DA    A7          2     1260           PLO   RAM
+ 08DB    F804        2     1261           LDI   4
+ 08DD    30EA        2     1262           BR    US80
+ 08DF    F84F        2     1263  US70     LDI   ACTION
+ 08E1    A7          2     1264           PLO   RAM
+ 08E2    07          2     1265           LDN   RAM
+ 08E3    FF08        2     1266           SMI   8
+ 08E5    33EA        2     1267           BPZ   US80      WAS DOWN, SKIP
+ 08E7    17          2     1268           INC   RAM
+ 08E8    07          2     1269           LDN   RAM        GET NEWACTN
+ 08E9    27          2     1270           DEC   RAM
+ 08EA    57          2     1271  US80     STR   RAM
+ 08EB    17          2     1272           INC   RAM
+ 08EC    57          2     1273           STR   RAM        UPDT ACTION&NEWACTN
+ 08ED    17          2     1274           INC   RAM
+ 08EE    F86E        2     1275           LDI   (POSNVEC-2)
+ 08F0    57          2     1276           STR   RAM        RESET LASTSHFT
+ 08F1    8C          2     1277           GLO   RC
+ 08F2    32C0        2     1278           BZ    US22      NO UFOS LEFT
+ 08F4    31F9        2     1279           BQ    US85
+ 08F6    7B          2     1280           SEQ
+ 08F7    3056        2     1281           BR    US05
+ 08F9    7A          2     1282  US85     REQ
+ 08FA    3056        2     1283           BR    US05
+ 
+ 
+ 0900                      1285           ORG   #900
+ 0900    91          2     1286  SHOSCORE GHI   ZERO
+ 0901    BA          2     1287           PHI   RA
+ 0902    AA          2     1288           PLO   RA
+ 0903    BB          2     1289           PHI   RB
+ 0904    AB          2     1290           PLO   RB
+ 0905    BC          2     1291           PHI   RC
+ 0906    AC          2     1292           PLO   RC
+ 0907    F853        2     1293           LDI   SCORE
+ 0909    A7          2     1294           PLO   RAM
+ 090A    47          2     1295           LDA   RAM
+ 090B    B8          2     1296           PHI   ACC
+ 090C    07          2     1297           LDN   RAM
+ 090D    A8          2     1298           PLO   ACC
+ 090E    88          2     1299  SS05     GLO   ACC
+ 090F    FF0A        2     1300           SMI   10
+ 0911    A8          2     1301           PLO   ACC
+ 0912    3B17        2     1302           BM    SS10
+ 0914    1A          2     1303           INC   RA
+ 0915    300E        2     1304           BR    SS05
+ 0917    98          2     1305  SS10     GHI   ACC
+ 0918    FF01        2     1306           SMI   1
+ 091A    3B20        2     1307           BM    SS15
+ 091C    B8          2     1308           PHI   ACC
+ 091D    1A          2     1309           INC   RA
+ 091E    300E        2     1310           BR    SS05
+ 0920    8A          2     1311  SS15     GLO   RA
+ 0921    FF0A        2     1312           SMI   10
+ 0923    AA          2     1313           PLO   RA
+ 0924    3B29        2     1314           BM    SS20
+ 0926    1B          2     1315           INC   RB
+ 0927    3020        2     1316           BR    SS15
+ 0929    9A          2     1317  SS20     GHI   RA
+ 092A    FF01        2     1318           SMI   1
+ 092C    3B32        2     1319           BM    SS25
+ 092E    BA          2     1320           PHI   RA
+ 092F    1B          2     1321           INC   RB
+ 0930    3020        2     1322           BR    SS15
+ 0932    8B          2     1323  SS25     GLO   RB
+ 0933    FF0A        2     1324           SMI   10
+ 0935    AB          2     1325           PLO   RB
+ 0936    3B3B        2     1326           BM    SS30
+ 0938    1C          2     1327           INC   RC
+ 0939    3032        2     1328           BR    SS25
+ 093B    9B          2     1329  SS30     GHI   RB
+ 093C    FF01        2     1330           SMI   1
+ 093E    3B44        2     1331           BM    SS35
+ 0940    BB          2     1332           PHI   RB
+ 0941    1C          2     1333           INC   RC
+ 0942    3032        2     1334           BR    SS25
+ 0944    8C          2     1335  SS35     GLO   RC
+ 0945    FE          2     1336           SHL
+ 0946    FE          2     1337           SHL
+ 0947    FE          2     1338           SHL
+ 0948    FE          2     1339           SHL
+ 0949    52          2     1340           STR   STK
+ 094A    8B          2     1341           GLO   RB
+ 094B    FC0A        2     1342           ADI   10
+ 094D    F1          2     1343           OR
+ 094E    73          2     1344           STXD
+ 094F    8A          2     1345           GLO   RA
+ 0950    FC0A        2     1346           ADI   10
+ 0952    FE          2     1347           SHL
+ 0953    FE          2     1348           SHL
+ 0954    FE          2     1349           SHL
+ 0955    FE          2     1350           SHL
+ 0956    52          2     1351           STR   STK
+ 0957    88          2     1352           GLO   ACC
+ 0958    FC0A        2     1353           ADI   10
+ 095A    F1          2     1354           OR
+ 095B    52          2     1355           STR   STK
+ 095C    64          2     1356           OUT   4         LOW ORDER
+ 095D    67          2     1357           OUT   7         HI ORDER
+ 095E    22          2     1358           DEC   STK
+ 095F    D5          2     1359           EXIT
+ 
+ 
+ 0960    366C        2     1361  MOVEGUN  B3    MVG10
+ 0962    6C          2     1362           INP   4
+ 0963    FA0F        2     1363           ANI   #0F
+ 0965    3273        2     1364           BZ    MVGL
+ 0967    6C          2     1365           INP   4
+ 0968    FA02        2     1366           ANI   #02
+ 096A    3A88        2     1367           BNZ   MVGR
+ 096C    D401BF      2     1368  MVG10    CALL  WAIT      WASTE CAUSE NO MOVE
+ 096F    01                1369           DA1   1
+ 0970    91          2     1370  MVGX     GHI   ZERO
+ 0971    A8          2     1371           PLO   ACC
+ 0972    D5          2     1372           EXIT
+ 0973    F848        2     1373  MVGL     LDI   GUNY
+ 0975    A7          2     1374           PLO   RAM
+ 0976    07          2     1375           LDN   RAM
+ 0977    3270        2     1376           BZ    MVGX
+ 0979    A8          2     1377           PLO   ACC
+ 097A    F800        2     1378           LDI   0
+ 097C    B8          2     1379           PHI   ACC
+ 097D    D4015B      2     1380           CALL  DSPL
+ 0980    2D03              1381           DA2   GUN
+ 0982    07          2     1382           LDN   RAM
+ 0983    FF01        2     1383           SMI   1
+ 0985    57          2     1384           STR   RAM
+ 0986    309D        2     1385           BR    MVG2
+ 0988    F848        2     1386  MVGR     LDI   GUNY
+ 098A    A7          2     1387           PLO   RAM
+ 098B    07          2     1388           LDN   RAM
+ 098C    A8          2     1389           PLO   ACC
+ 098D    FF1D        2     1390           SMI   #1D
+ 098F    3370        2     1391           BPZ   MVGX
+ 0991    F800        2     1392           LDI   0
+ 0993    B8          2     1393           PHI   ACC
+ 0994    D4015B      2     1394           CALL  DSPL
+ 0997    2D03              1395           DA2   GUN
+ 0999    07          2     1396           LDN   RAM
+ 099A    FC01        2     1397           ADI   1
+ 099C    57          2     1398           STR   RAM
+ 099D    A8          2     1399  MVG2     PLO   ACC
+ 099E    91          2     1400           GHI   ZERO
+ 099F    B8          2     1401           PHI   ACC
+ 09A0    D4015B      2     1402           CALL  DSPL
+ 09A3    2D03              1403           DA2   GUN
+ 09A5    D5          2     1404           EXIT            ACC=HIT/NO
+ 
+ 
+ 09A6    9A          2     1406  SHOBLK   GHI   RA
+ 09A7    B8          2     1407           PHI   ACC
+ 09A8    8A          2     1408           GLO   RA
+ 09A9    A8          2     1409           PLO   ACC
+ 09AA    D4015B      2     1410           CALL  DSPL
+ 09AD    4303              1411           DA2   BLOCK
+ 09AF    D5          2     1412           EXIT
+                           1413  *
+ 09B0                      1414  CHEKUFO  EQU   *         CHECK FOR UFOFIRE ERRORS
+ 09B0    9C          2     1415           GHI   RC
+ 09B1    32BF        2     1416           BZ    CHKERS
+ 09B3    FAC0        2     1417           ANI   #C0
+ 09B5    3ABF        2     1418           BNZ   CHKERS
+ 09B7    8C          2     1419           GLO   RC
+ 09B8    32BF        2     1420           BZ    CHKERS
+ 09BA    FAE0        2     1421           ANI   #E0
+ 09BC    3ABF        2     1422           BNZ   CHKERS
+ 09BE    D5          2     1423           EXIT
+ 09BF    F8EE        2     1424  CHKERS   LDI   #EE
+ 09C1    73          2     1425           STXD
+ 09C2    7B          2     1426           SEQ
+ 09C3    8E          2     1427           GLO   RE
+ 09C4    52          2     1428           STR   STK
+ 09C5    64          2     1429           OUT   4
+ 09C6    67          2     1430           OUT   7         SHO EE + RAY X ADDR
+ 09C7    22          2     1431           DEC   STK
+ 09C8    9C          2     1432           GHI   RC
+ 09C9    73          2     1433           STXD
+ 09CA    8C          2     1434           GLO   RC
+ 09CB    52          2     1435           STR   STK
+ 09CC    3FCC        2     1436           BN4   *
+ 09CE    37CE        2     1437           B4    *
+ 09D0    64          2     1438           OUT   4
+ 09D1    67          2     1439           OUT   7         SHO RAY X,Y
+ 09D2    22          2     1440           DEC   STK
+ 09D3    28          2     1441           DEC   ACC
+ 09D4    98          2     1442           GHI   ACC
+ 09D5    73          2     1443           STXD
+ 09D6    88          2     1444           GLO   ACC
+ 09D7    52          2     1445           STR   STK
+ 09D8    3FD8        2     1446           BN4   *
+ 09DA    37DA        2     1447           B4    *
+ 09DC    64          2     1448           OUT   4
+ 09DD    67          2     1449           OUT   7         SHO A(POSNVEC ELM)
+ 09DE    30DE        2     1450           BR    *         BUZZ LOOP

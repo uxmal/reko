@@ -61,6 +61,7 @@
         <var id="var.PowerPC.Design.TargetPath">$SolutionDir$/Arch/PowerPC.Design/$TargetFwkWindowsDir$/Reko.Arch.PowerPC.Design.dll</var>
         <var id="var.PowerPC.TargetPath">$SolutionDir$/Arch/PowerPC/$TargetDir$/Reko.Arch.PowerPC.dll</var>
         <var id="var.Qualcomm.TargetPath">$SolutionDir$/Arch/Qualcomm/$TargetDir$/Reko.Arch.Qualcomm.dll</var>
+        <var id="var.Rca.TargetPath">$SolutionDir$/Arch/Rca/$TargetDir$/Reko.Arch.Rca.dll</var>
         <var id="var.Renesas.TargetPath" >$SolutionDir$/Arch/Renesas/$TargetDir$/Reko.Arch.Renesas.dll</var>
         <var id="var.RiscV.TargetPath">$SolutionDir$/Arch/RiscV/$TargetDir$/Reko.Arch.RiscV.dll</var>
         <var id="var.Sanyo.TargetPath">$SolutionDir$/Arch/Sanyo/$TargetDir$/Reko.Arch.Sanyo.dll</var>
@@ -342,6 +343,7 @@
         <File Source="$(var.PowerPC.TargetPath)" nuget_target="f:" />
         <File Source="$(var.PowerPC.Design.TargetPath)" />
         <File Source="$(var.Qualcomm.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.Rca.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Renesas.TargetPath)" nuget_target="f:" />
         <File Source="$(var.RiscV.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Sanyo.TargetPath)" nuget_target="f:" />

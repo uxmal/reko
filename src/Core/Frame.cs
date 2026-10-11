@@ -86,8 +86,8 @@ namespace Reko.Core
             this.outParameters = [];
             this.namingPolicy = NamingPolicy.Instance;
 
-			// There is always a "variable" for the global memory and the frame
-			// pointer.
+			// There is always a "variable" for the global memory, the frame
+			// pointer, and the continuation of this procedure.
 
             this.Memory = new Identifier("Mem0", new UnknownType(), MemoryStorage.Instance);
             this.Identifiers.Add(Memory);

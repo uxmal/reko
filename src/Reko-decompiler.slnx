@@ -208,6 +208,10 @@
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
+    <Project Path="Arch/Rca/Rca.csproj">
+      <BuildType Solution="UnixDebug|*" Project="Debug" />
+      <BuildType Solution="UnixRelease|*" Project="Debug" />
+    </Project>
     <Project Path="Arch/Renesas/Renesas.csproj">
       <BuildType Solution="UnixDebug|*" Project="Release" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
@@ -300,6 +304,7 @@
     <File Path="Drivers/reko.config" />
     <Project Path="Drivers/AvaloniaShell/AvaloniaShell.csproj">
       <BuildDependency Project="Arch/Oki/Oki.csproj" />
+      <BuildDependency Project="Arch/Rca/Rca.csproj" />
       <BuildDependency Project="ImageLoaders/AOut/AOut.csproj" />
       <BuildDependency Project="ImageLoaders/DiskImages/DiskImages.csproj" />
       <BuildDependency Project="Libraries/MacsBug/MacsBug.csproj" />
@@ -326,6 +331,7 @@
       <BuildDependency Project="Arch/Oki/Oki.csproj" />
       <BuildDependency Project="Arch/PowerPC.Design/PowerPC.Design.csproj" />
       <BuildDependency Project="Arch/PowerPC/PowerPC.csproj" />
+      <BuildDependency Project="Arch/Rca/Rca.csproj" />
       <BuildDependency Project="Arch/RiscV/RiscV.csproj" />
       <BuildDependency Project="Arch/Sparc/Sparc.csproj" />
       <BuildDependency Project="Arch/SuperH/SuperH.csproj" />
@@ -390,60 +396,127 @@
     </Project>
     <Project Path="Drivers/WebSite/website.csproj">
       <BuildDependency Project="Arch/Alpha/Alpha.csproj" />
+      <BuildDependency Project="Arch/Altera/Altera.csproj" />
+      <BuildDependency Project="Arch/Angstrem/Angstrem.csproj" />
+      <BuildDependency Project="Arch/Arc/Arc.csproj" />
       <BuildDependency Project="Arch/Arm/Arm.csproj" />
       <BuildDependency Project="Arch/Avr/Avr.csproj" />
+      <BuildDependency Project="Arch/Blackfin/Blackfin.csproj" />
+      <BuildDependency Project="Arch/C166/C166.csproj" />
       <BuildDependency Project="Arch/Cil/Cil.csproj" />
+      <BuildDependency Project="Arch/CompactRisc/CompactRisc.csproj" />
+      <BuildDependency Project="Arch/Cray/Cray.csproj" />
+      <BuildDependency Project="Arch/CSky/CSky.csproj" />
+      <BuildDependency Project="Arch/Epson/Epson.csproj" />
+      <BuildDependency Project="Arch/Etrax/Etrax.csproj" />
+      <BuildDependency Project="Arch/Fujitsu/Fujitsu.csproj" />
+      <BuildDependency Project="Arch/H8/H8.csproj" />
       <BuildDependency Project="Arch/i8051/i8051.csproj" />
+      <BuildDependency Project="Arch/IA64/IA64.csproj" />
+      <BuildDependency Project="Arch/Infineon/Infineon.csproj" />
+      <BuildDependency Project="Arch/Kalimba/Kalimba.csproj" />
+      <BuildDependency Project="Arch/LatticeMico/LatticeMico.csproj" />
+      <BuildDependency Project="Arch/Loongson/Loongson.csproj" />
       <BuildDependency Project="Arch/M16C/M16C.csproj" />
+      <BuildDependency Project="Arch/Maxim/Maxim.csproj" />
+      <BuildDependency Project="Arch/MCore/MCore.csproj" />
+      <BuildDependency Project="Arch/MicroBlaze/MicroBlaze.csproj" />
+      <BuildDependency Project="Arch/Microchip/MicrochipPIC.csproj" />
+      <BuildDependency Project="Arch/MilStd1750/MilStd1750.csproj" />
       <BuildDependency Project="Arch/Mips/Mips.csproj" />
+      <BuildDependency Project="Arch/MN103/MN103.csproj" />
       <BuildDependency Project="Arch/Mos6502/Mos6502.csproj" />
       <BuildDependency Project="Arch/Motorola.Design/Motorola.Design.csproj" />
       <BuildDependency Project="Arch/Motorola/Motorola.csproj" />
       <BuildDependency Project="Arch/MSP430/MSP430.csproj" />
+      <BuildDependency Project="Arch/NatSemi/NatSemi.csproj" />
+      <BuildDependency Project="Arch/Nec/Nec.csproj" />
+      <BuildDependency Project="Arch/Oki/Oki.csproj" />
+      <BuildDependency Project="Arch/OpenRISC/OpenRISC.csproj" />
+      <BuildDependency Project="Arch/Padauk/Padauk.csproj" />
+      <BuildDependency Project="Arch/PaRisc/PaRisc.csproj" />
+      <BuildDependency Project="Arch/Pdp/Pdp.csproj" />
       <BuildDependency Project="Arch/PowerPC/PowerPC.csproj" />
+      <BuildDependency Project="Arch/Qualcomm/Qualcomm.csproj" />
+      <BuildDependency Project="Arch/Rca/Rca.csproj" />
       <BuildDependency Project="Arch/RiscV/RiscV.csproj" />
+      <BuildDependency Project="Arch/Sanyo/Sanyo.csproj" />
       <BuildDependency Project="Arch/Sparc/Sparc.csproj" />
       <BuildDependency Project="Arch/SuperH/SuperH.csproj" />
+      <BuildDependency Project="Arch/Telink/Telink.csproj" />
       <BuildDependency Project="Arch/Tlcs/Tlcs.csproj" />
+      <BuildDependency Project="Arch/Tms320C28/Tms320C28.csproj" />
+      <BuildDependency Project="Arch/Tms7000/Tms7000.csproj" />
+      <BuildDependency Project="Arch/V850/V850.csproj" />
       <BuildDependency Project="Arch/Vax/Vax.csproj" />
+      <BuildDependency Project="Arch/WE32100/WE32100.csproj" />
       <BuildDependency Project="Arch/X86.Design/X86.Design.csproj" />
       <BuildDependency Project="Arch/X86/X86.csproj" />
+      <BuildDependency Project="Arch/XCore/XCore.csproj" />
       <BuildDependency Project="Arch/Xtensa/Xtensa.csproj" />
       <BuildDependency Project="Arch/Zilog/Zilog.csproj" />
+      <BuildDependency Project="Arch/zSeries/zSeries.csproj" />
       <BuildDependency Project="Environments/AmigaOS.Design/AmigaOS.Design.csproj" />
       <BuildDependency Project="Environments/AmigaOS/AmigaOS.csproj" />
       <BuildDependency Project="Environments/AtariTOS/AtariTOS.csproj" />
+      <BuildDependency Project="Environments/BbcMicro/BbcMicro.csproj" />
       <BuildDependency Project="Environments/C64/C64.csproj" />
       <BuildDependency Project="Environments/Cpm/Cpm.csproj" />
       <BuildDependency Project="Environments/Dreamcast/Dreamcast.csproj" />
+      <BuildDependency Project="Environments/Gameboy/Gameboy.csproj" />
+      <BuildDependency Project="Environments/Hpux/Hpux.csproj" />
       <BuildDependency Project="Environments/MacOS/MacOS.csproj" />
+      <BuildDependency Project="Environments/MorphOS/MorphOS.csproj" />
       <BuildDependency Project="Environments/Msdos.Design/Msdos.Design.csproj" />
       <BuildDependency Project="Environments/Msdos/Msdos.csproj" />
       <BuildDependency Project="Environments/NeoGeo/NeoGeo.csproj" />
+      <BuildDependency Project="Environments/OpenVMS/OpenVMS.csproj" />
+      <BuildDependency Project="Environments/OS2/OS2.csproj" />
+      <BuildDependency Project="Environments/PalmOS/PalmOS.csproj" />
+      <BuildDependency Project="Environments/Pdp10Env/Pdp10Env.csproj" />
       <BuildDependency Project="Environments/PlayStation/PlayStation.csproj" />
       <BuildDependency Project="Environments/RiscOS/RiscOS.csproj" />
       <BuildDependency Project="Environments/RT11/RT11.csproj" />
       <BuildDependency Project="Environments/SegaGenesis/SegaGenesis.csproj" />
+      <BuildDependency Project="Environments/Snes/Snes.csproj" />
+      <BuildDependency Project="Environments/Switch/Switch.csproj" />
       <BuildDependency Project="Environments/SysV/SysV.csproj" />
       <BuildDependency Project="Environments/Trs80/Trs80.csproj" />
       <BuildDependency Project="Environments/Wii/Wii.csproj" />
       <BuildDependency Project="Environments/Windows/Windows.csproj" />
+      <BuildDependency Project="Environments/Xbox/Xbox.csproj" />
       <BuildDependency Project="Environments/ZX81/ZX81.csproj" />
+      <BuildDependency Project="ImageLoaders/AOut/AOut.csproj" />
+      <BuildDependency Project="ImageLoaders/Archives/Archives.csproj" />
       <BuildDependency Project="ImageLoaders/BinHex/BinHex.csproj" />
       <BuildDependency Project="ImageLoaders/Coff/Coff.csproj" />
+      <BuildDependency Project="ImageLoaders/DiskImages/DiskImages.csproj" />
       <BuildDependency Project="ImageLoaders/Dol/Dol.csproj" />
       <BuildDependency Project="ImageLoaders/Elf/Elf.csproj" />
+      <BuildDependency Project="ImageLoaders/HpSom/HpSom.csproj" />
       <BuildDependency Project="ImageLoaders/Hunk/Hunk.csproj" />
       <BuildDependency Project="ImageLoaders/IntelHex/IntelHex.csproj" />
+      <BuildDependency Project="ImageLoaders/Ldm/Ldm.csproj" />
       <BuildDependency Project="ImageLoaders/Llvm/LLVM.csproj" />
       <BuildDependency Project="ImageLoaders/MachO/MachO.csproj" />
       <BuildDependency Project="ImageLoaders/MzExe/MzExe.csproj" />
+      <BuildDependency Project="ImageLoaders/Nro/Nro.csproj" />
       <BuildDependency Project="ImageLoaders/OdbgScript/OdbgScript.csproj" />
+      <BuildDependency Project="ImageLoaders/Omf/Omf.csproj" />
+      <BuildDependency Project="ImageLoaders/Pef/Pef.csproj" />
+      <BuildDependency Project="ImageLoaders/Srec/Srec.csproj" />
+      <BuildDependency Project="ImageLoaders/TekHex/TekHex.csproj" />
       <BuildDependency Project="ImageLoaders/TypeLib/TypeLib.csproj" />
       <BuildDependency Project="ImageLoaders/VmsExe/VmsExe.csproj" />
       <BuildDependency Project="ImageLoaders/WebAssembly/WebAssembly.csproj" />
+      <BuildDependency Project="ImageLoaders/Xbe/Xbe.csproj" />
+      <BuildDependency Project="ImageLoaders/XexLoader/Xex.csproj" />
       <BuildDependency Project="Libraries/Libc/Libc.csproj" />
+      <BuildDependency Project="Libraries/MacsBug/MacsBug.csproj" />
       <BuildDependency Project="Libraries/Python/Python.csproj" />
+      <BuildDependency Project="Native/NativeProxy.csproj" />
+      <BuildDependency Project="Scripts/Python/Python.csproj" />
+      <BuildDependency Project="Symbols/LGSymLoader/LGSymLoader.csproj" />
       <BuildDependency Project="tools/c2xml/c2xml.csproj" />
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
@@ -466,6 +539,7 @@
       <BuildDependency Project="Arch/Oki/Oki.csproj" />
       <BuildDependency Project="Arch/PowerPC.Design/PowerPC.Design.csproj" />
       <BuildDependency Project="Arch/PowerPC/PowerPC.csproj" />
+      <BuildDependency Project="Arch/Rca/Rca.csproj" />
       <BuildDependency Project="Arch/RiscV/RiscV.csproj" />
       <BuildDependency Project="Arch/Sparc/Sparc.csproj" />
       <BuildDependency Project="Arch/SuperH/SuperH.csproj" />
@@ -883,6 +957,7 @@
     <Project Path="UnitTests/UnitTests.csproj">
       <BuildDependency Project="Arch/Angstrem/Angstrem.csproj" />
       <BuildDependency Project="Arch/Microchip/MicrochipPIC.csproj" />
+      <BuildDependency Project="Arch/Rca/Rca.csproj" />
       <BuildDependency Project="Libraries/Microchip/Utils/Microchip.Utils.csproj" />
       <BuildDependency Project="tools/genPICdb/genPICdb.csproj" />
       <BuildType Solution="UnixDebug|*" Project="Debug" />
@@ -973,15 +1048,12 @@
     <BuildType Solution="UnixDebug|x86" Project="Debug" />
     <BuildType Solution="UnixRelease|x64" Project="Release" />
     <BuildType Solution="UnixRelease|x86" Project="Release" />
+    <Platform Solution="*|Any CPU" Project="x64" />
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
-    <Platform Solution="Debug|Any CPU" Project="x64" />
     <Platform Solution="Debug|ARM64" Project="x64" />
-    <Platform Solution="Release|Any CPU" Project="x64" />
     <Platform Solution="Release|ARM64" Project="x86" />
-    <Platform Solution="UnixDebug|Any CPU" Project="x64" />
     <Platform Solution="UnixDebug|ARM64" Project="x64" />
-    <Platform Solution="UnixRelease|Any CPU" Project="x64" />
     <Platform Solution="UnixRelease|ARM64" Project="x64" />
     <Build Solution="*|ARM64" Project="false" />
   </Project>

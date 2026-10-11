@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>rca1802</arch>
+  <input>
+    <location>invad.bin</location>
+    <asmDir>invad.reko</asmDir>
+    <srcDir>invad.reko</srcDir>
+    <includeDir>invad.reko</includeDir>
+    <resources>invad.reko\resources</resources>
+    <user>
+      <address>0000</address>
+      <loader>raw</loader>
+      <processor name="rca1802" />
+      <procedure name="fn0400">
+        <address>0400</address>
+      </procedure>
+      <heuristic name="shingle" />
+      <onLoad enabled="false" />
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+</project>
