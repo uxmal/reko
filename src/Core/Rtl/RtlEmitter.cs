@@ -158,7 +158,7 @@ namespace Reko.Core.Rtl
         {
             var requiredBits = InstrClass.Call;
             if ((iclass & requiredBits) != requiredBits)
-                throw new ArgumentException(nameof(iclass), "InstrClass bits must be consistent with a call.");
+                throw new ArgumentException("InstrClass bits must be consistent with a call.", nameof(iclass));
             Instructions.Add(new RtlCall(target, retSize, iclass));
             return this;
         }
@@ -330,7 +330,7 @@ namespace Reko.Core.Rtl
             InstrClass iclass)
         {
             if ((iclass & InstrClass.Return) != InstrClass.Return)
-                throw new ArgumentException(nameof(iclass), "Instruction class must be a Return.");
+                throw new ArgumentException("Instruction class must be a Return.", nameof(iclass));
             Instructions.Add(new RtlReturn(returnAddressBytes, extraBytesPopped, iclass));
             return this;
         }

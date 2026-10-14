@@ -43,7 +43,7 @@ namespace Reko.Arch.i8051
         {
             this.arch = arch;
             this.rdr = rdr;
-            this.ops = new List<MachineOperand>();
+            this.ops = [];
         }
 
         public override i8051Instruction? DisassembleInstruction()
@@ -74,7 +74,7 @@ namespace Reko.Arch.i8051
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.Invalid,
-                Operands = Array.Empty<MachineOperand>()
+                Operands = []
             };
         }
 

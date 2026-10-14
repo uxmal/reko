@@ -88,7 +88,7 @@ namespace Reko.Analysis
         public SsaTransform[] Transform()
         {
             if (eventListener.IsCanceled())
-                return Array.Empty<SsaTransform>();
+                return [];
             var sw = new Stopwatch();
             sw.Start();
             trace.Inform("== SCC: {0} ===", string.Join(",", sccProcs));

@@ -41,8 +41,6 @@ namespace Reko.Core.Rtl
             this.Address = addr;
             this.Length = instrLength;
             this.Instructions = instrs;
-            if (instrs.Length == 0)
-                _ = this; //$DEBUG
         }
 
         /// <summary>
