@@ -21,6 +21,7 @@
 using Reko.Arch.Rca.Analysis;
 using Reko.Core;
 using Reko.Core.Analysis;
+using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -114,6 +115,17 @@ public class Rca1802Architecture : ProcessorArchitecture
     public override string GrfToString(RegisterStorage flagRegister, string prefix, ulong grf)
     {
         throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
+    /// <remarks>
+    /// The standard convention on RCA1802 is that the X register is set to
+    /// 2 (indicating the R2 stack register) on entry to a procedure.
+    /// </remarks>
+    public override void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter m)
+    {
+        var x = proc.Frame.EnsureRegister(Registers.X);
+        m.Assign(x, 2);
     }
 
     public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
