@@ -501,6 +501,16 @@ namespace Reko.Core
         Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType);  //$REVIEW: generalize these two methods?
 
         /// <summary>
+        /// Allows the architecture to inject statements at the entry of a procedure. This is used to
+        /// model architecture-specific prologues that are not visible in the machine code, such as
+        /// calling convetions where certain registers are known to have certain values.
+        /// </summary>
+        /// <param name="proc">Procedure to modify.</param>
+        /// <param name="addr">Address to modify.</param>
+        /// <param name="m"><see cref="CodeEmitter"/> used to generate code.</param>
+        void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter m);
+
+        /// <summary>
         /// Attempt to inline the instructions at <paramref name="addrCallee"/>. If the instructions
         /// can be inlined, return them as a list of RtlInstructions.
         /// </summary>
@@ -919,6 +929,11 @@ namespace Reko.Core
         public virtual IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
         {
             throw new NotImplementedException($"Your architecture must implement {nameof(GetSubFlags)}.");
+        }
+
+        /// <inheritdoc/>
+        public virtual void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter m)
+        {
         }
 
         /// <inheritdoc/>

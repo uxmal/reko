@@ -354,7 +354,6 @@ namespace Reko.Core
         /// <param name="emitter">A <see cref="CodeEmitter"/> that can be used to generate IR code.</param>
         void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter);
 
-
         /// <summary>
         /// Attempt to inline the instructions at <paramref name="addrCallee"/>. If the instructions
         /// can be inlined, return them as a list of <see cref="RtlInstruction"/>s.
@@ -945,6 +944,7 @@ namespace Reko.Core
         /// <inheritdoc/>
         public virtual void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter)
         {
+            Architecture.InjectProcedureEntryStatements(proc, addr, emitter);
         }
 
         /// <inheritdoc/>
