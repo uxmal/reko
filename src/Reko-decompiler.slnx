@@ -387,8 +387,6 @@
       <Platform Solution="UnixDebug|Any CPU" Project="x86" />
       <Platform Solution="UnixRelease|Any CPU" Project="x86" />
       <Build Solution="Debug|Any CPU" Project="false" />
-      <Build Solution="Debug|ARM64" Project="false" />
-      <Build Solution="Release|ARM64" Project="false" />
     </Project>
     <Project Path="Drivers/WebSite/website.csproj">
       <BuildDependency Project="Arch/Alpha/Alpha.csproj" />
