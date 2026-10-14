@@ -210,10 +210,10 @@
     </Project>
     <Project Path="Arch/Rca/Rca.csproj">
       <BuildType Solution="UnixDebug|*" Project="Debug" />
-      <BuildType Solution="UnixRelease|*" Project="Debug" />
+      <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
     <Project Path="Arch/Renesas/Renesas.csproj">
-      <BuildType Solution="UnixDebug|*" Project="Release" />
+      <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
     <Project Path="Arch/RiscV/RiscV.csproj">
@@ -222,10 +222,7 @@
     </Project>
     <Project Path="Arch/Sanyo/Sanyo.csproj">
       <BuildType Solution="UnixDebug|*" Project="Debug" />
-      <BuildType Solution="UnixRelease|Any CPU" Project="Debug" />
-      <BuildType Solution="UnixRelease|ARM64" Project="Release" />
-      <BuildType Solution="UnixRelease|x64" Project="Release" />
-      <BuildType Solution="UnixRelease|x86" Project="Debug" />
+      <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
     <Project Path="Arch/Sparc/Sparc.csproj">
       <BuildType Solution="UnixDebug|*" Project="Debug" />
@@ -245,10 +242,7 @@
     </Project>
     <Project Path="Arch/Tms320C28/Tms320C28.csproj">
       <BuildType Solution="UnixDebug|*" Project="Debug" />
-      <BuildType Solution="UnixRelease|Any CPU" Project="Debug" />
-      <BuildType Solution="UnixRelease|ARM64" Project="Release" />
-      <BuildType Solution="UnixRelease|x64" Project="Release" />
-      <BuildType Solution="UnixRelease|x86" Project="Debug" />
+      <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
     <Project Path="Arch/Tms7000/Tms7000.csproj">
       <BuildType Solution="UnixDebug|*" Project="Debug" />
