@@ -46,8 +46,6 @@ public class Rca1802Disassembler : DisassemblerBase<Rca1802Instruction, Mnemonic
     public override Rca1802Instruction? DisassembleInstruction()
     {
         this.addr = rdr.Address;
-        if (this.addr.Offset == 0x0856)
-            _ = this; //$DEBUG
         if (!rdr.TryReadByte(out byte uInstr))
             return null;
         var instr = rootDecoder.Decode(uInstr, this);

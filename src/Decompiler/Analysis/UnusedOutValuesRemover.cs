@@ -100,15 +100,22 @@ namespace Reko.Analysis
                 this.wl.AddRange(ssaStates);
                 while (wl.TryGetWorkItem(out SsaState? ssa))
                 {
-                    if (this.eventListener.IsCanceled())
-                        return;
-                    var context = new AnalysisContext(program, ssa.Procedure, dynamicLinker, services, eventListener);
-                    var vp = new ValuePropagator(context);
-                    vp.Transform(ssa);
-                    change |= RemoveUnusedDefinedValues(ssa, wl);
-                    //DataFlowAnalysis.DumpWatchedProcedure("After RemoveUnusedDefinedValues", ssa.Procedure);
-                    change |= RemoveLiveInStorages(ssa.Procedure, dataFlow[ssa.Procedure], wl);
-                    //DataFlowAnalysis.DumpWatchedProcedure("After RemoveLiveInStorages", ssa.Procedure);
+                    try
+                    {
+                        if (this.eventListener.IsCanceled())
+                            return;
+                        var context = new AnalysisContext(program, ssa.Procedure, dynamicLinker, services, eventListener);
+                        var vp = new ValuePropagator(context);
+                        vp.Transform(ssa);
+                        change |= RemoveUnusedDefinedValues(ssa, wl);
+                        //DataFlowAnalysis.DumpWatchedProcedure("After RemoveUnusedDefinedValues", ssa.Procedure);
+                        change |= RemoveLiveInStorages(ssa.Procedure, dataFlow[ssa.Procedure], wl);
+                        //DataFlowAnalysis.DumpWatchedProcedure("After RemoveLiveInStorages", ssa.Procedure);
+                    }
+                    catch (Exception ex)
+                    {
+                        eventListener.Error(ex, "An error occurred during data flow analysis.");
+                    }
                 }
             } while (change);
             foreach (var proc in procToSsa.Keys)

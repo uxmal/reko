@@ -106,7 +106,7 @@ public class Rca1802Architecture : ProcessorArchitecture
 
     public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
     {
-        if (flags.FlagRegister != Registers.Status)
+        if (flags is null || flags.FlagRegister != Registers.Status)
             yield break;
         if ((flags.FlagGroupBits & Registers.DF.FlagGroupBits) != 0)
             yield return Registers.DF;
@@ -130,7 +130,7 @@ public class Rca1802Architecture : ProcessorArchitecture
 
     public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
     {
-        throw new NotImplementedException();
+        return Address.Ptr16(c.ToUInt16());
     }
 
     public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)

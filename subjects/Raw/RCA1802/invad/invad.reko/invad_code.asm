@@ -1,0 +1,1305 @@
+;;; Segment code (0000)
+0000 C0 F0 00 F8 00 B3 F8 01 B4 F8 01 B5 F8 00 B7 B9 ................
+0010 F8 14 A3 D3 F8 0F B2 F8 02 B1 F8 02 A1 F8 D7 A4 ................
+0020 F8 E7 A5 F8 FF A2 E2 C0 04 00 60 C0 60 80 C0 80 ..........`.`...
+0030 E0 F0 F8 FC F8 F0 E0 00 A0 D0 B0 80 40 20 10 08 ............@ ..
+0040 04 02 01 F0 F0 F0 00 00 00 00 00 00 00 00 00 00 ................
+0050 00 00 00 00 00 35 A7 FF 00 00 00 00 00 00 00 00 .....5..........
+0060 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+; ...
+
+;; fn0100: 0100
+;;   Called from:
+;;     0521 (in fn0512)
+fn0100 proc
+	CALL	fn023E
+	LDA	R6
+	PLO	R15
+
+l0105:
+	LDI	55
+	PLO	R7
+	LDA	R7
+	PHI	R8
+	LDN	R7
+	PLO	R8
+	LDI	08
+	PLO	R11
+
+l010F:
+	GLO	R11
+	BZ	012E
+
+l0112:
+	DEC	R11
+	GHI	R8
+	SHR
+	STR	R2
+	GLO	R8
+	XOR
+	STR	R2
+	GLO	R8
+	SHL
+	XOR
+	STR	R2
+	GLO	R8
+	SHL
+	SHL
+	SHL
+	XOR
+	SHRC
+	SHRC
+	SHRC
+	SHRC
+	GHI	R8
+	SHRC
+	PHI	R8
+	GLO	R8
+	SHRC
+	PLO	R8
+	BR	010F
+
+l012E:
+	GLO	R8
+	STR	R7
+	GHI	R8
+	DEC	R7
+	STR	R7
+	GHI	R1
+	PLO	R10
+	GLO	R15
+	BZ	0156
+
+l0138:
+	SHLC
+	BDF	013E
+
+l013B:
+	INC	R10
+	BR	0138
+
+l013E:
+	LDI	FF
+
+l0140:
+	STR	R2
+	GLO	R10
+	BZ	0149
+
+l0144:
+	DEC	R10
+	LDN	R2
+	SHR
+	BR	0140
+
+l0149:
+	GLO	R8
+	AND
+	STR	R2
+	GLO	R15
+	SM
+	BNF	0105
+
+l0150:
+	LDN	R2
+	PLO	R8
+	CALL	fn026A
+	EXIT
+
+l0156:
+	LDI	01
+	PLO	R15
+	BR	0138
+
+;; fn015B: 015B
+;;   Called from:
+;;     048D (in fn0400)
+;;     0509 (in fn0507)
+;;     0566 (in fn055B)
+;;     0597 (in fn0577)
+;;     05C3 (in fn0577)
+;;     0686 (in fn0600)
+;;     0870 (in fn084F)
+;;     08A8 (in fn084F)
+fn015B proc
+	CALL	fn023E
+	GLO	R8
+	ANI	1F
+	SHL
+	SHL
+	SHL
+	PLO	R10
+	GHI	R8
+	ANI	3F
+	PHI	R13
+	SHR
+	SHR
+	SHR
+	STR	R2
+	GLO	R10
+	ADD
+	PLO	R10
+	GHI	R13
+	ANI	07
+	PHI	R10
+	LDI	03
+	PHI	R12
+	GLO	R10
+	PLO	R12
+	GHI	R1
+	PHI	R11
+	LDA	R6
+	PLO	R11
+	GHI	R1
+	PLO	R8
+	LDA	R6
+	PLO	R14
+
+l0181:
+	BZ	01BA
+
+l0183:
+	GHI	R10
+	PLO	R15
+	GHI	R1
+	PLO	R13
+	LDA	R11
+	PHI	R13
+
+l0189:
+	GLO	R15
+	BZ	0197
+
+l018C:
+	DEC	R15
+	GHI	R1
+	SHRC
+	GHI	R13
+	SHRC
+	PHI	R13
+	GLO	R13
+	SHRC
+	PLO	R13
+	BR	0189
+
+l0197:
+	SEX	R12
+	GHI	R13
+	AND
+	BZ	019D
+
+l019C:
+	INC	R8
+
+l019D:
+	GHI	R13
+	XOR
+	STR	R12
+	INC	R12
+	GLO	R12
+	BZ	01BA
+
+l01A4:
+	ANI	07
+	BZ	01B0
+
+l01A8:
+	GLO	R13
+	AND
+	BZ	01AD
+
+l01AC:
+	INC	R8
+
+l01AD:
+	GLO	R13
+	XOR
+	STR	R12
+
+l01B0:
+	DEC	R14
+	GLO	R12
+	ADI	07
+	BDF	01BA
+
+l01B6:
+	PLO	R12
+	GLO	R14
+	BR	0181
+
+l01BA:
+	SEX	R2
+	CALL	fn026A
+	EXIT
+
+;; fn01BF: 01BF
+;;   Called from:
+;;     040E (in fn0400)
+;;     0492 (in fn0400)
+fn01BF proc
+	CALL	fn023E
+	LDA	R6
+	PLO	R10
+	BZ	01D2
+
+l01C6:
+	LDI	1F
+
+l01C8:
+	PLO	R11
+	PLO	R11
+	DEC	R11
+	GLO	R11
+	BNZ	01C8
+
+l01CE:
+	DEC	R10
+	GLO	R10
+	BNZ	01C6
+
+l01D2:
+	CALL	fn026A
+	EXIT
+01D6                   D3 E2 96 73 86 73 93 B6 83 A6       ...s.s....
+01E0 46 B3 46 A3 30 D6 D3 96 B3 86 A3 E2 12 72 A6 F0 F.F.0........r..
+01F0 B6 30 E6 00 00 00 00 00 00 00 00 00 00 00 00 00 .0..............
+0200 72 70 22 78 22 52 C4 99 3A 23 89 32 25 29 F8 00 rp"x"R..:#.2%)..
+0210 A0 80 E2 E2 20 A0 E2 20 A0 E2 20 A0 3C 11 F8 03 .... .. .. .<...
+0220 B0 30 00 29 E2 30 0E                            .0.).0.         
+
+;; fn0227: 0227
+;;   Called from:
+;;     0512 (in fn0512)
+fn0227 proc
+	GLO	R10
+	STXD
+	GLO	R7
+	STR	R2
+	LDI	FF
+	PLO	R10
+	LDI	03
+	PHI	R10
+
+l0231:
+	GHI	R1
+	STR	R10
+	GLO	R10
+	BZ	0239
+
+l0236:
+	DEC	R10
+	BR	0231
+
+l0239:
+	LDXA
+	PLO	R7
+	LDN	R2
+	PLO	R10
+	EXIT
+
+;; fn023E: 023E
+;;   Called from:
+;;     0100 (in fn0100)
+;;     015B (in fn015B)
+;;     01BF (in fn01BF)
+fn023E proc
+	GLO	R7
+	STXD
+	GHI	R15
+	STXD
+	GLO	R15
+	STR	R2
+	LDI	57
+	PLO	R7
+	LDN	R7
+	PLO	R15
+	LDI	0D
+	PHI	R15
+	SEX	R15
+	LDA	R2
+	STXD
+	LDA	R2
+	STXD
+	LDN	R2
+	STXD
+	GHI	R14
+	STXD
+	GLO	R14
+	STXD
+	GHI	R13
+	STXD
+	GLO	R13
+	STXD
+	GHI	R12
+	STXD
+	GLO	R12
+	STXD
+	GHI	R11
+	STXD
+	GLO	R11
+	STXD
+	GHI	R10
+	STXD
+	GLO	R10
+	STXD
+	GLO	R15
+	STR	R7
+	EXIT
+
+;; fn026A: 026A
+;;   Called from:
+;;     0152 (in fn0100)
+;;     01BB (in fn015B)
+;;     01D2 (in fn01BF)
+fn026A proc
+	LDI	57
+	PLO	R7
+	LDN	R7
+	PLO	R15
+	LDI	0D
+	PHI	R15
+	SEX	R15
+	INC	R15
+	LDXA
+	PLO	R10
+	LDXA
+	PHI	R10
+	LDXA
+	PLO	R11
+	LDXA
+	PHI	R11
+	LDXA
+	PLO	R12
+	LDXA
+	PHI	R12
+	LDXA
+	PLO	R13
+	LDXA
+	PHI	R13
+	LDXA
+	PLO	R14
+	LDXA
+	PHI	R14
+	LDXA
+	SEX	R2
+	STXD
+	LDA	R15
+	STXD
+	LDN	R15
+	STR	R2
+	GLO	R15
+	STR	R7
+	LDA	R2
+	PLO	R15
+	LDXA
+	PHI	R15
+	LDN	R2
+	PLO	R7
+	EXIT
+
+;; fn0298: 0298
+;;   Called from:
+;;     04D3 (in fn04CC)
+;;     04E1 (in fn04CC)
+;;     04EF (in fn04CC)
+;;     0608 (in fn0600)
+;;     0613 (in fn0600)
+;;     06AB (in fn0600)
+;;     0708 (in fn0700)
+;;     0726 (in fn071E)
+;;     0800 (in fn07FF)
+fn0298 proc
+	GLO	R7
+	STXD
+	LDA	R7
+	PHI	R8
+	SHR
+	SHR
+	SHR
+	STR	R2
+	LDN	R7
+	SHL
+	SHL
+	SHL
+	ADD
+	PLO	R8
+	LDI	3B
+	STR	R2
+	GHI	R8
+	ANI	07
+	ADD
+	PLO	R7
+	LDI	03
+	PHI	R8
+	SEX	R8
+	LDN	R7
+	AND
+	BNZ	02BF
+
+l02B6:
+	LDN	R7
+	XOR
+	STR	R8
+	GHI	R1
+
+l02BA:
+	PLO	R8
+	INC	R2
+	LDN	R2
+	PLO	R7
+	EXIT
+
+l02BF:
+	LDN	R7
+	XOR
+	STR	R8
+	LDI	01
+	BR	02BA
+02C6                   00 00 00 00 00 00 00 00 00 00       ..........
+02D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+; ...
+
+;; fn0400: 0400
+fn0400 proc
+	INP1	09
+
+l0401:
+	BN4	0401
+
+l0403:
+	B4	0403
+
+l0405:
+	CALL	fn0512
+	CALL	fn0500
+	GLO	R8
+	BNZ	0483
+
+l040E:
+	CALL	fn01BF
+	LDX
+
+l0412:
+	LDI	06
+	PLO	R9
+	CALL	fn0600
+	CALL	fn0700
+	GLO	R8
+	BNZ	0483
+
+l041E:
+	CALL	fn084F
+	GLO	R8
+	BNZ	04C1
+
+l0424:
+	CALL	fn0600
+	CALL	fn071E
+	GLO	R8
+	BNZ	0483
+
+l042D:
+	CALL	fn0960
+	GLO	R8
+	BNZ	0483
+
+l0433:
+	CALL	fn0600
+	CALL	fn0700
+	GLO	R8
+	BNZ	0483
+
+l043C:
+	CALL	fn084F
+	GLO	R8
+	BNZ	04C1
+
+l0442:
+	CALL	fn0600
+	CALL	fn0960
+	GLO	R8
+	BNZ	0483
+
+l044B:
+	CALL	fn071E
+	GLO	R8
+	BNZ	0483
+
+l0451:
+	CALL	fn0600
+	CALL	fn084F
+	GLO	R8
+	BNZ	04C1
+
+l045A:
+	LDI	46
+	PLO	R7
+	LDN	R7
+	BZ	046C
+
+l0460:
+	GLO	R9
+	BZ	0412
+
+l0463:
+	CALL	fn0900
+	BR	0460
+0468                         00 00 00 00                     ....    
+
+l046C:
+	CALL	fn04CC
+	LDI	46
+	PLO	R7
+	GHI	R1
+	STR	R7
+	CALL	fn084F
+	LDI	52
+	PLO	R7
+	LDN	R7
+	SMI	02
+	STR	R7
+	CALL	fn0577
+	BR	0412
+
+l0483:
+	CALL	fn04CC
+	LDI	48
+	PLO	R7
+	LDN	R7
+	PLO	R8
+	GHI	R1
+	PHI	R8
+	CALL	fn015B
+	NBR
+0491    03                                            .              
+
+l0492:
+	CALL	fn01BF
+	LBR	D405
+0498                         00 D4 01 BF C0 F8 48 A7         ......H.
+04A0 07 A8 91 B8 D4 01 5B 38 03 D4 01 BF C0 F8 47 A7 ......[8......G.
+04B0 07 FF 01 57 32 C1 D4 01 00 1D F8 48 A7 88 57 30 ...W2......H..W0
+04C0 08                                              .               
+
+l04C1:
+	CALL	fn0900
+
+l04C4:
+	B4	04C4
+
+l04C6:
+	BN4	04C6
+
+l04C8:
+	B4	04C8
+
+l04CA:
+	BR	0405
+
+;; fn04CC: 04CC
+;;   Called from:
+;;     046C (in fn0400)
+;;     0483 (in fn0400)
+fn04CC proc
+	LDI	4A
+	PLO	R7
+	LDN	R7
+	BZ	04DA
+
+l04D2:
+	DEC	R7
+	CALL	fn0298
+	GHI	R1
+	STR	R7
+	INC	R7
+	STR	R7
+
+l04DA:
+	LDI	4C
+	PLO	R7
+	LDN	R7
+	BZ	04E8
+
+l04E0:
+	DEC	R7
+	CALL	fn0298
+	GHI	R1
+	STR	R7
+	INC	R7
+	STR	R7
+
+l04E8:
+	LDI	4E
+	PLO	R7
+	LDN	R7
+	BZ	04F6
+
+l04EE:
+	DEC	R7
+	CALL	fn0298
+	GHI	R1
+	STR	R7
+	INC	R7
+	STR	R7
+
+l04F6:
+	EXIT
+04F7                      00 00 00 00 00 00 00 00 00        .........
+
+;; fn0500: 0500
+;;   Called from:
+;;     0408 (in fn0400)
+fn0500 proc
+	GLO	R7
+	STXD
+	GHI	R1
+	PHI	R8
+	LDI	48
+	PLO	R7
+
+;; fn0507: 0507
+;;   Called from:
+;;     0506 (in fn0500)
+;;     0569 (in fn055B)
+fn0507 proc
+	LDN	R7
+	PLO	R8
+	CALL	fn015B
+	DEC	R13
+	LDN	R3
+	INC	R2
+	LDN	R2
+	PLO	R7
+	EXIT
+
+;; fn0512: 0512
+;;   Called from:
+;;     0405 (in fn0400)
+fn0512 proc
+	CALL	fn0227
+	CALL	fn055B
+	LDI	47
+	PLO	R7
+	LDI	03
+	STR	R7
+	LDI	48
+	PLO	R7
+	CALL	fn0100
+	INC	R13
+	GLO	R8
+	STR	R7
+	LDI	4A
+	PLO	R7
+	GHI	R1
+	STR	R7
+	DEC	R7
+	STR	R7
+	LDI	4C
+	PLO	R7
+	GHI	R1
+	STR	R7
+	DEC	R7
+	STR	R7
+	LDI	4E
+	PLO	R7
+	GHI	R1
+	STR	R7
+	DEC	R7
+	STR	R7
+	LDI	52
+	PLO	R7
+	LDI	0F
+	STR	R7
+	LDI	58
+	PLO	R7
+	LDI	0F
+	STR	R7
+	LDI	53
+	PLO	R7
+	GHI	R1
+	STR	R7
+	INC	R7
+	STR	R7
+	LDI	46
+	PLO	R7
+	GHI	R1
+	STR	R7
+	CALL	fn084F
+	CALL	fn0577
+	EXIT
+
+;; fn055B: 055B
+;;   Called from:
+;;     0515 (in fn0512)
+fn055B proc
+	LDI	03
+	PLO	R10
+	LDI	04
+	PHI	R8
+	PHI	R11
+	LDI	05
+	PLO	R11
+	PLO	R8
+	CALL	fn015B
+	BR	fn0507
+056B                                  8B FC 09 A8 AB            .....
+0570 9B B8 2A 8A 3A 66 D5                            ..*.:f.         
+
+;; fn0577: 0577
+;;   Called from:
+;;     047E (in fn0400)
+;;     0557 (in fn0512)
+fn0577 proc
+	LDI	48
+	PLO	R14
+	LDI	0C
+	PLO	R11
+	LDI	70
+	PLO	R13
+	GHI	R1
+	PHI	R13
+	LDI	52
+	PLO	R7
+	LDN	R7
+	PHI	R8
+	LDI	58
+	PLO	R7
+	GHI	R8
+	STR	R7
+	ADI	2C
+	PHI	R8
+	PHI	R12
+
+l0590:
+	LDI	02
+	PLO	R8
+	PLO	R12
+	LDI	06
+	PLO	R10
+
+l0597:
+	CALL	fn015B
+	DEC	R10
+	LDN	R3
+	GLO	R8
+	BNZ	05BF
+
+l059F:
+	GHI	R12
+	STR	R13
+	INC	R13
+	GLO	R12
+	STR	R13
+	INC	R13
+
+l05A5:
+	GLO	R12
+	ADI	05
+	PLO	R12
+	PLO	R8
+	GHI	R12
+	PHI	R8
+	DEC	R10
+	GLO	R10
+	BNZ	0597
+
+l05B0:
+	GHI	R12
+	SMI	04
+	PHI	R12
+	PHI	R8
+	DEC	R11
+	GLO	R11
+	BNZ	0590
+
+l05B9:
+	LDI	46
+	PLO	R7
+	GLO	R14
+	STR	R7
+	EXIT
+
+l05BF:
+	GLO	R12
+	PLO	R8
+	GHI	R12
+	PHI	R8
+	CALL	fn015B
+	DEC	R10
+	LDN	R3
+	LDI	FF
+	STR	R13
+	INC	R13
+	STR	R13
+	INC	R13
+	DEC	R14
+	BR	05A5
+05D1    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ...............
+05E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+; ...
+
+;; fn0600: 0600
+;;   Called from:
+;;     0415 (in fn0400)
+;;     0424 (in fn0400)
+;;     0433 (in fn0400)
+;;     0442 (in fn0400)
+;;     0451 (in fn0400)
+fn0600 proc
+	IDL
+	LDI	4A
+	PLO	R7
+	LDN	R7
+	BZ	061E
+
+l0607:
+	DEC	R7
+	CALL	fn0298
+	LDN	R7
+	ADI	01
+	STR	R7
+	SMI	40
+	BZ	06AE
+
+l0613:
+	CALL	fn0298
+	GLO	R8
+	BNZ	063D
+
+l0619:
+	EXIT
+061A                               D4 01 BF 00                 ....  
+
+l061E:
+	EXIT
+061F                                              3F                ?
+0620 19 F8 46 A7 07 32 18 F8 48 A7 07 FC 01 A8 F8 49 ..F..2..H......I
+0630 A7 F8 02 57 17 88 57 27 D4 02 98 88 32          ...W..W'....2   
+
+l063D:
+	INC	R8
+	LDI	4B
+	PLO	R10
+	GHI	R1
+	PHI	R10
+	SEX	R10
+	LDA	R7
+	SM
+	INC	R10
+	BNZ	064C
+
+l0649:
+	LDN	R7
+	SM
+	BZ	06B6
+
+l064C:
+	PHI	R6
+
+l064D:
+	INC	R10
+	DEC	R7
+	LDA	R7
+	SM
+	INC	R10
+	BNZ	0657
+
+l0654:
+	LDN	R7
+	SM
+	BZ	06B6
+
+l0657:
+	PHI	R6
+
+l0658:
+	DEC	R7
+	LDA	R7
+	PLO	R11
+	LDN	R7
+	PLO	R10
+	LDI	70
+	PLO	R8
+	GHI	R1
+	PHI	R8
+
+l0662:
+	SEX	R8
+	GLO	R11
+	SM
+	BNF	0676
+
+l0667:
+	SMI	03
+	BDF	0676
+
+l066B:
+	INC	R8
+	GLO	R10
+	SM
+	BNF	0677
+
+l0670:
+	SMI	03
+	BDF	0677
+
+l0674:
+	DEC	R8
+	BR	067D
+
+l0676:
+	SDBI	18
+
+l0677:
+	INC	R8
+
+l0678:
+	INC	R8
+	GLO	R8
+	BNZ	0662
+
+l067C:
+	BR	06AE
+
+l067D:
+	PLO	R14
+067E                                           7B 88               {.
+0680 A7 AB 47 B8 07 A8 D4 01 5B 2A 03 7A 8B A7 F8 FF ..G.....[*.z....
+0690 57 17 57 F8 54 A7 07 FC 01 57 3B A0             W.W.T....W;.    
+
+l069C:
+	DEC	R7
+	LDN	R7
+	ADI	01
+
+l06A0:
+	STR	R7
+	LDI	46
+	PLO	R7
+	LDN	R7
+	SMI	01
+	STR	R7
+	LDI	49
+	PLO	R7
+	CALL	fn0298
+
+l06AE:
+	SEQ
+	LDI	4A
+	PLO	R7
+	GHI	R1
+	STR	R7
+	DEC	R7
+	STR	R7
+
+l06B6:
+	EXIT
+06B7                      27 D4 02 98 30 AE 00 00 00        '...0....
+06C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+; ...
+
+;; fn0700: 0700
+;;   Called from:
+;;     0418 (in fn0400)
+;;     0436 (in fn0400)
+fn0700 proc
+	IDL
+	LDI	4C
+	PLO	R7
+	LDN	R7
+	BZ	0712
+
+l0707:
+	DEC	R7
+	CALL	fn0298
+	LDN	R7
+	BZ	0712
+
+l070E:
+	SMI	01
+	STR	R7
+	BR	fn07FF
+
+l0712:
+	SMI	F8
+0713          F8 46 A7 07 3A 3C A8 D5 00 00 00          .F..:<.....  
+
+;; fn071E: 071E
+;;   Called from:
+;;     0427 (in fn0400)
+;;     044B (in fn0400)
+fn071E proc
+	IDL
+	LDI	4E
+	PLO	R7
+	LDN	R7
+	BZ	0730
+
+l0725:
+	DEC	R7
+	CALL	fn0298
+	LDN	R7
+	BZ	0730
+
+l072C:
+	SMI	01
+	STR	R7
+	BR	fn07FF
+
+l0730:
+	SMI	F8
+0731    F8 46 A7 07 3A 73 A8 D5 00 00 00 00 F8 4B AE  .F..:s.......K.
+0740 91 BC AC F8 48 A7 E7 91 B8 F8 70 A8 F8 06 AD 48 ....H.....p....H
+0750 BC FF FF 32 65 88 BE 08 AC FF 02 F7 33 65 F4 FC ...2e.......3e..
+0760 04 F7 3B 65 30 AE 18 2D 8D 3A 4E 8C 3A AE 30 4B ..;e0..-.:N.:.0K
+0770 00 00 00 00 F8 4D AE 91 BC AC F8 48 A7 E7 91 B8 .....M.....H....
+0780 F8 70 A8 88 FC 01 A8 F8 06 AD 48 BC FF FF 32 A0 .p........H...2.
+0790 88 BE 08 AC FF 03 F7 33 A0 F4 FC 04 F7 3B A0 30 .......3.....;.0
+07A0 AE 28 28 2D 8D 3A 89 8C 3A AE 88 FC 17 30 85 9E .((-.:..:....0..
+07B0 A8 F8 0B AF 88 FC 0C 33 C7 A8 08 FF FF 32 C3 28 .......3.....2.(
+07C0 48 BC 08 AC 2F 8F 3A B3 8E A7 9C FF 01 57 17 8C H.../.:......W..
+07D0 FC 01 57 27 D4 09 B0 30 FF 00 00 00 00 00 00 00 ..W'...0........
+07E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+07F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ............... 
+
+;; fn07FF: 07FF
+;;   Called from:
+;;     0711 (in fn0700)
+;;     072F (in fn071E)
+fn07FF proc
+	IDL
+	CALL	fn0298
+	GLO	R8
+	BNZ	0806
+
+l0806:
+	EXIT
+0807                      F8 49 AB 91 BB EB 47 F7 1B        .I....G..
+0810 3A 17 07 F7 27 32 36 17 27 07 FF 02 3B 3E 1B 4B :...'26.'...;>.K
+0820 1B F7 3A 29 2B 4B 1B F7 32 36 F8 58 AB 07 F7 33 ..:)+K..26.X...3
+0830 4C 91 57 17 57 A8 D5 91 57 17 57 AC 27 30 46 F8 L.W.W...W.W.'0F.
+0840 04 AC 91 57 17 57 27 D4 02 98 8C A8 D5 91 30    ...W.W'.......0 
+
+;; fn084F: 084F
+;;   Called from:
+;;     041E (in fn0400)
+;;     043C (in fn0400)
+;;     0454 (in fn0400)
+;;     0474 (in fn0400)
+;;     0554 (in fn0512)
+fn084F proc
+	LDA	R6
+	LDI	46
+	PLO	R7
+	LDN	R7
+	PLO	R12
+	BZ	08D8
+
+l0856:
+	SEP	R8
+
+l0857:
+	LDI	51
+	PLO	R7
+	LDN	R7
+	PLO	R8
+	GHI	R1
+	PHI	R8
+
+l085E:
+	INC	R8
+	INC	R8
+	GLO	R8
+	PLO	R11
+	STR	R7
+	BZ	08DF
+
+l0865:
+	LDA	R8
+	PHI	R10
+	SMI	FF
+	BZ	085E
+
+l086B:
+	LDN	R8
+	PLO	R10
+	PLO	R8
+	GHI	R10
+	PHI	R8
+	CALL	fn015B
+	DEC	R10
+	LDN	R3
+	LDI	4F
+	PLO	R7
+	LDA	R7
+	SMI	04
+	BNF	088D
+
+l087D:
+	BZ	0898
+
+l087F:
+	GHI	R10
+	SMI	01
+	PHI	R10
+	SMI	02
+	BDF	08A3
+
+l0887:
+	CALL	fn09A6
+	LDI	04
+	PLO	R8
+
+l088D:
+	EXIT
+088E                                           8A FF               ..
+0890 01 AA 3A A3 F8 0C 57 30                         ..:...W0        
+
+l0898:
+	PLO	R3
+	GLO	R10
+	ADI	01
+	PLO	R10
+	SMI	1D
+	BNF	08A3
+
+l08A1:
+	LDI	08
+
+l08A3:
+	STR	R7
+	GHI	R10
+	PHI	R8
+	GLO	R10
+	PLO	R8
+	CALL	fn015B
+	DEC	R10
+	LDN	R3
+	GLO	R8
+	BNZ	08C3
+
+l08B0:
+	GLO	R11
+	PLO	R7
+	GHI	R10
+	STR	R7
+	INC	R7
+	GLO	R10
+	STR	R7
+	LDI	58
+	PLO	R7
+	SEX	R7
+	GHI	R10
+	SM
+	BDF	08C0
+
+l08BF:
+	GHI	R10
+
+l08C0:
+	STR	R7
+	GHI	R1
+	PLO	R8
+
+l08C3:
+	EXIT
+08C4             9A B8 8A A8 D4 01 5B 2A 03 F8 46 A7     ......[*..F.
+08D0 2C 8C 57 F8 FF BA AA 30                         ,.W....0        
+
+l08D8:
+	PLO	R15
+	LDI	4F
+	PLO	R7
+	LDI	04
+	BR	08EA
+
+l08DF:
+	SEX	R10
+08E0 F8 4F A7 07 FF 08 33 EA 17 07                   .O....3...      
+
+l08EA:
+	DEC	R7
+	STR	R7
+	INC	R7
+	STR	R7
+	INC	R7
+	LDI	6E
+	STR	R7
+	GLO	R12
+	BZ	08C0
+
+l08F5:
+	BQ	08F9
+
+l08F7:
+	SEQ
+	BR	0856
+
+l08F9:
+	STR	R6
+08FA                               7A 30 56 00 00 00           z0V...
+
+;; fn0900: 0900
+;;   Called from:
+;;     0463 (in fn0400)
+;;     04C1 (in fn0400)
+fn0900 proc
+	IDL
+	GHI	R1
+	PHI	R10
+	PLO	R10
+	PHI	R11
+	PLO	R11
+	PHI	R12
+	PLO	R12
+	LDI	53
+	PLO	R7
+	LDA	R7
+	PHI	R8
+	LDN	R7
+
+l090E:
+	PLO	R8
+	GLO	R8
+	SMI	0A
+	PLO	R8
+	BNF	0917
+
+l0915:
+	INC	R10
+	BR	090E
+
+l0917:
+	LDN	R14
+0918                         98 FF 01 3B 20 B8 1A 30         ...; ..0
+0920 0E 8A FF 0A AA 3B 29 1B 30 20 9A FF 01 3B 32 BA .....;).0 ...;2.
+0930 1B 30 20 8B FF 0A AB 3B 3B 1C 30 32 9B FF 01 3B .0 ....;;.02...;
+0940 44 BB 1C 30 32 8C FE FE FE FE 52 8B FC 0A F1 73 D..02.....R....s
+0950 8A FC 0A FE FE FE FE 52 88 FC 0A F1 52 64 67 22 .......R....Rdg"
+
+;; fn0960: 0960
+;;   Called from:
+;;     042D (in fn0400)
+;;     0445 (in fn0400)
+fn0960 proc
+	EXIT
+0961    36 6C 6C FA 0F 32 73 6C FA 02 3A 88 D4 01 BF  6ll..2sl..:....
+0970 01 91 A8 D5 F8 48 A7 07 32 70 A8 F8 00 B8 D4 01 .....H..2p......
+0980 5B 2D 03 07 FF 01 57 30 9D F8 48 A7 07 A8 FF 1D [-....W0..H.....
+0990 33 70 F8 00 B8 D4 01 5B 2D 03 07 FC 01 57 A8 91 3p.....[-....W..
+09A0 B8 D4 01 5B 2D 03                               ...[-.          
+
+;; fn09A6: 09A6
+;;   Called from:
+;;     0887 (in fn084F)
+fn09A6 proc
+	EXIT
+09A7                      9A B8 8A A8 D4 01 5B 43 03        ......[C.
+
+;; fn09B0: 09B0
+fn09B0 proc
+	EXIT
+09B1    9C 32 BF FA C0 3A BF 8C 32 BF FA E0 3A BF D5  .2...:..2...:..
+09C0 F8 EE 73 7B 8E 52 64 67 22 9C 73 8C 52 3F CC 37 ..s{.Rdg".s.R?.7
+09D0 CE 64 67 22 28 98 73 88 52 3F D8 37 DA 64 67 30 .dg"(.s.R?.7.dg0
+09E0 DE                                              .               

@@ -229,6 +229,8 @@ namespace Reko.Core
         public FlagGroupStorage(RegisterStorage freg, ulong grfMask, string name)
             : base(freg.Domain, name, freg.DataType)
         {
+            if (grfMask == 0)
+                _ = this; //$DEBUG
             this.FlagRegister = freg;
             this.FlagGroupBits = grfMask;
             this.BitSize = (uint) freg.DataType.BitSize;

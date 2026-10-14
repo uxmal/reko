@@ -1475,9 +1475,7 @@ Error: Unable to load metadata file windows32.xml.
    at Reko.Core.Loading.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\TypeLibraryLoader.cs:line 52
    at Reko.Core.Loading.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in c:\dev\uxmal\reko\master\src\Core\Loading\MetadataLoader.cs:line 70
    at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in c:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 94
-       at Reko.Environments.Windows.MipsCallingConvention.SetReturnRegister(ICallingConventionBuilder ccr, DataType dtArg) in c:\dev\uxmal\reko\master\src\Environments\Windows\Arch\MipsCallingConvention.cs:line 166
-   at Reko.Environments.Windows.MipsCallingConvention.Generate(ICallingConventionBuilder ccr, Int32 retAddressOnStack, DataType dtRet, DataType dtThis, List`1 dtParams) in c:\dev\uxmal\reko\master\src\Environments\Windows\Arch\MipsCallingConvention.cs:line 92
-   at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in c:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 222
+       at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in c:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 222
    at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sProc) in c:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 189
 0001179C: warning: Unable to resolve imported reference COREDLL.dll!Ordinal_2696.
 000114B8: warning: Call target address 00000000 is invalid.
@@ -1892,7 +1890,9 @@ fn0001B1D0: warning: Structure analysis stopped making progress, quitting. Pleas
 fn0001B1F8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0001B2AC: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-       at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 159
+       at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in c:\dev\uxmal\reko\master\src\Core\Block.cs:line 106
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 100
    at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 66
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 89
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 723
@@ -1957,6 +1957,82 @@ Collecting data types. [Done]
 Rewriting expressions. [Done]
 Rewriting procedures to high-level language. [Done]
 
+*** Raw\RCA1802\invad\invad
+0495: warning: Call target address D405 is invalid.
+Finding procedure candidates [Done]
+Building procedures [Done]
+Error: An error occurred during data flow analysis.
+    The given key 'fp' was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in c:\dev\uxmal\reko\master\src\Core\Analysis\SsaIdentifierCollection.cs:line 77
+   at Reko.Analysis.SsaEvaluationContext.GetValue(Identifier id) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaEvaluationContext.cs:line 71
+   at Reko.Evaluation.IdConstant.Match(Identifier id, EvaluationContext ctx, Unifier unifier, IEventListener listener) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\IdConstant.cs:line 48
+   at Reko.Evaluation.ExpressionSimplifier.VisitIdentifier(Identifier id) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.Identifier.cs:line 31
+   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 119
+   at Reko.Analysis.ValuePropagator.Worker.VisitAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 159
+   at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in c:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 64
+   at Reko.Analysis.ValuePropagator.Worker.Transform(Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 150
+   at Reko.Analysis.ValuePropagator.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 137
+   at Reko.Analysis.ValuePropagator.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 73
+   at Reko.Analysis.SccWorker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SccWorker.cs:line 118
+Error: An error occurred during data flow analysis.
+    The given key 'fp' was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in c:\dev\uxmal\reko\master\src\Core\Analysis\SsaIdentifierCollection.cs:line 77
+   at Reko.Analysis.SsaEvaluationContext.GetValue(Identifier id) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaEvaluationContext.cs:line 71
+   at Reko.Evaluation.IdConstant.Match(Identifier id, EvaluationContext ctx, Unifier unifier, IEventListener listener) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\IdConstant.cs:line 48
+   at Reko.Evaluation.ExpressionSimplifier.VisitIdentifier(Identifier id) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.Identifier.cs:line 31
+   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 119
+   at Reko.Analysis.ValuePropagator.Worker.VisitAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 159
+   at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in c:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 64
+   at Reko.Analysis.ValuePropagator.Worker.Transform(Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 150
+   at Reko.Analysis.ValuePropagator.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 137
+   at Reko.Analysis.ValuePropagator.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 73
+   at Reko.Analysis.UnusedOutValuesRemover.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\UnusedOutValuesRemover.cs:line 109
+Error: An error occurred during data flow analysis.
+    The given key 'fp' was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in c:\dev\uxmal\reko\master\src\Core\Analysis\SsaIdentifierCollection.cs:line 77
+   at Reko.Analysis.SsaEvaluationContext.GetValue(Identifier id) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaEvaluationContext.cs:line 71
+   at Reko.Evaluation.IdConstant.Match(Identifier id, EvaluationContext ctx, Unifier unifier, IEventListener listener) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\IdConstant.cs:line 48
+   at Reko.Evaluation.ExpressionSimplifier.VisitIdentifier(Identifier id) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.Identifier.cs:line 31
+   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 119
+   at Reko.Analysis.ValuePropagator.Worker.VisitAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 159
+   at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in c:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 64
+   at Reko.Analysis.ValuePropagator.Worker.Transform(Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 150
+   at Reko.Analysis.ValuePropagator.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 137
+   at Reko.Analysis.ValuePropagator.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 73
+   at Reko.Analysis.UnusedOutValuesRemover.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\UnusedOutValuesRemover.cs:line 109
+Rewriting procedures. [Done]
+fn084F: error: An internal error occurred while building the expressions of fn084F
+    The given key 'fp' was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in c:\dev\uxmal\reko\master\src\Core\Analysis\SsaIdentifierCollection.cs:line 77
+   at Reko.Analysis.SsaEvaluationContext.GetValue(Identifier id) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaEvaluationContext.cs:line 71
+   at Reko.Evaluation.IdConstant.Match(Identifier id, EvaluationContext ctx, Unifier unifier, IEventListener listener) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\IdConstant.cs:line 48
+   at Reko.Evaluation.ExpressionSimplifier.VisitIdentifier(Identifier id) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.Identifier.cs:line 31
+   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 119
+   at Reko.Analysis.ValuePropagator.Worker.VisitAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 159
+   at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in c:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 64
+   at Reko.Analysis.ValuePropagator.Worker.Transform(Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 150
+   at Reko.Analysis.ValuePropagator.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 137
+   at Reko.Analysis.ValuePropagator.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 73
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 256
+Building expressions. [Done]
+Gathering primitive datatypes from instructions. [Done]
+l08D8: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
+Collecting data types. [Done]
+Rewriting expressions. [Done]
+fn084F: error: An error occurred while rewriting procedure to high-level language.
+    Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+       at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in c:\dev\uxmal\reko\master\src\Core\Block.cs:line 106
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 100
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 66
+   at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 89
+   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 723
+Rewriting procedures to high-level language. [Done]
+
 === Raw\TriCore\bootloader
 Rewriting procedures. [Done]
 Building expressions. [Done]
@@ -1991,7 +2067,7 @@ Error: An error occurred while writing assembly language output.
    at Reko.Core.Memory.BeImageReader..ctor(ByteMemoryArea image, Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 642
    at Reko.Core.Memory.ByteMemoryArea.CreateBeReader(Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 108
    at Reko.Core.EndianServices.BeServices.CreateImageReader(MemoryArea mem, Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\EndianServices.cs:line 418
-   at Reko.Core.ProcessorArchitecture.CreateImageReader(MemoryArea mem, Address addr, Int64 cbUnits) in c:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 781
+   at Reko.Core.ProcessorArchitecture.CreateImageReader(MemoryArea mem, Address addr, Int64 cbUnits) in c:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 791
    at Reko.Core.Output.Dumper.DumpData(IProcessorArchitecture arch, MemoryArea mem, Address address, Int64 cUnits, Boolean condenseZeroLines, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 265
    at Reko.Core.Output.Dumper.DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, Int64 cUnits, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 238
    at Reko.Core.Output.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 157
@@ -2052,9 +2128,7 @@ fn0800_8F97: error: An internal error occurred while building the expressions of
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 289
 fn0800_1CF6: error: An error occurred while renaming variables.
     The given key 'l0800_1D54' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 134
+       at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 175
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 160
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
@@ -2960,4 +3034,4 @@ Collecting data types. [Done]
 Rewriting expressions. [Done]
 Rewriting procedures to high-level language. [Done]
 
-Decompiled 100 binaries in 344.63 seconds.
+Decompiled 101 binaries in 84.52 seconds.

@@ -114,11 +114,12 @@ namespace Reko.Structure
             var args = phi.Src.Arguments
                 .Select(a => a.Value)
                 .ToArray();
+            var dt = args.Length > 0 ? args[0].DataType : phi.Src.DataType;
             var dst = phi.Dst;
             return new AbsynAssignment(dst,
                 m.Fn(
                     new Identifier("\u03D5", new UnknownType(), null!),
-                    args[0].DataType,
+                    dt,
                     args));
         }
 

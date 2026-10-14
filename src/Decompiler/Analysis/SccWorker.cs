@@ -97,7 +97,9 @@ namespace Reko.Analysis
             // Convert all procedures in the SCC to SSA form and perform
             // value propagation.
             dfa.DumpWatchedProcedures("worker", "Before SSA", procs);
-            var ssts = procs.Select(ConvertToSsa).ToArray();
+            SsaTransform[] ssts = procs.Select(ConvertToSsa)
+                .Where(s => s is not null)
+                .ToArray()!;
             dfa.DumpWatchedProcedures("esv", "After extra stack vars", ssts);
             if (eventListener.IsCanceled()) return ssts;
 
@@ -108,43 +110,66 @@ namespace Reko.Analysis
             // New stack based variables may be available now.
             foreach (var sst in ssts)
             {
-                if (eventListener.IsCanceled())
+                try
+                {
+                    if (eventListener.IsCanceled())
+                        return ssts;
+                    var vp = new ValuePropagator(context);
+                    vp.Transform(sst.SsaState);
+                    sst.RenameFrameAccesses = true;
+                    sst.Transform();
+                    dfa.DumpWatchedProcedure("esv2", "After extra stack vars 2", sst.SsaState);
+                }
+                catch (Exception ex)
+                {
+                    context.EventListener.Error(ex, "An error occurred during data flow analysis.");
                     return ssts;
-                var vp = new ValuePropagator(context);
-                vp.Transform(sst.SsaState);
-                sst.RenameFrameAccesses = true;
-                sst.Transform();
-                dfa.DumpWatchedProcedure("esv2", "After extra stack vars 2", sst.SsaState);
+                }
             }
 
             foreach (var sst in ssts)
             {
-                if (eventListener.IsCanceled())
-                    return ssts;
-                var ssa = sst.SsaState;
-                RemoveImplicitRegistersFromHellNodes(ssa);
-                var prj = new ProjectionPropagator(context);
-                prj.Transform(ssa);
-                dfa.DumpWatchedProcedure("prpr", "After projection propagation", ssa);
+                try
+                {
+                    if (eventListener.IsCanceled())
+                        return ssts;
+                    var ssa = sst.SsaState;
+                    RemoveImplicitRegistersFromHellNodes(ssa);
+                    var prj = new ProjectionPropagator(context);
+                    prj.Transform(ssa);
+                    dfa.DumpWatchedProcedure("prpr", "After projection propagation", ssa);
 
-                // Stores of sliced long variables can be fused.
-                var stfu = new StoreFuser(context);
-                stfu.Transform(ssa);
-                dfa.DumpWatchedProcedure("stfu2", "After second store fusion", ssa);
+                    // Stores of sliced long variables can be fused.
+                    var stfu = new StoreFuser(context);
+                    stfu.Transform(ssa);
+                    dfa.DumpWatchedProcedure("stfu2", "After second store fusion", ssa);
+                } catch (Exception ex)
+                {
+                    context.EventListener.Error(ex, "An error occurred during data flow analysis.");
+                    return ssts;
+                }
             }
 
             var uid = new UsedRegisterFinder(program, flow, procs, this.eventListener);
             foreach (var sst in ssts)
             {
-                if (eventListener.IsCanceled())
+                try
+                {
+                    if (eventListener.IsCanceled())
+                        return ssts;
+                    var ssa = sst.SsaState;
+                    RemovePreservedUseInstructions(ssa);
+                    DeadCode.Eliminate(ssa);
+                    uid.ComputeLiveIn(ssa, true);
+                    var procFlow = flow[ssa.Procedure];
+                    RemoveDeadArgumentsFromCalls(ssa.Procedure, procFlow, sst.ExpressionEmitter, ssts);
+                    dfa.DumpWatchedProcedure("dcar", "After dead call argument removal", ssa);
+                }
+                catch (Exception ex)
+                {
+                    context.EventListener.Error(ex, "An error occurred during data flow analysis.");
                     return ssts;
-                var ssa = sst.SsaState;
-                RemovePreservedUseInstructions(ssa);
-                DeadCode.Eliminate(ssa);
-                uid.ComputeLiveIn(ssa, true);
-                var procFlow = flow[ssa.Procedure];
-                RemoveDeadArgumentsFromCalls(ssa.Procedure, procFlow, sst.ExpressionEmitter, ssts);
-                dfa.DumpWatchedProcedure("dcar", "After dead call argument removal", ssa);
+                }
             }
             sw.Stop();
             Debug.Print("   SCC: {0} {1}ms ===", string.Join(",", sccProcs), sw.ElapsedMilliseconds);
@@ -157,17 +182,17 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="proc"></param>
         /// <returns>The <sse cref="SsaTransform" /> for the procedure.</returns>
-        public SsaTransform ConvertToSsa(Procedure proc)
+        public SsaTransform? ConvertToSsa(Procedure proc)
         {
+            SsaTransform? sst = null;
             if (!program.NeedsSsaTransform)
             {
                 // Some formats, like LLVM, already have phi functions.
-                var sst = new SsaTransform(program, proc, sccProcs, this.dynamicLinker, this.flow);
+                sst = new SsaTransform(program, proc, sccProcs, this.dynamicLinker, this.flow);
                 return sst;
             }
 
             var analysisFactory = proc.Architecture.CreateExtension<IAnalysisFactory>();
-
             try
             {
                 // Transform the procedure to SSA state. When encountering 'call'
@@ -176,7 +201,7 @@ namespace Reko.Analysis
                 // not been visited, or are computed destinations  (e.g. vtables)
                 // they will have no "ProcedureFlow" associated with them yet, in
                 // which case the the SSA treats the call as a "hell node".
-                var sst = new SsaTransform(program, proc, sccProcs, this.dynamicLinker, this.flow);
+                sst = new SsaTransform(program, proc, sccProcs, this.dynamicLinker, this.flow);
                 var ssa = sst.Transform();
                 dfa.DumpWatchedProcedure("ssa", "After SSA", ssa);
 
@@ -272,7 +297,7 @@ namespace Reko.Analysis
                 var banner = $"// {proc.Name} ==========={nl}{ex.Message}{nl}{ex.StackTrace}{nl}{nl}";
                 services.GetService<ITestGenerationService>()?
                     .ReportProcedure($"analysis_{99:00}_crash.txt", banner, proc);
-                throw;
+                return sst;
             }
         }
 

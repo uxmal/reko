@@ -1,0 +1,1071 @@
+word16 fn0100(word16 R1, word16 R6, word16 R7, word16 R10, word16 R11, word16 R12, word16 R13, word16 R14, word16 R15, byte bArg00, word16 & R7Out, byte & R8Out, word16 & R15Out)
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0512
+// MayUse:  R1:[8..15] R10:[0..15] R11:[0..15] R12:[0..15] R13:[0..15] R14:[0..15] R15:[0..15] R6:[0..15] R7:[0..15] Stack +0000:[0..7]
+// LiveOut: R15:[0..15]-fn0512 R6:[0..15]-fn0512 R7:[0..15]-fn0512 R8:[0..7]-fn0512
+// Trashed: DF D R10 R11 R12 R13 R14 R15 R6 R7 R8 X
+// Preserved: R2
+fn0100_entry:
+l0100:
+	X_16 = fn023E(R7, R10, R11, R12, R13, R14, R15, bLoc01, bArg00)
+	R2_14 = <invalid>
+	R15_141 = SEQ(SLICE(R15_13, byte, 8), Mem0[R6:byte])
+l0105:
+	R7_23 = SEQ(SLICE(R7_15, byte, 8), 0x55<8>)
+	R8_130 = Mem24[R7_23:word16]
+	R11 = SEQ(SLICE(R11, byte, 8), 8<8>)
+l010F:
+	branch SLICE(R11, byte, 0) == 0<8> l012E
+l0112:
+	Mem95[R2_14:byte] = SLICE(R8_130, byte, 8) >>u 1<8>
+	Mem101[R2_14:byte] = Mem95[__readX(X_16):byte] ^ SLICE(R8_130, byte, 0)
+	Mem107[R2_14:byte] = Mem101[__readX(X_16):byte] ^ SLICE(R8_130, byte, 0) << 1<8>
+	D_123 = SLICE(R8_130, byte, 8)
+	D_127 = SLICE(R8_130, byte, 0)
+	R11 = R11 - 1<16>
+	R8_130 = SEQ(__rcr<byte,byte>(D_123, 1<8>, cond(D_123 & 1<8>)), __rcr<byte,byte>(D_127, 1<8>, cond(D_127 & 1<8>)))
+	goto l010F
+l012E:
+	Mem39[R7_23 + 1<i16>:byte] = SLICE(R8_130, byte, 0)
+	Mem42[R7_23:byte] = SLICE(R8_130, byte, 8)
+	R7_15 = R7_23
+	R10 = SEQ(SLICE(R10, byte, 8), SLICE(R1, byte, 8))
+	branch SLICE(R15_141, byte, 0) == 0<8> l0156
+l0138:
+	branch __is_DF_set() l013E
+l013B:
+	R10 = R10 + 1<16>
+	goto l0138
+l013E:
+	D_54 = 0xFF<8>
+l0140:
+	Mem57[R2_14:byte] = D_54
+	branch SLICE(R10, byte, 0) == 0<8> l0149
+l0144:
+	R10 = R10 - 1<16>
+	D_54 = Mem57[R2_14:byte] >>u 1<8>
+	goto l0140
+l0149:
+	Mem66[R2_14:byte] = Mem57[__readX(X_16):byte] & SLICE(R8_130, byte, 0)
+	branch !__is_DF_set() l0105
+l0150:
+	R8_74 = SEQ(SLICE(R8_130, byte, 8), Mem66[R2_14:byte])
+	R7Out = fn026A(out R10_157, out R11_158, out R12_159, out R13_160, out R14_161, out R15_81)
+	R8Out = R8_74
+	R15Out = R15_81
+	return R6 + 1<i16>
+l0156:
+	R15_141 = SEQ(SLICE(R15_141, byte, 8), 1<8>)
+	goto l0138
+fn0100_exit:
+
+
+word16 fn015B(word16 R1, word16 R6, word16 R7, byte R8, word16 R10, word16 R11, word16 R12, word16 R13, word16 R14, word16 R15, byte bArg00, word16 & R7Out, byte & R8Out, word16 & R10Out, word16 & R11Out, word16 & R12Out, word16 & R13Out, word16 & R14Out, word16 & R15Out)
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0400
+//      fn0507
+//      fn055B
+//      fn0577
+//      fn0600
+//      fn084F
+// MayUse:  R1:[8..15] R10:[0..15] R11:[0..15] R12:[0..15] R13:[0..15] R14:[0..15] R15:[0..15] R6:[0..15] R7:[0..15] R8:[0..15] Stack +0000:[0..7]
+// LiveOut: R10:[0..15]-fn055B R11:[0..15]-fn055B R12:[0..15]-fn055B R13:[0..15]-fn055B R14:[0..15]-fn055B R15:[0..15]-fn055B R6:[0..15]-fn055B R7:[0..15]-fn055B R8:[0..7]-fn0507
+// Trashed: DF D R10 R11 R12 R13 R14 R15 R6 R7 R8 X
+// Preserved: R2
+fn015B_entry:
+l015B:
+	D_24 = SLICE(R8, byte, 8)
+	X_16 = fn023E(R7, R10, R11, R12, R13, R14, R15, bLoc01, bArg00)
+	R2_14 = <invalid>
+	Mem30[R2_14:byte] = (D_24 & 0x3F<8>) >>u 3<8>
+	R12_133 = SEQ(3<8>, Mem30[__readX(X_16):byte] + ((R8 & 0x1F<8>) << 3<8>))
+	D_134 = Mem30[R6 + 1<i16>:byte]
+	R11_50 = SEQ(SLICE(R1, byte, 8), Mem30[R6:byte])
+	R8_101 = SEQ(SLICE(R8, byte, 8), SLICE(R1, byte, 8))
+	R14_117 = SEQ(SLICE(R14, byte, 8), D_134)
+l0181:
+	branch D_134 == 0<8> l01BA
+l0183:
+	R15_13 = SEQ(SLICE(R15_13, byte, 8), D_24 & 7<8>)
+	R11_50 = R11_50 + 1<i16>
+	R13_147 = SEQ(Mem66[R11_50:byte], SLICE(R1, byte, 8))
+l0189:
+	branch SLICE(R15_13, byte, 0) == 0<8> l0197
+l018C:
+	D_140 = SLICE(R13_147, byte, 8)
+	D_144 = SLICE(R13_147, byte, 0)
+	R15_13 = R15_13 - 1<16>
+	R13_147 = SEQ(__rcr<byte,byte>(D_140, 1<8>, cond(D_140 & 1<8>)), __rcr<byte,byte>(D_144, 1<8>, cond(D_144 & 1<8>)))
+	goto l0189
+l0197:
+	branch (Mem66[__readX(0xC<4>):byte] & SLICE(R13_147, byte, 8)) == 0<8> l019D
+l019C:
+	R8_101 = R8_101 + 1<16>
+l019D:
+	Mem92[R12_133:byte] = Mem66[__readX(0xC<4>):byte] ^ SLICE(R13_147, byte, 8)
+	R12_93 = R12_133 + 1<16>
+	D_94 = SLICE(R12_93, byte, 0)
+	branch D_94 == 0<8> l01BA
+l01A4:
+	branch (D_94 & 7<8>) == 0<8> l01B0
+l01A8:
+	branch (Mem92[__readX(0xC<4>):byte] & SLICE(R13_147, byte, 0)) == 0<8> l01AD
+l01AC:
+	R8_101 = R8_101 + 1<16>
+l01AD:
+	Mem112[R12_93:byte] = Mem92[__readX(0xC<4>):byte] ^ SLICE(R13_147, byte, 0)
+l01B0:
+	R14_117 = R14_117 - 1<16>
+	D_119 = SLICE(R12_93, byte, 0)
+	branch __is_DF_set() l01BA
+l01B6:
+	R12_133 = SEQ(SLICE(R12_93, byte, 8), D_119 + 7<8>)
+	D_134 = SLICE(R14_117, byte, 0)
+	goto l0181
+l01BA:
+	R7Out = fn026A(out R10_124, out R11_125, out R12_126, out R13_127, out R14_128, out R15_129)
+	R8Out = R8_101
+	R10Out = R10_124
+	R11Out = R11_125
+	R12Out = R12_126
+	R13Out = R13_127
+	R14Out = R14_128
+	R15Out = R15_129
+	return R6 + 2<i16>
+fn015B_exit:
+
+
+void fn01BF(word16 R6, word16 R7, word16 R10, word16 R11, word16 R12, word16 R13, word16 R14, word16 R15, byte bArg00)
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0400
+// MayUse:  R10:[0..15] R11:[0..15] R12:[0..15] R13:[0..15] R14:[0..15] R15:[0..15] R6:[0..15] R7:[0..15] Stack +0000:[0..7]
+// LiveOut:
+// Trashed: D R10 R11 R12 R13 R14 R15 R6 R7 X
+// Preserved: R2
+fn01BF_entry:
+l01BF:
+	fn023E(R7, R10, R11, R12, R13, R14, R15, bLoc01, bArg00)
+	D_18 = Mem0[R6:byte]
+	R10_20 = SEQ(SLICE(R10, byte, 8), D_18)
+	branch D_18 == 0<8> l01D2
+l01C6:
+	D_21 = 0x1F<8>
+l01C8:
+	D_21 = D_21 - 1<8>
+	branch D_21 != 0<8> l01C8
+l01CE:
+	R10_20 = R10_20 - 1<16>
+	branch SLICE(R10_20, byte, 0) != 0<8> l01C6
+l01D2:
+	fn026A(out R10_48, out R11_49, out R12_50, out R13_51, out R14_52, out R15_53)
+	return
+fn01BF_exit:
+
+
+word16 fn0227(word16 R1, word16 R10)
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0512
+// MayUse:  R1:[8..15] R10:[0..7]
+// LiveOut: R7:[0..15]-fn0512
+// Trashed: D R10 R7 X
+// Preserved: R2
+fn0227_entry:
+l0227:
+	Mem7[__readX(2<4>):byte] = SLICE(R10, byte, 0)
+	X_8 = __drx(2<4>)
+	R10_15 = 0x3FF<16>
+l0231:
+	Mem19[R10_15:byte] = SLICE(R1, byte, 8)
+	branch SLICE(R10_15, byte, 0) == 0<8> l0239
+l0236:
+	R10_15 = R10_15 - 1<16>
+	goto l0231
+l0239:
+	D_23 = Mem19[__readX(X_8):byte]
+	__irx(X_8)
+	return SEQ(SLICE(R7, byte, 8), D_23)
+fn0227_exit:
+
+
+word4 fn023E(word16 R7, word16 R10, word16 R11, word16 R12, word16 R13, word16 R14, word16 R15, byte bArg01, byte bArg02)
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0100
+//      fn015B
+//      fn01BF
+// MayUse:  R10:[0..15] R11:[0..15] R12:[0..15] R13:[0..15] R14:[0..15] R15:[0..15] R7:[0..7] Stack +0001:[0..7] Stack +0002:[0..7]
+// LiveOut: R2:[0..15]-fn015B X:[0..3]-fn015B
+// Trashed: D R15 R2 R7 X
+// Preserved:
+fn023E_entry:
+l023E:
+	Mem7[__readX(2<4>):byte] = SLICE(R7, byte, 0)
+	X_8 = __drx(2<4>)
+	Mem12[__readX(X_8):byte] = SLICE(R15, byte, 8)
+	__drx(X_8)
+	R7_17 = SEQ(SLICE(R7, byte, 8), 0x57<8>)
+	D_18 = Mem15[R7_17:byte]
+	Mem26[__readX(0xF<4>):byte] = SLICE(R15, byte, 0)
+	X_27 = __drx(0xF<4>)
+	Mem31[__readX(X_27):byte] = bArg01
+	X_32 = __drx(X_27)
+	Mem35[__readX(X_32):byte] = bArg02
+	X_36 = __drx(X_32)
+	Mem40[__readX(X_36):byte] = SLICE(R14, byte, 8)
+	X_41 = __drx(X_36)
+	Mem44[__readX(X_41):byte] = SLICE(R14, byte, 0)
+	X_45 = __drx(X_41)
+	Mem49[__readX(X_45):byte] = SLICE(R13, byte, 8)
+	X_50 = __drx(X_45)
+	Mem53[__readX(X_50):byte] = SLICE(R13, byte, 0)
+	X_54 = __drx(X_50)
+	Mem58[__readX(X_54):byte] = SLICE(R12, byte, 8)
+	X_59 = __drx(X_54)
+	Mem62[__readX(X_59):byte] = SLICE(R12, byte, 0)
+	X_63 = __drx(X_59)
+	Mem67[__readX(X_63):byte] = SLICE(R11, byte, 8)
+	X_68 = __drx(X_63)
+	Mem71[__readX(X_68):byte] = SLICE(R11, byte, 0)
+	X_72 = __drx(X_68)
+	Mem76[__readX(X_72):byte] = SLICE(R10, byte, 8)
+	X_77 = __drx(X_72)
+	Mem80[__readX(X_77):byte] = SLICE(R10, byte, 0)
+	X_81 = __drx(X_77)
+	Mem83[R7_17:byte] = D_18
+	return X_81
+fn023E_exit:
+
+
+word16 fn026A(word16 & R10Out, word16 & R11Out, word16 & R12Out, word16 & R13Out, word16 & R14Out, word16 & R15Out)
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0100
+//      fn015B
+//      fn01BF
+// MayUse: 
+// LiveOut: R10:[0..15]-fn015B R11:[0..15]-fn015B R12:[0..15]-fn015B R13:[0..15]-fn015B R14:[0..15]-fn015B R15:[0..15]-fn015B R7:[0..15]-fn015B
+// Trashed: D R10 R11 R12 R13 R14 R15 R2 R7 X
+// Preserved:
+fn026A_entry:
+l026A:
+	R7_6 = SEQ(SLICE(R7, byte, 8), 0x57<8>)
+	D_8 = Mem0[R7_6:byte]
+	D_16 = Mem0[__readX(0xF<4>):byte]
+	X_17 = __irx(0xF<4>)
+	D_21 = Mem0[__readX(X_17):byte]
+	X_22 = __irx(X_17)
+	D_25 = Mem0[__readX(X_22):byte]
+	X_26 = __irx(X_22)
+	D_30 = Mem0[__readX(X_26):byte]
+	X_31 = __irx(X_26)
+	D_34 = Mem0[__readX(X_31):byte]
+	X_35 = __irx(X_31)
+	D_39 = Mem0[__readX(X_35):byte]
+	X_40 = __irx(X_35)
+	D_43 = Mem0[__readX(X_40):byte]
+	X_44 = __irx(X_40)
+	D_48 = Mem0[__readX(X_44):byte]
+	X_49 = __irx(X_44)
+	D_52 = Mem0[__readX(X_49):byte]
+	X_53 = __irx(X_49)
+	D_57 = Mem0[__readX(X_53):byte]
+	X_58 = __irx(X_53)
+	D_61 = Mem0[__readX(X_58):byte]
+	__irx(X_58)
+	Mem65[__readX(2<4>):byte] = D_61
+	R15_12 = SEQ(0xD<8>, D_8)
+	X_66 = __drx(2<4>)
+	Mem70[__readX(X_66):byte] = Mem65[R15_12 + 1<16>:byte]
+	X_71 = __drx(X_66)
+	D_72 = Mem70[R15_12 + 2<16>:byte]
+	Mem75[R7_6:byte] = D_8 + 2<8>
+	D_80 = Mem75[__readX(X_71):byte]
+	__irx(X_71)
+	R10Out = SEQ(D_21, D_16)
+	R11Out = SEQ(D_30, D_25)
+	R12Out = SEQ(D_39, D_34)
+	R13Out = SEQ(D_48, D_43)
+	R14Out = SEQ(D_57, D_52)
+	R15Out = SEQ(D_80, D_72)
+	return SEQ(SLICE(R7, byte, 8), bArg01)
+fn026A_exit:
+
+
+word16 fn0298(word16 R7, word16 & R8Out)
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn04CC
+//      fn0600
+//      fn0700
+//      fn071E
+// MayUse:  R7:[0..15]
+// LiveOut: R7:[0..15]-fn0600 R8:[0..15]-fn0600
+// Trashed: DF D R2 R7 R8 X
+// Preserved:
+fn0298_entry:
+l0298:
+	Mem7[__readX(2<4>):byte] = SLICE(R7, byte, 0)
+	X_8 = __drx(2<4>)
+	D_9 = Mem7[R7:byte]
+	D_23 = Mem16[__readX(X_8):byte] + (Mem16[R7 + 1<i16>:byte] << 3<8>)
+	R7_32 = SEQ(SLICE(R7 + 1<i16>, byte, 8), Mem26[__readX(X_8):byte] + (D_9 & 7<8>))
+	R8_34 = SEQ(3<8>, D_23)
+	branch (Mem26[__readX(8<4>):byte] & Mem26[R7_32:byte]) != 0<8> l02BF
+l02B6:
+	Mem53[R8_34:byte] = Mem26[__readX(8<4>):byte] ^ Mem26[R7_32:byte]
+	D_47 = SLICE(R1, byte, 8)
+l02BA:
+	R8Out = SEQ(3<8>, D_47)
+	return SEQ(SLICE(R7 + 1<i16>, byte, 8), bArg01)
+l02BF:
+	Mem46[R8_34:byte] = Mem26[__readX(8<4>):byte] ^ Mem26[R7_32:byte]
+	D_47 = 1<8>
+	goto l02BA
+fn0298_exit:
+
+
+void fn0400()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+fn0400_entry:
+l0400:
+	__irx(__input(1<8>))
+l0401:
+	branch !__is_EF4_set() l0401
+l0403:
+	branch __is_EF4_set() l0403
+l0405:
+	R6_110 = fn0500(R1_139, fn0512(R1_139, R6_13, R10_7, R12_12, R13_11, R14_10, R15_9, out R7_22, out R10_15, out R11_16, out R12_17, out R13_18, out R14_19, out R15_20), R7_22, R10_15, R11_16, R12_17, R13_18, R14_19, R15_20, out R7_34, out R8_35, out R10_104, out R11_105, out R12_106, out R13_107, out R14_108, out R15_109)
+	branch SLICE(R8_35, byte, 0) != 0<8> l0483
+l040E:
+	fn01BF(R6_110, R7_34, R10_104, R11_105, R12_106, R13_107, R14_108, R15_109, Mem40[R2_159 + -2<i16>:byte])
+l0412:
+	R6_110 = fn0600(R1_139, R6_57, R12_60, R13_59, R15_58, out R8_261, out R10_104, out R11_105, out R12_106, out R13_107, out R14_108, out R15_109)
+	branch fn0700() != 0<8> l0483
+l041E:
+	fn084F()
+	branch fn0700() != 0<8> l04C1
+l0424:
+	R6_110 = fn0600(R1_139, R6_110, R12_106, R13_107, R15_109, out R8_247, out R10_104, out R11_105, out R12_106, out R13_107, out R14_108, out R15_109)
+	R8_94 = CONVERT(fn071E(), uint8, uint16)
+	branch SLICE(R8_94, byte, 0) != 0<8> l0483
+l042D:
+	fn0960()
+	branch SLICE(R8_94, byte, 0) != 0<8> l0483
+l0433:
+	R6_110 = fn0600(R1_139, R6_110, R12_106, R13_107, R15_109, out R8_248, out R10_104, out R11_105, out R12_106, out R13_107, out R14_108, out R15_109)
+	R8_114 = CONVERT(fn0700(), uint8, uint16)
+	branch SLICE(R8_114, byte, 0) != 0<8> l0483
+l043C:
+	fn084F()
+	branch SLICE(R8_114, byte, 0) != 0<8> l04C1
+l0442:
+	R6_110 = fn0600(R1_139, R6_110, R12_106, R13_107, R15_109, out R8_122, out R10_104, out R11_105, out R12_106, out R13_107, out R14_108, out R15_109)
+	fn0960()
+	branch SLICE(R8_122, byte, 0) != 0<8> l0483
+l044B:
+	branch fn071E() != 0<8> l0483
+l0451:
+	R6_208 = fn0600(R1_139, R6_110, R12_106, R13_107, R15_109, out R8_201, out R10_249, out R11_250, out R12_251, out R13_252, out R14_253, out R15_207)
+	fn084F()
+	branch SLICE(R8_201, byte, 0) != 0<8> l04C1
+l045A:
+	branch Mem147[SEQ(SLICE(R7_199, byte, 8), 0x46<8>):byte] == 0<8> l046C
+l0460:
+	branch SLICE(R9_239, byte, 0) == 0<8> l0412
+l0463:
+	fn0900()
+l046C:
+	fn04CC(R1_139)
+	Mem221[SEQ(SLICE(R7_215, byte, 8), 0x46<8>):byte] = SLICE(R1_139, byte, 8)
+	fn084F()
+	R7_223 = SEQ(SLICE(R7_215, byte, 8), 0x52<8>)
+	Mem226[R7_223:byte] = Mem221[R7_223:byte] - 2<8>
+	fn0577(R1_139, R6_208, R15_207, out R7_254, out R10_255, out R11_256, out R12_257, out R13_258, out R14_259, out R15_260)
+	goto l0412
+l0483:
+	fn04CC(R1_139)
+	R7_145 = SEQ(SLICE(R7_141, byte, 8), 0x48<8>)
+	R6_168 = fn015B(R1_139, R6_110, R7_145, Mem146[R7_145:byte], R10_104, R11_105, R12_106, R13_107, R14_108, R15_109, Mem146[R2_159 + -2<i16>:byte], out R7_169, out R8_246, out R10_162, out R11_163, out R12_164, out R13_165, out R14_166, out R15_167)
+l0492:
+	fn01BF(R6_168, R7_169, R10_162, R11_163, R12_164, R13_165, R14_166, R15_167, Mem146[R2_159 + -2<i16>:byte])
+	call fnD405 (retsize: 0;)
+		uses: Mem:Mem146
+	return
+l04C1:
+	fn0900()
+l04C4:
+	branch __is_EF4_set() l04C4
+l04C6:
+	branch !__is_EF4_set() l04C6
+l04C8:
+	branch __is_EF4_set() l04C8
+l04CA:
+	goto l0405
+fn0400_exit:
+
+
+void fn04CC(word16 R1)
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0400
+// MayUse:  R1:[8..15]
+// LiveOut:
+// Trashed: D R7 R8 X
+// Preserved: DF R2
+fn04CC_entry:
+l04CC:
+	R7_19 = SEQ(SLICE(R7, byte, 8), 0x4A<8>)
+	branch Mem0[R7_19:byte] == 0<8> l04DA
+l04D2:
+	R7_12 = fn0298(R7_19 - 1<16>, out R8_71)
+	D_17 = SLICE(R1, byte, 8)
+	Mem18[R7_12:byte] = D_17
+	Mem20[R7_12 + 1<16>:byte] = D_17
+	R7_19 = R7_12 + 1<16>
+l04DA:
+	R7_23 = SEQ(SLICE(R7_19, byte, 8), 0x4C<8>)
+	branch Mem24[R7_23:byte] == 0<8> l04E8
+l04E0:
+	R7_29 = fn0298(R7_23 - 1<16>, out R8_72)
+	D_34 = SLICE(R1, byte, 8)
+	Mem35[R7_29:byte] = D_34
+	Mem37[R7_29 + 1<16>:byte] = D_34
+	R7_23 = R7_29 + 1<16>
+l04E8:
+	R7_40 = SEQ(SLICE(R7_23, byte, 8), 0x4E<8>)
+	branch Mem41[R7_40:byte] == 0<8> l04F6
+l04EE:
+	R7_46 = fn0298(R7_40 - 1<16>, out R8_73)
+	D_51 = SLICE(R1, byte, 8)
+	Mem52[R7_46:byte] = D_51
+	Mem54[R7_46 + 1<16>:byte] = D_51
+l04F6:
+	return
+fn04CC_exit:
+
+
+word16 fn0500(word16 R1, word16 R6, word16 R7, word16 R10, word16 R11, word16 R12, word16 R13, word16 R14, word16 R15, word16 & R7Out, byte & R8Out, word16 & R10Out, word16 & R11Out, word16 & R12Out, word16 & R13Out, word16 & R14Out, word16 & R15Out)
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0400
+// MayUse:  R1:[0..15] R10:[0..15] R11:[0..15] R12:[0..15] R13:[0..15] R14:[0..15] R15:[0..15] R6:[0..15] R7:[0..7]
+// LiveOut: R10:[0..15]-fn0400 R11:[0..15]-fn0400 R12:[0..15]-fn0400 R13:[0..15]-fn0400 R14:[0..15]-fn0400 R15:[0..15]-fn0400 R6:[0..15]-fn0400 R7:[0..15]-fn0400 R8:[0..7]-fn0400
+// Trashed: DF D R10 R11 R12 R13 R14 R15 R6 R7 R8 X
+// Preserved: R2
+fn0500_entry:
+l0500:
+	Mem7[__readX(2<4>):byte] = SLICE(R7, byte, 0)
+	__drx(2<4>)
+	R7_14 = SEQ(SLICE(R7, byte, 8), 0x48<8>)
+l0506_thunk_fn0507:
+	R6_30 = fn0507(R1, R6, R7_14, R10, R11, R12, R13, R14, R15, out R7_31, out R8_32, out R10_23, out R11_24, out R12_25, out R13_26, out R14_27, out R15_28)
+	R7Out = R7_31
+	R8Out = R8_32
+	R10Out = R10_23
+	R11Out = R11_24
+	R12Out = R12_25
+	R13Out = R13_26
+	R14Out = R14_27
+	R15Out = R15_28
+	return R6_30
+fn0500_exit:
+
+
+word16 fn0507(word16 R1, word16 R6, word16 R7, word16 R10, word16 R11, word16 R12, word16 R13, word16 R14, word16 R15, word16 & R7Out, byte & R8Out, word16 & R10Out, word16 & R11Out, word16 & R12Out, word16 & R13Out, word16 & R14Out, word16 & R15Out)
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0500
+//      fn055B
+// MayUse:  R1:[0..15] R10:[0..15] R11:[0..15] R12:[0..15] R13:[0..15] R14:[0..15] R15:[0..15] R6:[0..15] R7:[0..15]
+// LiveOut: R10:[0..15]-fn055B R11:[0..15]-fn055B R12:[0..15]-fn055B R13:[0..15]-fn055B R14:[0..15]-fn055B R15:[0..15]-fn055B R6:[0..15]-fn055B R7:[0..15]-fn0500 R8:[0..7]-fn0500
+// Trashed: DF D R10 R11 R12 R13 R14 R15 R2 R6 R7 R8 X
+// Preserved:
+fn0507_entry:
+l0507:
+	R6_24 = fn015B(R1, R6, R7, Mem0[R7:byte], R10, R11, R12, R13, R14, R15, bLoc02, out R7_25, out R8_26, out R10_18, out R11_19, out R12_20, out R13_21, out R14_22, out R15_23)
+	R7Out = SEQ(SLICE(R7_25, byte, 8), bArg01)
+	R8Out = R8_26
+	R10Out = R10_18
+	R11Out = R11_19
+	R12Out = R12_20
+	R13Out = R13_21 - 1<16>
+	R14Out = R14_22
+	R15Out = R15_23
+	return R6_24
+fn0507_exit:
+
+
+word16 fn0512(word16 R1, word16 R6, word16 R10, word16 R12, word16 R13, word16 R14, word16 R15, word16 & R7Out, word16 & R10Out, word16 & R11Out, word16 & R12Out, word16 & R13Out, word16 & R14Out, word16 & R15Out)
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0400
+// MayUse:  R1:[0..15] R10:[0..15] R12:[0..15] R13:[0..15] R14:[0..15] R15:[0..15] R6:[0..15]
+// LiveOut: R10:[0..15]-fn0400 R11:[0..15]-fn0400 R12:[0..15]-fn0400 R13:[0..15]-fn0400 R14:[0..15]-fn0400 R15:[0..15]-fn0400 R6:[0..15]-fn0400 R7:[0..15]-fn0400
+// Trashed: DF D R10 R11 R12 R13 R14 R15 R6 R7 R8 X
+// Preserved: R2
+fn0512_entry:
+l0512:
+	R6_22 = fn055B(R1, R6, fn0227(R1, R10), R12, R13, R14, R15, out R10_16, out R11_17, out R12_18, out R13_19, out R14_20, out R15_21)
+	Mem30[SEQ(SLICE(R7_23, byte, 8), 0x47<8>):byte] = 3<8>
+	R6_40 = fn0100(R1, R6_22, SEQ(SLICE(R7_23, byte, 8), 0x48<8>), R10_16, R11_17, R12_18, R13_19, R14_20, R15_21, bLoc02, out R7_41, out R8_42, out R15_39)
+	Mem47[R7_41:byte] = SLICE(R8_42, byte, 0)
+	R7_49 = SEQ(SLICE(R7_41, byte, 8), 0x4A<8>)
+	D_50 = SLICE(R1, byte, 8)
+	Mem51[R7_49:byte] = D_50
+	Mem53[R7_49 - 1<16>:byte] = D_50
+	R7_55 = SEQ(SLICE(R7_49 - 1<16>, byte, 8), 0x4C<8>)
+	D_56 = SLICE(R1, byte, 8)
+	Mem57[R7_55:byte] = D_56
+	Mem59[R7_55 - 1<16>:byte] = D_56
+	R7_61 = SEQ(SLICE(R7_55 - 1<16>, byte, 8), 0x4E<8>)
+	D_62 = SLICE(R1, byte, 8)
+	Mem63[R7_61:byte] = D_62
+	Mem65[R7_61 - 1<16>:byte] = D_62
+	Mem69[SEQ(SLICE(R7_61 - 1<16>, byte, 8), 0x52<8>):byte] = 0xF<8>
+	Mem73[SEQ(SLICE(R7_61 - 1<16>, byte, 8), 0x58<8>):byte] = 0xF<8>
+	R7_75 = SEQ(SLICE(R7_61 - 1<16>, byte, 8), 0x53<8>)
+	D_76 = SLICE(R1, byte, 8)
+	Mem77[R7_75:byte] = D_76
+	Mem79[R7_75 + 1<16>:byte] = D_76
+	Mem83[SEQ(SLICE(R7_75 + 1<16>, byte, 8), 0x46<8>):byte] = SLICE(R1, byte, 8)
+	fn084F()
+	R6_91 = fn0577(R1, R6_40, R15_39, out R7_92, out R10_85, out R11_86, out R12_87, out R13_88, out R14_89, out R15_90)
+	R7Out = R7_92
+	R10Out = R10_85
+	R11Out = R11_86
+	R12Out = R12_87
+	R13Out = R13_88
+	R14Out = R14_89
+	R15Out = R15_90
+	return R6_91
+fn0512_exit:
+
+
+word16 fn055B(word16 R1, word16 R6, word16 R7, word16 R12, word16 R13, word16 R14, word16 R15, word16 & R10Out, word16 & R11Out, word16 & R12Out, word16 & R13Out, word16 & R14Out, word16 & R15Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0512
+// MayUse:  R1:[0..15] R12:[0..15] R13:[0..15] R14:[0..15] R15:[0..15] R6:[0..15] R7:[0..15]
+// LiveOut: R10:[0..15]-fn0512 R11:[0..15]-fn0512 R12:[0..15]-fn0512 R13:[0..15]-fn0512 R14:[0..15]-fn0512 R15:[0..15]-fn0512 R6:[0..15]-fn0512
+// Trashed: DF D R10 R11 R12 R13 R14 R15 R6 R7 R8 X
+// Preserved: R2
+fn055B_entry:
+l055B:
+	R6_30 = fn015B(R1, R6, R7, 5<8>, SEQ(SLICE(R10, byte, 8), 3<8>), 0x405<16>, R12, R13, R14, R15, bLoc02, out R7_31, out R8_55, out R10_24, out R11_25, out R12_26, out R13_27, out R14_28, out R15_29)
+l0569_thunk_fn0507:
+	R6_43 = fn0507(R1, R6_30, R7_31, R10_24, R11_25, R12_26, R13_27, R14_28, R15_29, out R7_56, out R8_57, out R10_36, out R11_37, out R12_38, out R13_39, out R14_40, out R15_41)
+	R10Out = R10_36
+	R11Out = R11_37
+	R12Out = R12_38
+	R13Out = R13_39
+	R14Out = R14_40
+	R15Out = R15_41
+	return R6_43
+fn055B_exit:
+
+
+word16 fn0577(word16 R1, word16 R6, word16 R15, word16 & R7Out, word16 & R10Out, word16 & R11Out, word16 & R12Out, word16 & R13Out, word16 & R14Out, word16 & R15Out)
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0400
+//      fn0512
+// MayUse:  R1:[0..15] R15:[0..15] R6:[0..15]
+// LiveOut: R10:[0..15]-fn0512 R11:[0..15]-fn0512 R12:[0..15]-fn0512 R13:[0..15]-fn0512 R14:[0..15]-fn0512 R15:[0..15]-fn0512 R6:[0..15]-fn0512 R7:[0..15]-fn0512
+// Trashed: DF D R10 R11 R12 R13 R14 R15 R6 R7 R8 X
+// Preserved: R2
+fn0577_entry:
+l0577:
+	D_20 = Mem0[SEQ(SLICE(R7, byte, 8), 0x52<8>):byte]
+	R7_118 = SEQ(SLICE(R7, byte, 8), 0x58<8>)
+	Mem26[R7_118:byte] = D_20
+	R14_120 = SEQ(SLICE(R14, byte, 8), 0x48<8>)
+	R11_114 = SEQ(SLICE(R11, byte, 8), 0xC<8>)
+	R13_129 = SEQ(SLICE(R1, byte, 8), 0x70<8>)
+	R8_113 = SEQ(D_20 + 0x2C<8>, SLICE(R8, byte, 0))
+	R12_112 = SEQ(D_20 + 0x2C<8>, SLICE(R12, byte, 0))
+l0590:
+	R8_106 = SEQ(SLICE(R8_113, byte, 8), 2<8>)
+	R12_102 = SEQ(SLICE(R12_112, byte, 8), 2<8>)
+	R10 = SEQ(SLICE(R10, byte, 8), 6<8>)
+l0597:
+	R6 = fn015B(R1, R6, R7_118, SLICE(R8_106, byte, 0), R10, R11_114, R12_102, R13_129, R14_120, R15, bLoc02, out R7_118, out R8_61, out R10_53, out R11_114, out R12_55, out R13_56, out R14_120, out R15)
+	R10_107 = R10_53 - 1<16>
+	branch SLICE(R8_61, byte, 0) != 0<8> l05BF
+l059F:
+	Mem93[R13_56:byte] = SLICE(R12_55, byte, 8)
+	Mem96[R13_56 + 1<16>:byte] = SLICE(R12_55, byte, 0)
+	R13_129 = R13_56 + 2<16>
+l05A5:
+	D_99 = SLICE(R12_55, byte, 0)
+	R10 = R10_107 - 1<16>
+	R12_102 = SEQ(SLICE(R12_55, byte, 8), D_99 + 5<8>)
+	R8_106 = SEQ(SLICE(R12_55, byte, 8), D_99 + 5<8>)
+	branch SLICE(R10, byte, 0) != 0<8> l0597
+l05B0:
+	D_110 = SLICE(R12_55, byte, 8)
+	R11_114 = R11_114 - 1<16>
+	R12_112 = SEQ(D_110 - 4<8>, D_99 + 5<8>)
+	R8_113 = SEQ(D_110 - 4<8>, D_99 + 5<8>)
+	branch SLICE(R11_114, byte, 0) != 0<8> l0590
+l05B9:
+	R7_119 = SEQ(SLICE(R7_118, byte, 8), 0x46<8>)
+	Mem122[R7_119:byte] = SLICE(R14_120, byte, 0)
+	R7Out = R7_119
+	R10Out = R10
+	R11Out = R11_114
+	R12Out = R12_112
+	R13Out = R13_129
+	R14Out = R14_120
+	R15Out = R15
+	return R6
+l05BF:
+	R6 = fn015B(R1, R6, R7_118, SLICE(R12_55, byte, 0), R10_53 - 1<16>, R11_114, R12_55, R13_56, R14_120, R15, bLoc02, out R7_118, out R8_156, out R10_73, out R11_114, out R12_55, out R13_76, out R14_77, out R15)
+	Mem87[R13_76:byte] = 0xFF<8>
+	Mem89[R13_76 + 1<16>:byte] = 0xFF<8>
+	R10_107 = R10_73 - 1<16>
+	R13_129 = R13_76 + 2<16>
+	R14_120 = R14_77 - 1<16>
+	goto l05A5
+fn0577_exit:
+
+
+word16 fn0600(word16 R1, word16 R6, word16 R12, word16 R13, word16 R15, byte & R8Out, word16 & R10Out, word16 & R11Out, word16 & R12Out, word16 & R13Out, word16 & R14Out, word16 & R15Out)
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0400
+// MayUse:  R1:[0..15] R12:[0..15] R13:[0..15] R15:[0..15] R6:[0..15]
+// LiveOut: R10:[0..15]-fn0400 R11:[0..15]-fn0400 R12:[0..15]-fn0400 R13:[0..15]-fn0400 R14:[0..15]-fn0400 R15:[0..15]-fn0400 R6:[0..15]-fn0400 R8:[0..7]-fn0400
+// Trashed: DF D R10 R11 R12 R13 R14 R15 R6 R7 R8 X
+// Preserved: R2
+fn0600_entry:
+l0600:
+	__idle()
+	R7_6 = SEQ(SLICE(R7, byte, 8), 0x4A<8>)
+	branch Mem0[R7_6:byte] == 0<8> l061E
+l0607:
+	R7_12 = fn0298(R7_6 - 1<16>, out R8_103)
+	D_16 = Mem0[R7_12:byte]
+	Mem19[R7_12:byte] = D_16 + 1<8>
+	branch D_16 == 0x3F<8> l06AE
+l0613:
+	R7_23 = fn0298(R7_12, out R8_24)
+	branch SLICE(R8_24, byte, 0) != 0<8> l063D
+l0619:
+	R8Out = R8_24
+	R10Out = R10
+	R11Out = R11
+	R12Out = R12
+	R13Out = R13
+	R14Out = R14
+	R15Out = R15
+	return R6
+l061E:
+	R8Out = R8
+	R10Out = R10
+	R11Out = R11
+	R12Out = R12
+	R13Out = R13
+	R14Out = R14
+	R15Out = R15
+	return R6
+l063D:
+	R10_34 = SEQ(SLICE(R1, byte, 8), 0x4B<8>)
+	R8_103 = R8_24 + 1<16>
+	D_40 = Mem19[__readX(0xA<4>):byte] - Mem19[R7_23:byte]
+	R10 = R10_34 + 1<16>
+	branch D_40 != 0<8> l064C
+l0649:
+	branch Mem19[__readX(0xA<4>):byte] == Mem19[R7_23 + 1<i16>:byte] l06B6
+	goto l064D
+l064C:
+	R6 = SEQ(D_40, SLICE(R6, byte, 0))
+l064D:
+	D_60 = Mem19[__readX(0xA<4>):byte] - Mem19[R7_23:byte]
+	R10 = R10_34 + 3<16>
+	branch D_60 != 0<8> l0657
+l0654:
+	branch Mem19[__readX(0xA<4>):byte] == Mem19[R7_23 + 1<i16>:byte] l06B6
+	goto l0658
+l0657:
+	R6 = SEQ(D_60, SLICE(R6, byte, 0))
+l0658:
+	D_79 = Mem19[R7_23 + 1<i16>:byte]
+	R7_12 = R7_23 + 1<i16>
+	R11 = SEQ(SLICE(R11, byte, 8), Mem19[R7_23:byte])
+	R10 = SEQ(SLICE(R10_34 + 3<16>, byte, 8), D_79)
+	R8_103 = SEQ(SLICE(R1, byte, 8), 0x70<8>)
+l0662:
+	branch !__is_DF_set() l0676
+l0667:
+	branch __is_DF_set() l0676
+l066B:
+	R8_104 = R8_103 + 1<16>
+	D_109 = Mem19[__readX(8<4>):byte] - D_79
+	branch !__is_DF_set() l0677
+l0670:
+	branch __is_DF_set() l0677
+l0674:
+	goto l067D
+l0676:
+	goto l0678
+l0677:
+	R8_103 = R8_104 + 1<16>
+l0678:
+	R8_103 = R8_103 + 1<16>
+	branch SLICE(R8_103, byte, 0) != 0<8> l0662
+l067C:
+	goto l06AE
+l067D:
+	__set_q()
+	D_127 = SLICE(R8_104, byte, 0) - 1<8>
+	R7_132 = SEQ(SLICE(R7_23 + 1<i16>, byte, 8), D_127)
+	R6 = fn015B(R1, R6, R7_132 + 1<i16>, Mem19[R7_132 + 1<i16>:byte], R10, SEQ(SLICE(R11, byte, 8), D_127), R12, R13, SEQ(SLICE(R14, byte, 8), D_109 - 3<8>), R15, bLoc02, out R7_183, out R8_311, out R10_176, out R11, out R12, out R13, out R14, out R15)
+	__reset_q()
+	R7_197 = SEQ(SLICE(R7_183, byte, 8), SLICE(R11, byte, 0))
+	Mem199[R7_197:byte] = 0xFF<8>
+	Mem201[R7_197 + 1<16>:byte] = 0xFF<8>
+	R7_203 = SEQ(SLICE(R7_197 + 1<16>, byte, 8), 0x54<8>)
+	D_204 = Mem201[R7_203:byte]
+	Mem207[R7_203:byte] = D_204 + 1<8>
+	R10 = R10_176 - 1<16>
+	D_205 = D_204 + 1<8>
+	branch !__is_DF_set() l06A0
+l069C:
+	R7_203 = R7_203 - 1<16>
+	D_205 = Mem207[R7_203 - 1<16>:byte] + 1<8>
+l06A0:
+	Mem214[R7_203:byte] = D_205
+	R7_216 = SEQ(SLICE(R7_203, byte, 8), 0x46<8>)
+	Mem219[R7_216:byte] = Mem214[R7_216:byte] - 1<8>
+	R7_12 = fn0298(SEQ(SLICE(R7_203, byte, 8), 0x49<8>), out R8_103)
+l06AE:
+	__set_q()
+	R7_230 = SEQ(SLICE(R7_12, byte, 8), 0x4A<8>)
+	D_233 = SLICE(R1, byte, 8)
+	Mem234[R7_230:byte] = D_233
+	Mem236[R7_230 - 1<16>:byte] = D_233
+l06B6:
+	R8Out = R8_103
+	R10Out = R10
+	R11Out = R11
+	R12Out = R12
+	R13Out = R13
+	R14Out = R14
+	R15Out = R15
+	return R6
+fn0600_exit:
+
+
+byte fn0700()
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0400
+// MayUse: 
+// LiveOut: R8:[0..7]-fn0400
+// Trashed: DF D R7 R8 X
+// Preserved: R2
+fn0700_entry:
+l0700:
+	__idle()
+	R7_6 = SEQ(SLICE(R7, byte, 8), 0x4C<8>)
+	branch Mem0[R7_6:byte] == 0<8> l0712
+l0707:
+	R7_12 = fn0298(R7_6 - 1<16>, out R8_26)
+	D_16 = Mem0[R7_12:byte]
+	branch D_16 == 0<8> l0712
+l070E:
+	Mem20[R7_12:byte] = D_16 - 1<8>
+l0711_thunk_fn07FF:
+	return fn07FF(R7_12)
+l0712:
+fn0700_exit:
+
+
+byte fn071E()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0400
+// MayUse: 
+// LiveOut: R8:[0..7]-fn0400
+// Trashed: DF D R7 R8 X
+// Preserved: R2
+fn071E_entry:
+l071E:
+	__idle()
+	R7_6 = SEQ(SLICE(R7, byte, 8), 0x4E<8>)
+	branch Mem0[R7_6:byte] == 0<8> l0730
+l0725:
+	R7_12 = fn0298(R7_6 - 1<16>, out R8_26)
+	D_16 = Mem0[R7_12:byte]
+	branch D_16 == 0<8> l0730
+l072C:
+	Mem20[R7_12:byte] = D_16 - 1<8>
+l072F_thunk_fn07FF:
+	return fn07FF(R7_12)
+l0730:
+fn071E_exit:
+
+
+byte fn07FF(word16 R7)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0700
+//      fn071E
+// MayUse:  R7:[0..15]
+// LiveOut: R8:[0..7]-fn071E
+// Trashed: DF D R7 R8 X
+// Preserved: R2
+fn07FF_entry:
+l07FF:
+	__idle()
+	fn0298(R7, out R8_8)
+	branch SLICE(R8_8, byte, 0) != 0<8> l0806
+l0806:
+	return SLICE(R8_8, byte, 0)
+fn07FF_exit:
+
+
+void fn084F()
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0400
+//      fn0512
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+fn084F_entry:
+	def R1
+	def R6
+	def R8
+	def R10
+	def R11
+	def R12
+	def R13
+	def R14
+	def R7
+	def R15
+	R2 = fp
+	X = 2<4>
+l084F:
+	D = Mem0[R6:byte]
+	R6 = R6 + 1<i16>
+	D = 0x46<8>
+	R7 = SEQ(SLICE(R7, byte, 8), D)
+	D = Mem0[R7:byte]
+	R12 = SEQ(SLICE(R12, byte, 8), D)
+	branch D == 0<8> l08D8
+l0856:
+	call R8_19 (retsize: 0;)
+		uses: Mem:Mem14,R2:R2_20
+		defs: D:D_23,DF:DF_33,R1:R1_27,R10:R10_29,R11:R11_28,R12:R12_25,R15:R15_31,R2:R2_21,R3:R3_30,R6:R6_22,R7:R7_24,R8:R8_26,X:X_32
+	return
+l0857:
+	D_34 = 0x51<8>
+	R7_35 = SEQ(SLICE(R7_24, byte, 8), D_34)
+	D_36 = Mem14[R7_35:byte]
+	R8_37 = SEQ(SLICE(R8_26, byte, 8), D_36)
+	D_38 = SLICE(R1_27, byte, 8)
+	R8_39 = SEQ(D_38, SLICE(R8_37, byte, 0))
+l085E:
+	R14_60 = PHI()
+	R10_51 = PHI()
+	R7_46 = PHI()
+	R11_44 = PHI()
+	R8_40 = PHI()
+	R8_41 = R8_40 + 1<16>
+	R8_42 = R8_41 + 1<16>
+	D_43 = SLICE(R8_42, byte, 0)
+	R11_45 = SEQ(SLICE(R11_44, byte, 8), D_43)
+	Mem47[R7_46:byte] = D_43
+	branch D_43 == 0<8> l08DF
+l0865:
+	D_49 = Mem47[R8_42:byte]
+	R8_50 = R8_42 + 1<i16>
+	R10_52 = SEQ(D_49, SLICE(R10_51, byte, 0))
+	D_53 = D_49 - 0xFF<8>
+	branch D_53 == 0<8> l085E
+l086B:
+	D_54 = Mem47[R8_50:byte]
+	R10_55 = SEQ(SLICE(R10_52, byte, 8), D_54)
+	R8_56 = SEQ(SLICE(R8_50, byte, 8), D_54)
+	D_57 = SLICE(R10_55, byte, 8)
+	R8_58 = SEQ(D_57, SLICE(R8_56, byte, 0))
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>
+	fn015B(R1, R6, R7_46, SLICE(R8, byte, 0), R10, R11, R12, R13, R14, R15_31, stackArg0, out R7_70, out R8_71, out R10_72, out R11_73, out R12_74, out R13_75, out R14_76, out R15_77)
+	R10 = R10 - 1<16>
+	D = Mem0[R3:byte]
+	D = 0x4F<8>
+	R7 = SEQ(SLICE(R7, byte, 8), D)
+	D = Mem0[R7:byte]
+	R7 = R7 + 1<i16>
+	D = D - 4<8>
+	branch !__is_DF_set() l088D
+l087D:
+	branch D == 0<8> l0898
+l087F:
+	D = SLICE(R10, byte, 8)
+	D = D - 1<8>
+	R10 = SEQ(D, SLICE(R10, byte, 0))
+	D = D - 2<8>
+	branch __is_DF_set() l08A3
+l0887:
+	fn09A6()
+	D = 4<8>
+	R8 = SEQ(SLICE(R8, byte, 8), D)
+l088D:
+	return
+l0898:
+	R3 = SEQ(SLICE(R3, byte, 8), D)
+	D = SLICE(R10, byte, 0)
+	D = D + 1<8>
+	DF = cond(D)
+	R10 = SEQ(SLICE(R10, byte, 8), D)
+	D = D - 0x1D<8>
+	branch !__is_DF_set() l08A3
+l08A1:
+	D = 8<8>
+l08A3:
+	Mem0[R7:byte] = D
+	D = SLICE(R10, byte, 8)
+	R8 = SEQ(D, SLICE(R8, byte, 0))
+	D = SLICE(R10, byte, 0)
+	R8 = SEQ(SLICE(R8, byte, 8), D)
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>
+	fn015B(R1, R6, R7, SLICE(R8, byte, 0), R10, R11, R12, R13, R14, R15, stackArg0, out R7_81, out R8_82, out R10_83, out R11_84, out R12_85, out R13_86, out R14_87, out R15_88)
+	R10 = R10 - 1<16>
+	D = Mem0[R3:byte]
+	D = SLICE(R8, byte, 0)
+	branch D != 0<8> l08C3
+l08B0:
+	D = SLICE(R11, byte, 0)
+	R7 = SEQ(SLICE(R7, byte, 8), D)
+	D = SLICE(R10, byte, 8)
+	Mem0[R7:byte] = D
+	R7 = R7 + 1<16>
+	D = SLICE(R10, byte, 0)
+	Mem0[R7:byte] = D
+	D = 0x58<8>
+	R7 = SEQ(SLICE(R7, byte, 8), D)
+	X = 7<4>
+	D = SLICE(R10, byte, 8)
+	v16 = __readX(X)
+	v16 = Mem0[v16:byte]
+	D = v16 - D
+	DF = cond(D)
+	branch __is_DF_set() l08C0
+l08BF:
+	D = SLICE(R10, byte, 8)
+l08C0:
+	Mem0[R7:byte] = D
+	D = SLICE(R1, byte, 8)
+	R8 = SEQ(SLICE(R8, byte, 8), D)
+l08C3:
+	return
+l08D8:
+	R2_20 = PHI()
+	R8_19 = PHI()
+	R6_17 = PHI()
+	R12_15 = PHI()
+	R7_5 = PHI()
+	D_2 = PHI()
+	R15_1 = PHI()
+	R15_3 = SEQ(SLICE(R15_1, byte, 8), D_2)
+	D_4 = 0x4F<8>
+	R7_6 = SEQ(SLICE(R7_5, byte, 8), D_4)
+	D_7 = 4<8>
+	goto l08EA
+l08DF:
+	X_48 = 0xA<4>
+l08EA:
+	R7_8 = R7_6 - 1<16>
+	Mem9[R7_8:byte] = D_7
+	R7_10 = R7_8 + 1<16>
+	Mem11[R7_10:byte] = D_7
+	R7_12 = R7_10 + 1<16>
+	D_13 = 0x6E<8>
+	Mem14[R7_12:byte] = D_13
+	D_16 = SLICE(R12_15, byte, 0)
+	branch D_16 == 0<8> l08C0
+l08F5:
+	branch __is_Q_set() l08F9
+l08F7:
+	__set_q()
+	goto l0856
+l08F9:
+	Mem18[R6_17:byte] = D_16
+fn084F_exit:
+
+
+void fn0900()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0400
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0900_entry:
+l0900:
+	__idle()
+l090E:
+	branch !__is_DF_set() l0917
+l0915:
+	goto l090E
+l0917:
+fn0900_exit:
+
+
+void fn0960()
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0400
+// MayUse: 
+// LiveOut:
+// Trashed: X
+// Preserved: R2
+fn0960_entry:
+l0960:
+	return
+fn0960_exit:
+
+
+void fn09A6()
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn084F
+// MayUse: 
+// LiveOut:
+// Trashed: X
+// Preserved: R2
+fn09A6_entry:
+l09A6:
+	return
+fn09A6_exit:
+
+
+void fn09B0()
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse: 
+// LiveOut:
+// Trashed: X
+// Preserved: R2
+fn09B0_entry:
+l09B0:
+	return
+fn09B0_exit:
+
+

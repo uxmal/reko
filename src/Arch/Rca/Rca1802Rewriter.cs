@@ -582,7 +582,7 @@ public class Rca1802Rewriter : IEnumerable<RtlInstructionCluster>
         .Param(PrimitiveType.Byte)
         .Void();
 
-    private static readonly IntrinsicProcedure __readX_intrinsic = IntrinsicBuilder.Pure("__readX")
+    public static readonly IntrinsicProcedure __readX_intrinsic = IntrinsicBuilder.Pure("__readX")
         .Param(PrimitiveType.Byte)
         .Returns(PrimitiveType.Word16);
     private static readonly IntrinsicProcedure __req_intrinsic = IntrinsicBuilder.SideEffect("__reset_q")
