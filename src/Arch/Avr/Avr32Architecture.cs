@@ -66,7 +66,7 @@ namespace Reko.Arch.Avr
 
         public override ProcessorState CreateProcessorState()
         {
-            return new Avr32.Avr32ProcessorState(this);
+            return new Avr32ProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

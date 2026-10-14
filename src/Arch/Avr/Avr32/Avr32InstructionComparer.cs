@@ -31,12 +31,10 @@ internal class Avr32InstructionComparer : InstructionComparer
     private const int RegImmCode = 0x11;
     private const int RegPartCode = 0x12;
     private const int RegPairCode = 0x13;
-    private const int RegRangeCode = 0x14;
-    private const int LitCode = 0x15;
+    private const int LitCode = 0x14;
 
     public Avr32InstructionComparer(Normalize norm) : base(norm)
     {
-
     }
 
     public override bool DoCompareOperands(MachineOperand op1, MachineOperand op2)
@@ -49,33 +47,11 @@ internal class Avr32InstructionComparer : InstructionComparer
             MemoryOperand m1 => CompareMemoryOperands(m1, (MemoryOperand) op2),
             RegisterImmediateOperand ri1 => CompareRegisterImmediates(ri1, (RegisterImmediateOperand) op2),
             RegisterPartOperand rpo1 => CompareRegisterParts(rpo1, (RegisterPartOperand) op2),
-            RegisterPairOperand rp1 => CompareRegisterPairs(rp1, (RegisterPairOperand) op2),
             RegisterRange rr1 => CompareRegisterRanges(rr1, (RegisterRange) op2),
             SequenceStorage s1 => CompareSequences(s1, (SequenceStorage) op2),
             LiteralOperand lit1 => CompareLiterals(lit1, (LiteralOperand) op2),
             _ => throw new NotImplementedException(op1.GetType().Name)
         };
-    }
-
-    private bool CompareRegisterRanges(RegisterRange rr1, RegisterRange rr2)
-    {
-        if (base.NormalizeRegisters)
-            return true;
-        return 
-            rr1.RegisterIndex == rr2.RegisterIndex &&
-            rr1.Count == rr2.Count;
-    }
-
-    private bool CompareRegisterPairs(RegisterPairOperand rp1, RegisterPairOperand op2)
-    {
-        return
-            CompareRegisters(rp1.HiRegister, op2.HiRegister) &&
-            CompareRegisters(rp1.LoRegister, op2.LoRegister);
-    }
-
-    private bool CompareLiterals(LiteralOperand lit1, LiteralOperand lit2)
-    {
-        return lit1.Value == lit2.Value;
     }
 
     private bool CompareMemoryOperands(MemoryOperand m1, MemoryOperand m2)
@@ -120,28 +96,11 @@ internal class Avr32InstructionComparer : InstructionComparer
             MemoryOperand m => GetMemoryHash(m),
             RegisterImmediateOperand ri => GetRegisterImmediateHash(ri),
             RegisterPartOperand rpo => GetRegisterHash(rpo),
-            RegisterPairOperand rp => GetRegisterPairHash(rp),
             RegisterRange rr => GetRegisterRangeHash(rr),
             SequenceStorage s => GetSequenceHash(s),
-            LiteralOperand lit => GetStringHash(lit.Value),
+            LiteralOperand lit => GetStringHash(lit.Literal),
             _ => throw new NotImplementedException(op.GetType().Name)
         };
-    }
-
-    private int GetRegisterRangeHash(RegisterRange rr)
-    {
-        int hash = RegRangeCode;
-        hash = hash * 17 ^ (NormalizeRegisters ? 0 : rr.RegisterIndex);
-        hash = hash * 17 ^ (NormalizeRegisters ? 0 : rr.Count);
-        return hash;
-    }
-
-    private int GetRegisterPairHash(RegisterPairOperand rp)
-    {
-        int hash = RegPairCode;
-        hash = hash * 17 ^ GetRegisterHash(rp.HiRegister);
-        hash = hash * 17 ^ GetRegisterHash(rp.LoRegister);
-        return hash;
     }
 
     private int GetStringHash(string value)
