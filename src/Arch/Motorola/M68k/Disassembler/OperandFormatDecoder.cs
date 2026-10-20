@@ -40,17 +40,6 @@ namespace Reko.Arch.Motorola.M68k.Disassembler
             this.dasm = dasm;
         }
 
-        private static PrimitiveType SizeField(ushort opcode, int bitOffset)
-        {
-            switch (opcode >> bitOffset & 3)
-            {
-            case 0: return PrimitiveType.Byte;
-            case 1: return PrimitiveType.Word16;
-            case 2: return PrimitiveType.Word32;
-            default: throw new InvalidOperationException(string.Format("Illegal size field in opcode {0:X4}.", opcode));
-            }
-        }
-
         public bool TryParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
         {
             opcode >>= bitOffset;

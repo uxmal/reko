@@ -22,25 +22,21 @@ using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Memory;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Environments.PalmOS
 {
     public class PalmOSPlatform : Platform
     {
-        public PalmOSPlatform(IServiceProvider services, IProcessorArchitecture arch, string platformId)
-            : base(services, arch, platformId)
+        public PalmOSPlatform(IServiceProvider services, IProcessorArchitecture arch)
+            : base(services, arch, "palmOS")
         {
         }
 
-        public override string DefaultCallingConvention => throw new NotImplementedException();
+        public override string DefaultCallingConvention => "";
 
         public override SystemService? FindService(int vector, ProcessorState? state, IMemory? memory)
         {
-            if (vector != 0xF || state is null || memory is null)
+            if (vector != 0xF || state is null)
                 return null;
             if (memory is not IByteAdressableMemory mem)
                 return null;
@@ -53,12 +49,26 @@ namespace Reko.Environments.PalmOS
 
         public override int GetBitSizeFromCBasicType(CBasicType cb)
         {
-            throw new NotImplementedException();
+            switch (cb)
+            {
+            case CBasicType.Bool: return 8;
+            case CBasicType.Char: return 8;
+            case CBasicType.WChar_t: return 16;  //$REVIEW: Does PalmOS support wchar_t?
+            case CBasicType.Short: return 16;
+            case CBasicType.Int: return 32;
+            case CBasicType.Long: return 32;
+            case CBasicType.LongLong: return 64;
+            case CBasicType.Float: return 32;
+            case CBasicType.Double: return 64;
+            case CBasicType.LongDouble: return 64;
+            case CBasicType.Int64: return 64;
+            default: throw new NotImplementedException($"C basic type {cb} not supported.");
+            }
         }
 
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

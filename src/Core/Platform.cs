@@ -219,7 +219,7 @@ namespace Reko.Core
         /// represented with on this platform.
         /// </summary>
         /// <param name="cb">A C Basic type, like int, float etc.</param>
-        /// <returns>Number of bytes used by this platform.
+        /// <returns>Number of bits used by this platform.
         /// </returns>
         int GetBitSizeFromCBasicType(CBasicType cb);
 

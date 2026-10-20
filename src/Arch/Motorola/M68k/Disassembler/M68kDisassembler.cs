@@ -66,7 +66,7 @@ namespace Reko.Arch.Motorola.M68k.Disassembler
             this.services = services;
             this.rdr = rdr;
             addr = rdr.Address;
-            ops = new List<MachineOperand>();
+            ops = [];
             this.cpuType = cpuType;
         }
 
