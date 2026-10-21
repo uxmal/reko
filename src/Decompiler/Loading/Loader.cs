@@ -301,7 +301,7 @@ namespace Reko.Loading
                 throw new ApplicationException($"No processor architecture was specified.");
             var arch = cfgSvc.GetArchitecture(details.ArchitectureName, details.ArchitectureOptions);
             if (arch is null)
-                throw new ApplicationException($"Unknown processor architecture '{details.ArchitectureName}");
+                throw new ApplicationException($"Unknown processor architecture '{details.ArchitectureName}'.");
             arch.LoadUserOptions(details.ArchitectureOptions);
             IPlatform platform = Platform.Load(Services, details.PlatformName, null, arch);
             Address addrLoad;

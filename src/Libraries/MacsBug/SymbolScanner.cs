@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -154,7 +155,7 @@ namespace Reko.Libraries.MacsBug
                 }
 
                 // We think we saw the end of the procedure. Could there be a MacsBug symbol?
-                if (!TryReadMacsBugSymbol(out string symbol))
+                if (!TryReadMacsBugSymbol(out string? symbol))
                 {
                     // Don't really want a symbol in this case.
                     // But there might be more procedures.
@@ -173,7 +174,7 @@ namespace Reko.Libraries.MacsBug
             return false;
         }
 
-        private bool TryReadMacsBugSymbol(out string symbol)
+        private bool TryReadMacsBugSymbol([MaybeNullWhen(false)] out string symbol)
         {
             var savedOffset = rdr.Offset;
             symbol = null!;
@@ -217,7 +218,7 @@ namespace Reko.Libraries.MacsBug
             symbol = sb.ToString();
             if (!this.reValidVariableLengthProcedureName.IsMatch(symbol))
             {
-                symbol = null!;
+                symbol = null;
                 rdr.Offset = savedOffset;
                 return false;
             }
