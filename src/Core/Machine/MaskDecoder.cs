@@ -71,7 +71,7 @@ namespace Reko.Core.Machine
         /// Debug method to dump the instruction and the mask used to select the
         /// bitfield.
         /// </summary>
-        /// <param name="wInstr"></param>
+        /// <param name="wInstr">Instruction word to dump.</param>
         [Conditional("DEBUG")]
         public void TraceDecoder(uint wInstr)
         {
@@ -153,4 +153,3 @@ namespace Reko.Core.Machine
         }
     }
 }
-
