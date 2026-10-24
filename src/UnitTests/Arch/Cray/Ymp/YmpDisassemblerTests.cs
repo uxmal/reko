@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
 
         protected CrayInstruction DisassembleOctBytes(string octalBytes)
         {
-            ushort[] words = ToUInt16s(OctalStringToBytes(octalBytes)).ToArray();
+            ushort[] words = ToUInt16s(OctalStringToBytes(octalBytes, 6)).ToArray();
             var mem = new Word16MemoryArea(LoadAddress, words);
             return Disassemble(mem);
         }

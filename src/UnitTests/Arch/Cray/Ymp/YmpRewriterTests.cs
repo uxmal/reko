@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
 
         protected void Given_OctalString(string octalBytes)
         {
-            var words = YmpDisassemblerTests.ToUInt16s(YmpDisassemblerTests.OctalStringToBytes(octalBytes))
+            var words = YmpDisassemblerTests.ToUInt16s(OctalStringToBytes(octalBytes, 6))
                 .ToArray();
             Given_MemoryArea(new Word16MemoryArea(LoadAddress, words));
         }

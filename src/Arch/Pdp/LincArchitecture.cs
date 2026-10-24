@@ -37,8 +37,15 @@ public class LincArchitecture : ProcessorArchitecture
     public LincArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
         : base(services, archId, options, Registers.RegisterBank)
     {
-        Endianness = EndianServices.Big;
-        CarryFlag = Registers.L;
+        this.CarryFlag = Registers.L;
+        this.CodeMemoryGranularity = 12;
+        this.DefaultBase = 8;
+        this.Endianness = EndianServices.Big;
+        this.FramePointerType = PdpTypes.Ptr12;
+        this.InstructionBitSize = 12;
+        this.MemoryGranularity = 12;
+        this.PointerType = PdpTypes.Ptr12;
+        this.WordWidth = PdpTypes.Word12;
     }
 
     public static PrimitiveType Word12 => PdpTypes.Word12;
@@ -76,7 +83,7 @@ public class LincArchitecture : ProcessorArchitecture
 
     public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
     {
-        return new LincDisassembler(imageReader, this);
+        return new LincDisassembler(this, imageReader);
     }
 
     public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
@@ -96,7 +103,13 @@ public class LincArchitecture : ProcessorArchitecture
 
     public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
     {
-        throw new NotImplementedException();
+        return new LincRewriter(this, rdr, state, binder, host);
+    }
+
+    public override MemoryArea CreateCodeMemoryArea(Address addr, byte[] bytes)
+    {
+        // NOTE: assumes the bytes are provided in big-endian form.
+        return Word16MemoryArea.CreateFromBeBytes(addr, bytes);
     }
 
     public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, ulong grf)

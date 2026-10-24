@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Pdp.Memory;
 using Reko.Core;
 using Reko.Core.Machine;
 
@@ -26,13 +27,26 @@ namespace Reko.Arch.Pdp.Linc;
 public static class Registers
 {
     public static RegisterBank RegisterBank { get; }
-
+    public static RegisterStorage[] IndexRegisters { get; }
     public static RegisterStorage Accumulator { get; }
+
+    public static RegisterStorage Mq { get; }
+
+    /// <summary>
+    /// Tape accumulator
+    /// </summary>
+    public static RegisterStorage Tac { get; }
 
     /// <summary>
     /// Link bit (think of it as a carry bit).
     /// </summary>
     public static FlagGroupStorage L { get; }
+
+    /// <summary>
+    /// Gets the flag group storage for flow-related flags.
+    /// </summary>
+    public static FlagGroupStorage Flow { get; }
+
 
     /// <summary>
     /// Fictitious status register to group bits, not present in the
@@ -43,9 +57,13 @@ public static class Registers
     static Registers()
     {
         var factory = new StorageFactory();
+        IndexRegisters = factory.RangeOfReg(16, n => n == 0 ? "PC" : $"R{n}", PdpTypes.Word12);
         Accumulator = factory.Reg("AC", LincArchitecture.Word12);
-        Status = new RegisterStorage("Status", (int) StorageDomain.SystemRegister, 0, LincArchitecture.Word12);
+        Mq = factory.Reg("MQ", LincArchitecture.Word12);                // PDP-12?
+        Tac = factory.Reg("TAC", LincArchitecture.Word12);
+        Status = factory.Reg("Status", LincArchitecture.Word12);
         L = new FlagGroupStorage(Status, 1, "L");
-        RegisterBank = new RegisterBank([]);
+        Flow = new FlagGroupStorage(Status, 2, "F");
+        RegisterBank = new RegisterBank(factory.DomainsToRegisters.Values);
     }
 }

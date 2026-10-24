@@ -136,7 +136,7 @@ namespace Reko.UnitTests.Arch
             return instr;
         }
 
-        public static byte[] OctalStringToBytes(string octalBytes)
+        public static byte[] OctalStringToBytes(string octalBytes, int groupSize)
         {
             var w = new BeImageWriter();
             int h = 0;
@@ -144,11 +144,11 @@ namespace Reko.UnitTests.Arch
             for (int i = 0; i < octalBytes.Length; ++i)
             {
                 var digit = octalBytes[i] - '0';
-                if (0 <= digit && digit <= 9)
+                if (0 <= digit && digit <= 7)
                 {
                     ++nDigits;
                     h = h * 8 + digit;
-                    if (nDigits == 6)
+                    if (nDigits == groupSize)
                     {
                         w.WriteBeUInt16((ushort) h);
                         h = 0;

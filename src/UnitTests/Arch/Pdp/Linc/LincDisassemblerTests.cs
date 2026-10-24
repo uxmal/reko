@@ -45,14 +45,24 @@ public class LincDisassemblerTests : DisassemblerTestBase<LincInstruction>
         Assert.AreEqual(sExp, instr.ToString());
     }
 
+    private void AssertMultipleCode(string sExp, string octalwords)
+    {
+        var words = LincArchitecture.OctalStringToWords(octalwords);
+        var mem = new Word16MemoryArea(addrLoad, words);
+        var rdr = arch.CreateImageReader(mem, addrLoad);
+        var dasm = new LincDisassembler(arch, rdr);
+        var sActual = string.Join(" # ", dasm);
+        Assert.AreEqual(sExp, sActual);
+    }
+
     public override IProcessorArchitecture Architecture => arch;
     public override Address LoadAddress => addrLoad;
 
     [Test]
     public void LincDis_ada()
     {
-        AssertCode("ADA   1234", "1100 1234");
-        AssertCode("ADA i 0003", "1123");
+        AssertMultipleCode("ADA # 1234", "1100 1234");
+        AssertMultipleCode("ADA i 0003", "1123");
     }
 
     [Test]
@@ -108,7 +118,7 @@ public class LincDisassemblerTests : DisassemblerTestBase<LincInstruction>
     [Test]
     public void LincDis_bse()
     {
-        AssertCode("BSE i 4242", "1620 4242");
+        AssertMultipleCode("BSE i # 4242", "1620 4242");
     }
 
     [Test]
@@ -201,7 +211,7 @@ public class LincDisassemblerTests : DisassemblerTestBase<LincInstruction>
     [Test]
     public void LincDis_lda()
     {
-        AssertCode("LDA i 1234", "1020 1234");
+        AssertMultipleCode("LDA i # 1234", "1020 1234");
     }
 
     [Test]
@@ -255,8 +265,8 @@ public class LincDisassemblerTests : DisassemblerTestBase<LincInstruction>
     [Test]
     public void LincDis_mul()
     {
-        AssertCode("MUL   1234", "1240 1234");
-        AssertCode("MUL i 1234", "1260 1234");
+        AssertMultipleCode("MUL # 1234", "1240 1234");
+        AssertMultipleCode("MUL i # 1234", "1260 1234");
     }
 
     [Test]
@@ -382,21 +392,21 @@ public class LincDisassemblerTests : DisassemblerTestBase<LincInstruction>
     [Test]
     public void LincDis_set()
     {
-        AssertCode("SET   0000 0004", "0040 0004");
-        AssertCode("SET i 0000 0024", "0060 0024");
+        AssertMultipleCode("SET   0000 # 0004", "0040 0004");
+        AssertMultipleCode("SET i 0000 # 0024", "0060 0024");
     }
 
     [Test]
     public void LincDis_shd()
     {
-        AssertCode("SHD i 5500", "1420 5500");
+        AssertMultipleCode("SHD i # 5500", "1420 5500");
     }
 
     [Test]
     public void LincDis_skp()
     {
-        AssertCode("SKP", "0456");
-        AssertCode("SKP i", "0476");
+        AssertMultipleCode("SKP", "0456");
+        AssertMultipleCode("SKP i", "0476");
     }
 
     [Test]

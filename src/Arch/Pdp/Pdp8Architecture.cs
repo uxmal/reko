@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Pdp.Memory;
 using Reko.Arch.Pdp.Pdp8;
 using Reko.Core;
 using Reko.Core.Expressions;
@@ -35,15 +36,22 @@ public class Pdp8Architecture : ProcessorArchitecture
     public Pdp8Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
         : base(services, archId, options, Registers.RegisterBank)
     {
+        Endianness = EndianServices.Big;
     }
+
+    public static Address Ptr12(uint uAddr)
+    {
+        return Address.OctalPtr(PdpTypes.Ptr12, uAddr);
+    }
+
     public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
     {
-        throw new System.NotImplementedException();
+        return new Pdp8Disassembler(this, imageReader); 
     }
 
     public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
     {
-        throw new System.NotImplementedException();
+        return new Pdp8InstructionComparer(norm);
     }
 
     public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -53,7 +61,7 @@ public class Pdp8Architecture : ProcessorArchitecture
 
     public override ProcessorState CreateProcessorState()
     {
-        throw new System.NotImplementedException();
+        return new DefaultProcessorState(this);
     }
 
     public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

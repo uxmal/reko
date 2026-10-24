@@ -42,8 +42,9 @@ public class LincDisassembler : DisassemblerBase<LincInstruction, Mnemonic>
     private Address addr;
     private bool indirect;
     private ushort uInstrFirst;
+    private bool nextLiteral;
 
-    public LincDisassembler(EndianImageReader rdr, LincArchitecture arch)
+    public LincDisassembler(LincArchitecture arch, EndianImageReader rdr)
     {
         this.arch = arch;
         this.rdr = rdr;
@@ -55,7 +56,9 @@ public class LincDisassembler : DisassemblerBase<LincInstruction, Mnemonic>
         this.addr = rdr.Address;
         if (!this.rdr.TryReadBeUInt16(out this.uInstrFirst))
             return null;
-        var instr = rootDecoder.Decode(uInstrFirst, this);
+        var instr = nextLiteral
+            ? MakeLiteral(uInstrFirst)
+            : rootDecoder.Decode(uInstrFirst, this);
 
         ops.Clear();
         indirect = false;
@@ -82,7 +85,19 @@ public class LincDisassembler : DisassemblerBase<LincInstruction, Mnemonic>
             InstructionClass = iclass,
             Mnemonic = mnemonic,
             Indirect = indirect,
+            HasLiteral = nextLiteral,
             Operands = ops.ToArray()
+        };
+    }
+
+    private LincInstruction MakeLiteral(ushort uInstr)
+    {
+        this.nextLiteral = false;
+        return new LincInstruction
+        {
+            InstructionClass = InstrClass.Linear,
+            Mnemonic = Mnemonic.Literal,
+            Operands = [ Constant.Create(PdpTypes.Word12, uInstr) ]
         };
     }
 
@@ -146,9 +161,7 @@ public class LincDisassembler : DisassemblerBase<LincInstruction, Mnemonic>
 
     private static bool W12(uint uInstr, LincDisassembler dasm)
     {
-        if (!dasm.rdr.TryReadBeUInt16(out ushort w))
-            return false;
-        dasm.ops.Add(Constant.Create(PdpTypes.Word12, w));
+        dasm.nextLiteral = true;
         return true;
     }
 
@@ -164,16 +177,7 @@ public class LincDisassembler : DisassemblerBase<LincInstruction, Mnemonic>
         var beta = uInstr & 0xF;
         if (beta == 0)
         {
-            if (!dasm.rdr.TryReadBeUInt16(out ushort u))
-                return false;
-            if (dasm.indirect)
-            {
-                dasm.ops.Add(new MemoryOperand(u));
-            }
-            else
-            {
-                dasm.ops.Add(Constant.Create(PdpTypes.Word12, u));
-            }
+            dasm.nextLiteral = true;
         }
         else
         {

@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
@@ -133,11 +134,15 @@ namespace Reko.Core.Types
 
         private static PrimitiveType Cache(PrimitiveType p)
         {
-            if (!cache.TryGetValue((p.Domain, (int)p.BitSize), out var shared))
+            PrimitiveType? shared;
+            while (!cache.TryGetValue((p.Domain, (int)p.BitSize), out shared))
             {
                 shared = p;
-                cache.TryAdd((p.Domain, p.bitSize), shared);
-                lookupByName.TryAdd(shared.Name, shared);
+                if (cache.TryAdd((p.Domain, p.bitSize), shared))
+                {
+                    lookupByName.TryAdd(shared.Name, shared);
+                    return shared;
+                }
             }
 			return shared;
 		}

@@ -31,9 +31,15 @@ public class LincInstruction : MachineInstruction
     public override string MnemonicAsString => this.Mnemonic.ToString();
 
     public bool Indirect { get; set; }
+    public bool HasLiteral { get; set; }
 
     protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
     {
+        if (Mnemonic == Mnemonic.Literal)
+        {
+            RenderOperand(this.Operands[0], renderer, options);
+            return;
+        }
         renderer.WriteMnemonic(MnemonicAsString.ToUpperInvariant());
         if (this.Indirect)
             renderer.WriteString(" i");

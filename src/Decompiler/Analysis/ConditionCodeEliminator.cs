@@ -484,7 +484,7 @@ public class ConditionCodeEliminator : IAnalysis<SsaState>
                     {
                         return TransformRorC(app, a);
                     }
-                    else if (pseudo.Name == CommonOps.RolC.Name)
+                    else if (pseudo.IsInstanceOf(CommonOps.RolC))
                     {
                         return TransformRolC(app, a);
                     }

@@ -33,8 +33,11 @@ namespace Reko.Arch.Pdp.Memory;
 /// </summary>
 public class PdpTypes
 {
+    public static PrimitiveType Word3 { get; } = PrimitiveType.CreateWord(3);
+    public static PrimitiveType Word6 { get; } = PrimitiveType.CreateWord(6);
     public static PrimitiveType Word12 { get; } = PrimitiveType.CreateWord(12);
     public static PrimitiveType Word18 { get; } = PrimitiveType.CreateWord(18);
+    public static PrimitiveType Word24 { get; } = PrimitiveType.CreateWord(24);
     public static PrimitiveType Word36 { get; } = PrimitiveType.CreateWord(36);
     public static PrimitiveType Int36 { get; } = PrimitiveType.Create(Domain.SignedInt, 36);
     public static PrimitiveType Word72 { get; } = PrimitiveType.CreateWord(72);

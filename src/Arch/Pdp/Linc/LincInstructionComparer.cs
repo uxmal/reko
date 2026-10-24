@@ -18,11 +18,13 @@
  */
 #endregion
 
+using Reko.Arch.Pdp.Pdp8;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Reko.Arch.Pdp.Linc;
 
@@ -30,6 +32,17 @@ public class LincInstructionComparer : InstructionComparer
 {
     public LincInstructionComparer(Normalize norm) : base(norm)
     {
+    }
+
+    public override bool Equals(MachineInstruction? x, MachineInstruction? y)
+    {
+        if (!base.Equals(x, y))
+            return false;
+        if (x is LincInstruction px && y is LincInstruction py)
+        {
+            return px.Indirect == py.Indirect;
+        }
+        return true;
     }
 
     public override bool DoCompareOperands(MachineOperand op1, MachineOperand op2)
