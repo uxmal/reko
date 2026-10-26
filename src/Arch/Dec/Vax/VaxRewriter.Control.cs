@@ -1,0 +1,363 @@
+#region License
+/* 
+ * Copyright (C) 1999-2026 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using System;
+using System.Diagnostics;
+
+namespace Reko.Arch.Dec.Vax
+{
+    public partial class VaxRewriter
+    {
+        private void RewriteAcbf(PrimitiveType width)
+        {
+            var limit = RewriteSrcOp(0, width);
+            var add = RewriteSrcOp(1, width);
+            var index = RewriteDstOp(2, width, e => m.FAdd(e, add));
+            if (!VZN(index))
+                return;
+            if (!(add is Constant cAdd))
+            {
+                host.Error(
+                    this.instr.Address,
+                    "Instruction {0} too complex to rewrite.",
+                    this.instr);
+                m.Invalid();
+                return;
+            }
+            if (this.instr.Operands[3] is not Address addrOp)
+            {
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            if (cAdd.ToReal64() >= 0.0)
+            {
+                m.Branch(
+                    m.FLe(index, limit),
+                    addrOp,
+                    InstrClass.CondJump);
+            }
+            else
+            {
+                m.Branch(
+                    m.FGe(index, limit),
+                    addrOp,
+                    InstrClass.CondJump);
+            }
+        }
+
+        private void RewriteAcbi(PrimitiveType width)
+        {
+            var limit = RewriteSrcOp(0, width);
+            var add = RewriteSrcOp(1, width);
+            var index = RewriteDstOp(2, width, e => m.IAdd(e, add));
+            if (!VZN(index))
+                return;
+            if (!(add is Constant cAdd))
+            {
+                Debug.Print(
+                    "{0}: Instruction {1} too complex to rewrite.",
+                    this.instr.Address,
+                    this.instr);
+                m.Invalid();
+                return;
+            }
+            if (this.instr.Operands[3] is not Address addr)
+            {
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            if (cAdd.ToInt32() >= 0)
+            {
+                m.Branch(
+                    m.Le(index, limit),
+                    addr,
+                    InstrClass.CondJump);
+            }
+            else
+            {
+                m.Branch(
+                    m.Ge(index, limit),
+                    addr,
+                    InstrClass.CondJump);
+            }
+        }
+
+        private void RewriteBb(bool set)
+        {
+            var pos = RewriteSrcOp(0, PrimitiveType.Word32);
+            var @base = RewriteSrcOp(1, PrimitiveType.Word32);
+            Expression test = m.And(
+                @base,
+                m.Shl(m.Word32(1), pos));
+            if (set)
+            {
+                test = m.Ne0(test);
+            }
+            else
+            {
+                test = m.Eq0(test);
+            }
+            m.Branch(test,
+                (Address)this.instr.Operands[2],
+                InstrClass.CondJump);
+        }
+
+        private void RewriteBbxx(bool testBit, bool updateBit)
+        {
+            var pos = RewriteSrcOp(0, PrimitiveType.Word32);
+            var bas = RewriteSrcOp(1, PrimitiveType.Word32);
+            var dst = (Address)this.instr.Operands[2];
+            var tst = binder.CreateTemporary(PrimitiveType.Word32);
+            m.Assign(tst, m.And(bas, m.Shl(m.Int32(1), pos)));
+            if (updateBit)
+            {
+                m.Assign(bas, m.Or(bas, m.Shl(m.Int32(1), pos)));
+            } 
+            else
+            {
+                m.Assign(bas, m.And(bas, m.Comp( m.Shl(m.Int32(1), pos))));
+            }
+            var t = testBit
+                ? m.Ne0(tst)
+                : m.Eq0(tst);
+            m.Branch(t, dst, iclass);
+        }
+
+        private void RewriteBbxxi(bool testBit)
+        {
+            var pos = RewriteSrcOp(0, PrimitiveType.Word32);
+            var bas = RewriteSrcOp(1, PrimitiveType.Word32);
+            var dst = (Address)this.instr.Operands[2];
+            var tst = binder.CreateTemporary(PrimitiveType.Word32);
+            m.SideEffect(m.Fn(set_interlock));
+            m.Assign(tst, m.And(bas, m.Shl(m.Int32(1), pos)));
+            if (testBit)
+            {
+                m.Assign(bas, m.Or(bas, m.Shl(m.Int32(1), pos)));
+            }
+            else
+            {
+                m.Assign(bas, m.And(bas, m.Comp(m.Shl(m.Int32(1), pos))));
+            }
+            m.SideEffect(m.Fn(release_interlock));
+            var t = testBit
+                ? m.Ne0(tst)
+                : m.Eq0(tst);
+            m.Branch(t, dst, iclass);
+        }
+
+        private void RewriteBlb(Func<Expression,Expression> fn)
+        {
+            var n = RewriteSrcOp(0, PrimitiveType.Word32);
+            var test = fn(m.And(n, 1));
+            m.Branch(test,
+                    (Address)this.instr.Operands[1],
+                    iclass);
+        }
+
+        private void RewriteBranch()
+        {
+            if (this.instr.Operands[0] is not Address addr)
+            {
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            m.Goto(addr);
+        }
+
+        private void RewriteBsb()
+        {
+            if (this.instr.Operands[0] is Address addr)
+            {
+                m.Call(addr, 4);
+            }
+            else
+            { 
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+            }
+        }
+
+        private void RewriteBranch(ConditionCode cc, FlagGroupStorage flags)
+        {
+            m.Branch(
+                m.Test(cc, FlagGroup(flags)),
+                (Address)this.instr.Operands[0],
+                InstrClass.CondJump);
+        }
+
+        private void RewriteAob(
+            Func<Expression, Expression, Expression> cmp)
+        {
+            var limit = RewriteSrcOp(0, PrimitiveType.Word32);
+            var dst = RewriteDstOp(
+                1,
+                PrimitiveType.Word32,
+                e => m.IAdd(e, m.Word32(1)));
+            if (!AllFlags(dst))
+                return;
+            m.Branch(
+                cmp(dst, limit),
+                (Address)this.instr.Operands[2],
+                iclass);
+        }
+
+        private void RewriteCallg()
+        {
+            var callDst = RewriteSrcOp(1, PrimitiveType.Word32);
+            if (callDst is MemoryAccess mem)
+            {
+                if (mem.EffectiveAddress is Address addr)
+                {
+                    callDst = addr + 2;
+                }
+                else if (mem.EffectiveAddress is Constant cAddr)
+                {
+                    callDst = Address.Ptr32(cAddr.ToUInt32() + 2);
+                }
+                else
+                {
+                    callDst = m.IAddS(mem.EffectiveAddress, 2);
+                }
+            }
+            else
+            {
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            m.Call(callDst, 4);
+        }
+
+        private void RewriteCalls()
+        {
+            var callDst = RewriteSrcOp(1, PrimitiveType.Word32);
+            if (callDst is MemoryAccess mem)
+            {
+                if (mem.EffectiveAddress is Address addr)
+                {
+                    callDst = addr + 2;
+                }
+                else if (mem.EffectiveAddress is Constant cAddr)
+                {
+                    callDst = Address.Ptr32(cAddr.ToUInt32() + 2);
+                }
+                else
+                {
+                    callDst = m.IAddS(mem.EffectiveAddress, 2);
+                }
+            }
+            else
+            {
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            m.Call(callDst, 4);
+        }
+
+        private void RewriteCase(PrimitiveType size)
+        {
+            var selector = RewriteSrcOp(0, size);
+            var b = RewriteSrcOp(1, size);
+            var lim = RewriteSrcOp(2, size);
+            var tmp = binder.CreateTemporary(size);
+            m.Assign(tmp, m.ISub(selector, b));
+            if (lim is Constant cLim)
+            {
+                var offset = cLim.ToInt32() * 2;
+                var addrBeginTable = this.instr.Address + this.instr.Length;
+                var addrEndTable = addrBeginTable + offset;
+                m.BranchInMiddleOfInstruction(
+                    m.Gt(tmp, lim),
+                    addrEndTable,
+                    InstrClass.CondJump);
+                m.Goto(m.IAdd(addrBeginTable, m.IMul(tmp, 2)));
+            }
+            m.Invalid();
+        }
+
+        private void RewriteSob(
+            Func<Expression, Expression, Expression> cmp)
+        {
+            var dst = RewriteDstOp(
+                0,
+                PrimitiveType.Word32,
+                e => m.ISub(e, m.Word32(1)));
+            if (!AllFlags(dst))
+                return;
+            m.Branch(
+                cmp(dst, m.Word32(0)),
+                (Address)this.instr.Operands[1],
+                InstrClass.CondJump);
+        }
+
+        private void RewriteJmp()
+        {
+            var e = RewriteSrcOp(0, PrimitiveType.Word32);
+            if (e is MemoryAccess mem)
+                e = mem.EffectiveAddress;
+            m.Goto(e);
+        }
+
+        private void RewriteJsb()
+        {
+            var e = RewriteSrcOp(0, PrimitiveType.Word32);
+            if (e is MemoryAccess mem)
+                e = mem.EffectiveAddress;
+            m.Call(e, 4);
+        }
+
+        private void RewriteRei()
+        {
+            m.Return(4, 4);
+        }
+
+        // condition handler (initially 0) <-- fp
+        // saved PSW + flags
+        // saved AP
+        // saved FP
+        // saved PC
+        // saved regs
+        // ...
+        // last saved reg                  <-- sp
+        private void RewriteRet()
+        {
+            var sp = binder.EnsureRegister(Registers.sp);
+            var fp = binder.EnsureRegister(Registers.fp);
+            var ap = binder.EnsureRegister(Registers.ap);
+            m.Assign(sp, m.ISub(fp, 4));
+            m.Assign(fp, m.Mem32(m.IAdd(sp, 16)));
+            m.Assign(ap, m.Mem32(m.IAdd(sp, 12)));
+            m.Return(4, 0);
+        }
+
+        private void RewriteRsb()
+        {
+            m.Return(4, 0);
+        }
+    }
+}

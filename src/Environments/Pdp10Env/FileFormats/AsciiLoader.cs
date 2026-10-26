@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Reko.Arch.Pdp;
-using Reko.Arch.Pdp.Memory;
+using Reko.Arch.Dec;
+using Reko.Arch.Dec.Memory;
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;

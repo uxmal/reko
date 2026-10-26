@@ -1896,9 +1896,7 @@ fn0001B1D0: warning: Structure analysis stopped making progress, quitting. Pleas
 fn0001B1F8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0001B2AC: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-       at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in c:\dev\uxmal\reko\master\src\Core\Block.cs:line 106
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 100
+       at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 159
    at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 66
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 89
    at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 723
@@ -1975,10 +1973,10 @@ Error: An error occurred during data flow analysis.
    at Reko.Evaluation.IdConstant.Match(Identifier id, EvaluationContext ctx, Unifier unifier, IEventListener listener) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\IdConstant.cs:line 48
    at Reko.Evaluation.ExpressionSimplifier.VisitIdentifier(Identifier id) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.Identifier.cs:line 31
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 119
-   at Reko.Analysis.ValuePropagator.Worker.VisitAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 168
+   at Reko.Analysis.ValuePropagator.Worker.VisitAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 159
    at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in c:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 64
-   at Reko.Analysis.ValuePropagator.Worker.Transform(Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 159
-   at Reko.Analysis.ValuePropagator.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 146
+   at Reko.Analysis.ValuePropagator.Worker.Transform(Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 150
+   at Reko.Analysis.ValuePropagator.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 137
    at Reko.Analysis.ValuePropagator.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 73
    at Reko.Analysis.SccWorker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SccWorker.cs:line 118
 Error: An error occurred during data flow analysis.
@@ -1989,10 +1987,10 @@ Error: An error occurred during data flow analysis.
    at Reko.Evaluation.IdConstant.Match(Identifier id, EvaluationContext ctx, Unifier unifier, IEventListener listener) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\IdConstant.cs:line 48
    at Reko.Evaluation.ExpressionSimplifier.VisitIdentifier(Identifier id) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.Identifier.cs:line 31
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 119
-   at Reko.Analysis.ValuePropagator.Worker.VisitAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 168
+   at Reko.Analysis.ValuePropagator.Worker.VisitAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 159
    at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in c:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 64
-   at Reko.Analysis.ValuePropagator.Worker.Transform(Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 159
-   at Reko.Analysis.ValuePropagator.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 146
+   at Reko.Analysis.ValuePropagator.Worker.Transform(Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 150
+   at Reko.Analysis.ValuePropagator.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 137
    at Reko.Analysis.ValuePropagator.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 73
    at Reko.Analysis.UnusedOutValuesRemover.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\UnusedOutValuesRemover.cs:line 109
 Error: An error occurred during data flow analysis.
@@ -2003,10 +2001,10 @@ Error: An error occurred during data flow analysis.
    at Reko.Evaluation.IdConstant.Match(Identifier id, EvaluationContext ctx, Unifier unifier, IEventListener listener) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\IdConstant.cs:line 48
    at Reko.Evaluation.ExpressionSimplifier.VisitIdentifier(Identifier id) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.Identifier.cs:line 31
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 119
-   at Reko.Analysis.ValuePropagator.Worker.VisitAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 168
+   at Reko.Analysis.ValuePropagator.Worker.VisitAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 159
    at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in c:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 64
-   at Reko.Analysis.ValuePropagator.Worker.Transform(Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 159
-   at Reko.Analysis.ValuePropagator.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 146
+   at Reko.Analysis.ValuePropagator.Worker.Transform(Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 150
+   at Reko.Analysis.ValuePropagator.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 137
    at Reko.Analysis.ValuePropagator.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 73
    at Reko.Analysis.UnusedOutValuesRemover.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\UnusedOutValuesRemover.cs:line 109
 Rewriting procedures. [Done]
@@ -2018,10 +2016,10 @@ fn084F: error: An internal error occurred while building the expressions of fn08
    at Reko.Evaluation.IdConstant.Match(Identifier id, EvaluationContext ctx, Unifier unifier, IEventListener listener) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\IdConstant.cs:line 48
    at Reko.Evaluation.ExpressionSimplifier.VisitIdentifier(Identifier id) in c:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.Identifier.cs:line 31
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in c:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 119
-   at Reko.Analysis.ValuePropagator.Worker.VisitAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 168
+   at Reko.Analysis.ValuePropagator.Worker.VisitAssignment(Assignment a) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 159
    at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in c:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 64
-   at Reko.Analysis.ValuePropagator.Worker.Transform(Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 159
-   at Reko.Analysis.ValuePropagator.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 146
+   at Reko.Analysis.ValuePropagator.Worker.Transform(Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 150
+   at Reko.Analysis.ValuePropagator.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 137
    at Reko.Analysis.ValuePropagator.Transform(SsaState ssa) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 73
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 256
 Building expressions. [Done]
@@ -3048,4 +3046,4 @@ Collecting data types. [Done]
 Rewriting expressions. [Done]
 Rewriting procedures to high-level language. [Done]
 
-Decompiled 101 binaries in 41.82 seconds.
+Decompiled 101 binaries in 71.82 seconds.

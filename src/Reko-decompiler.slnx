@@ -10,10 +10,6 @@
     <Platform Name="x86" />
   </Configurations>
   <Folder Name="/Architectures/">
-    <Project Path="Arch/Alpha/Alpha.csproj">
-      <BuildType Solution="UnixDebug|*" Project="Debug" />
-      <BuildType Solution="UnixRelease|*" Project="Release" />
-    </Project>
     <Project Path="Arch/Altera/Altera.csproj">
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
@@ -58,8 +54,12 @@
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
+    <Project Path="Arch/Dec/Dec.csproj">
+      <BuildType Solution="UnixDebug|*" Project="Debug" />
+      <BuildType Solution="UnixRelease|*" Project="Release" />
+    </Project>
     <Project Path="Arch/Epson/Epson.csproj">
-      <BuildType Solution="UnixDebug|*" Project="Release" />
+      <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
     <Project Path="Arch/Etrax/Etrax.csproj">
@@ -87,7 +87,7 @@
       <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
     <Project Path="Arch/Kalimba/Kalimba.csproj">
-      <BuildType Solution="UnixDebug|*" Project="Release" />
+      <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
     <Project Path="Arch/LatticeMico/LatticeMico.csproj">
@@ -187,10 +187,6 @@
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
-    <Project Path="Arch/Pdp/Pdp.csproj">
-      <BuildType Solution="UnixDebug|*" Project="Debug" />
-      <BuildType Solution="UnixRelease|*" Project="Release" />
-    </Project>
     <Project Path="Arch/PowerPC.Design/PowerPC.Design.csproj">
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
@@ -252,10 +248,6 @@
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
-    <Project Path="Arch/Vax/Vax.csproj">
-      <BuildType Solution="UnixDebug|*" Project="Debug" />
-      <BuildType Solution="UnixRelease|*" Project="Release" />
-    </Project>
     <Project Path="Arch/WE32100/WE32100.csproj">
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
@@ -312,7 +304,6 @@
       <Platform Solution="UnixRelease|Any CPU" Project="x64" />
     </Project>
     <Project Path="Drivers/CmdLine/CmdLine.csproj">
-      <BuildDependency Project="Arch/Alpha/Alpha.csproj" />
       <BuildDependency Project="Arch/Angstrem/Angstrem.csproj" />
       <BuildDependency Project="Arch/Arm/Arm.csproj" />
       <BuildDependency Project="Arch/Avr/Avr.csproj" />
@@ -331,7 +322,6 @@
       <BuildDependency Project="Arch/SuperH/SuperH.csproj" />
       <BuildDependency Project="Arch/Tlcs/Tlcs.csproj" />
       <BuildDependency Project="Arch/Tms7000/Tms7000.csproj" />
-      <BuildDependency Project="Arch/Vax/Vax.csproj" />
       <BuildDependency Project="Arch/X86.Design/X86.Design.csproj" />
       <BuildDependency Project="Arch/X86/X86.csproj" />
       <BuildDependency Project="Arch/Xtensa/Xtensa.csproj" />
@@ -389,7 +379,6 @@
       <Build Solution="Debug|Any CPU" Project="false" />
     </Project>
     <Project Path="Drivers/WebSite/website.csproj">
-      <BuildDependency Project="Arch/Alpha/Alpha.csproj" />
       <BuildDependency Project="Arch/Altera/Altera.csproj" />
       <BuildDependency Project="Arch/Angstrem/Angstrem.csproj" />
       <BuildDependency Project="Arch/Arc/Arc.csproj" />
@@ -401,6 +390,7 @@
       <BuildDependency Project="Arch/CompactRisc/CompactRisc.csproj" />
       <BuildDependency Project="Arch/Cray/Cray.csproj" />
       <BuildDependency Project="Arch/CSky/CSky.csproj" />
+      <BuildDependency Project="Arch/Dec/Dec.csproj" />
       <BuildDependency Project="Arch/Epson/Epson.csproj" />
       <BuildDependency Project="Arch/Etrax/Etrax.csproj" />
       <BuildDependency Project="Arch/Fujitsu/Fujitsu.csproj" />
@@ -429,7 +419,6 @@
       <BuildDependency Project="Arch/OpenRISC/OpenRISC.csproj" />
       <BuildDependency Project="Arch/Padauk/Padauk.csproj" />
       <BuildDependency Project="Arch/PaRisc/PaRisc.csproj" />
-      <BuildDependency Project="Arch/Pdp/Pdp.csproj" />
       <BuildDependency Project="Arch/PowerPC/PowerPC.csproj" />
       <BuildDependency Project="Arch/Qualcomm/Qualcomm.csproj" />
       <BuildDependency Project="Arch/Rca/Rca.csproj" />
@@ -442,7 +431,6 @@
       <BuildDependency Project="Arch/Tms320C28/Tms320C28.csproj" />
       <BuildDependency Project="Arch/Tms7000/Tms7000.csproj" />
       <BuildDependency Project="Arch/V850/V850.csproj" />
-      <BuildDependency Project="Arch/Vax/Vax.csproj" />
       <BuildDependency Project="Arch/WE32100/WE32100.csproj" />
       <BuildDependency Project="Arch/X86.Design/X86.Design.csproj" />
       <BuildDependency Project="Arch/X86/X86.csproj" />
@@ -517,7 +505,6 @@
       <Build Solution="UnixDebug|x64" Project="false" />
     </Project>
     <Project Path="Drivers/WindowsDecompiler/WindowsDecompiler.csproj">
-      <BuildDependency Project="Arch/Alpha/Alpha.csproj" />
       <BuildDependency Project="Arch/Angstrem/Angstrem.csproj" />
       <BuildDependency Project="Arch/Arm/Arm.csproj" />
       <BuildDependency Project="Arch/Avr/Avr.csproj" />
@@ -539,7 +526,6 @@
       <BuildDependency Project="Arch/SuperH/SuperH.csproj" />
       <BuildDependency Project="Arch/Tlcs/Tlcs.csproj" />
       <BuildDependency Project="Arch/Tms7000/Tms7000.csproj" />
-      <BuildDependency Project="Arch/Vax/Vax.csproj" />
       <BuildDependency Project="Arch/X86.Design/X86.Design.csproj" />
       <BuildDependency Project="Arch/X86/X86.csproj" />
       <BuildDependency Project="Arch/Xtensa/Xtensa.csproj" />

@@ -249,7 +249,7 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\Pdp11\Pdp11.csproj">
+    <ProjectReference Include="..\Arch\Dec\Dec.csproj">
       <Name>Pdp11</Name>
       <Project>{cd10a2c6-246c-4cbb-8e92-86579714795a}</Project>
       <Private>True</Private>

@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Reko.Arch.Vax;
+using Reko.Arch.Dec.Vax;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Loading;

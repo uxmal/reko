@@ -20,7 +20,7 @@
 
 using Moq;
 using NUnit.Framework;
-using Reko.Arch.Pdp;
+using Reko.Arch.Dec;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Memory;
