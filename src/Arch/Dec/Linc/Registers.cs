@@ -54,6 +54,12 @@ public static class Registers
     /// </summary>
     public static RegisterStorage Status { get; }
 
+    /// <summary>
+    /// Gets the stack pointer register storage.
+    /// </summary>
+    /// <remarks>Set access is restricted to the containing assembly.</remarks>
+    public static RegisterStorage SP { get; }
+
     static Registers()
     {
         var factory = new StorageFactory();
@@ -62,6 +68,7 @@ public static class Registers
         Mq = factory.Reg("MQ", LincArchitecture.Word12);                // PDP-12?
         Tac = factory.Reg("TAC", LincArchitecture.Word12);
         Status = factory.Reg("Status", LincArchitecture.Word12);
+        SP = factory.Reg("SP", LincArchitecture.Word12);
         L = new FlagGroupStorage(Status, 1, "L");
         Flow = new FlagGroupStorage(Status, 2, "F");
         RegisterBank = new RegisterBank(factory.DomainsToRegisters.Values);

@@ -34,8 +34,8 @@ namespace Reko.ImageLoaders.DiskImages.TwoMG
 
         public override ILoadedImage Load(Address? addrLoad)
         {
-                var rdr = new ByteImageReader(base.RawImage);
-                var prefix = rdr.ReadStruct<Prefix>();
+            var rdr = new ByteImageReader(base.RawImage);
+            var prefix = rdr.ReadStruct<Prefix>();
             switch (prefix.ImageFormat)
             {
             case 1:

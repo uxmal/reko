@@ -178,7 +178,7 @@ public class Pdp1Rewriter : IEnumerable<RtlInstructionCluster>
         var offset = rdr.Offset;
         rdr.Offset -= 1;
         rdr.TryReadBeUInt18(out uint word);
-        var opcodeAsString = Convert.ToString((long) word, 8).PadLeft(6, '0');
+        var opcodeAsString = Convert.ToString(word, 8).PadLeft(6, '0');
         rdr.Offset = offset;
         var instr = dasm.Current;
         arch.Services.GetService<ITestGenerationService>()?.ReportMissingRewriter(

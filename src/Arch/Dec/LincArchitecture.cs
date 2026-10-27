@@ -45,6 +45,7 @@ public class LincArchitecture : ProcessorArchitecture
         this.InstructionBitSize = 12;
         this.MemoryGranularity = 12;
         this.PointerType = PdpTypes.Ptr12;
+        this.StackRegister = Registers.SP;
         this.WordWidth = PdpTypes.Word12;
     }
 

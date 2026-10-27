@@ -157,7 +157,7 @@ public class LincRewriter : IEnumerable<RtlInstructionCluster>
     private void EmitUnitTest(LincInstruction instr)
     {
         var testSvc = arch.Services.GetService<ITestGenerationService>();
-        testSvc?.ReportMissingRewriter("LincRw", instr, instr.MnemonicAsString, rdr, "");
+        testSvc?.ReportMissingRewriter("LincRw", instr, instr.MnemonicAsString, rdr, "", "");
         m.Invalid();
         iclass = InstrClass.Invalid;
     }
