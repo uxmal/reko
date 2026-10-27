@@ -62,7 +62,7 @@ public class LincIndexEntry : ArchivedFile
             return new Blob(tape.Location.AppendFragment(Name), []);
         }
         var words = new ushort[Length * LincTape.WordsPerBlock];
-        if (!tape.TryReadBlocks(ExecAddress, words, TypeId))
+        if (!tape.TryReadBlocks(words, ExecAddress, TypeId))
         {
             return new Blob(tape.Location.AppendFragment(Name), []);
         }
@@ -76,6 +76,7 @@ public class LincIndexEntry : ArchivedFile
             arch,
             platform);
         program.Location = tape.Location.AppendFragment(Name);
+        program.Name = Name;
         return program;
     }
 

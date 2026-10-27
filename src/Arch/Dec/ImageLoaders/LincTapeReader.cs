@@ -80,11 +80,11 @@ public class LincTapeReader : ImageLoader
     {
         int indexBlockNo = 0x116; // 0o426;
         var indexBlocks = new ushort[LincTape.WordsPerBlock * 2];
-        if (!tape.TryReadBlocks(indexBlockNo, indexBlocks, 2) ||
+        if (!tape.TryReadBlocks(indexBlocks, indexBlockNo, 2) ||
             !IsEmptyIndexEntry(indexBlocks, 0, LincTape.EmptyMarker))
         {
             indexBlockNo = 0x0D6; // 0o326;
-            if (!tape.TryReadBlocks(indexBlockNo, indexBlocks, 2) ||
+            if (!tape.TryReadBlocks(indexBlocks, indexBlockNo, 2) ||
                 !IsEmptyIndexEntry(indexBlocks, 0, LincTape.EmptyMarker))
             {
                 throw new BadImageFormatException("Couldn't find the LINC table index.");

@@ -153,10 +153,14 @@ namespace Reko.Loading
                 return project;
             }
             var fsLocation = ImageLocation.FromUri(imageLocation.FilesystemPath);
-            if (imageLocation.Fragments.Length == 1)
+            if (imageLocation.Fragments.Length == 0)
             {
+                // This current image will not be "drilled into" since there are 
+                // no fragments.
                 return ParseBinaryImage(fsLocation, image, loaderName, environmentName, null, addrLoad);
             }
+
+            // Iterate through all the fragments / nested archives.
             var binaryImage = ParseBinaryImage(fsLocation, image, null, environmentName, null, addrLoad);
             foreach (var fragment in imageLocation.Fragments)
             {

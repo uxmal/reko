@@ -23,9 +23,18 @@ using Reko.Core.Loading;
 using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Arch.Dec.ImageLoaders;
 
+/// <summary>
+/// Represents a LINC tape archive backed by a raw tape image and exposed through
+/// the <see cref="IArchive"/> interface.
+/// </summary>
+/// <remarks>
+/// The raw bytes are expected to store the 12-bit words as 16-bit little-endian values,
+/// with the upper 4 bits of each word set to zero.
+/// </remarks>
 public class LincTape : IArchive
 {
     public const int BytesPerBlock = 512;
@@ -47,33 +56,50 @@ public class LincTape : IArchive
         this.RootEntries = [];
     }
 
-    public ArchiveDirectoryEntry? this[string path] => throw new NotImplementedException();
+    public ArchiveDirectoryEntry? this[string path] => RootEntries.FirstOrDefault(e => string.Compare(
+        e.Name,
+        path, 
+        StringComparison.OrdinalIgnoreCase) == 0);
 
+    /// <inheritdoc/>
     public List<ArchiveDirectoryEntry> RootEntries { get; internal set; }
 
+    /// <inheritdoc/>
     public ImageLocation Location { get; }
 
-
+    /// <inheritdoc/>
     public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
     {
-        throw new NotImplementedException();
+        return visitor.VisitArchive(this, context);
     }
 
+    /// <inheritdoc/>
     public string GetRootPath(ArchiveDirectoryEntry? entry)
     {
         throw new NotImplementedException();
     }
 
-    public bool TryReadBlocks(int indexBlockNo, ushort[] indexBlock, int cBlocks)
+    /// <summary>
+    /// Read <paramref name="blockCount"/> blocks from the tape, starting at 
+    /// <paramref name="blockNumber"/>. The words from the read blocks are
+    /// stored in <paramref name="blocks"/>.
+    /// </summary>
+    /// <param name="blocks">The buffer into which the read words are stored.</param>
+    /// <param name="blockNumber">Block from which to start.</param>
+    /// <param name="blockCount">The number of blocks to read.</param>
+    /// <returns>
+    /// The method returns true if the read was successful, false otherwise.
+    /// </returns>
+    public bool TryReadBlocks(ushort[] blocks, int blockNumber, int blockCount)
     {
-        int actualBlock = (indexBlockNo - this.forwardOffset) * BytesPerBlock;
+        int actualBlock = (blockNumber - this.forwardOffset) * BytesPerBlock;
         if (actualBlock + BytesPerBlock > rawImage.Length)
             return false;
-        ReadOnlySpan<byte> blockSpan = rawImage.AsSpan(actualBlock, BytesPerBlock * cBlocks);
-        int cTotalWords = cBlocks * WordsPerBlock;
+        ReadOnlySpan<byte> blockSpan = rawImage.AsSpan(actualBlock, BytesPerBlock * blockCount);
+        int cTotalWords = blockCount * WordsPerBlock;
         for (int i = 0; i < cTotalWords; ++i)
         {
-            indexBlock[i] = BinaryPrimitives.ReadUInt16LittleEndian(blockSpan);
+            blocks[i] = BinaryPrimitives.ReadUInt16LittleEndian(blockSpan);
             blockSpan = blockSpan.Slice(2);
         }
         return true;
