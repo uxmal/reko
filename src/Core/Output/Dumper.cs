@@ -19,12 +19,14 @@
 #endregion
 
 using Reko.Core.Collections;
+using Reko.Core.Lib;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Core.Output
@@ -386,13 +388,18 @@ namespace Reko.Core.Output
         private void WriteOpcodes(MemoryArea image, IProcessorArchitecture arch, Address begin, Address addrEnd, FormatterInstructionWriter writer)
 		{
 			EndianImageReader rdr = arch.CreateImageReader(image, begin);
-            var byteSize = (7 + arch.InstructionBitSize) / 8;
-            string instrByteFormat = $"{{0:X{byteSize * 2}}} "; // each byte is two nybbles.
+            Debug.Assert(arch.DefaultBase != 0);
+            var bitsPerDigit = Bits.Log2((uint)arch.DefaultBase);
+            int cOpcodeDigits = (arch.InstructionBitSize + bitsPerDigit - 1) / bitsPerDigit;
             var instrByteSize = PrimitiveType.CreateWord(arch.InstructionBitSize);
 
             while (rdr.Address < addrEnd && rdr.TryRead(instrByteSize, out var v))
             {
-                writer.WriteFormat(instrByteFormat, v.ToUInt64());
+                writer.WriteString(
+                    Convert.ToString((long)v.ToUInt64(), arch.DefaultBase)
+                        .ToUpperInvariant()
+                        .PadLeft(cOpcodeDigits, '0'));
+                writer.WriteChar(' ');  
 			}
 		}
 

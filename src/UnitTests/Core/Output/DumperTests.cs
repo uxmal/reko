@@ -48,6 +48,7 @@ namespace Reko.UnitTests.Core.Output
             this.arch.Setup(a => a.Name).Returns("FakeArch");
             this.arch.Setup(a => a.FramePointerType).Returns(PrimitiveType.Ptr32);
             this.arch.Setup(a => a.InstructionBitSize).Returns(8);
+            this.arch.Setup(a => a.DefaultBase).Returns(16);
             this.platform = new Mock<IPlatform>();
             var segmentMap = new SegmentMap(
                     Address.Ptr32(0x00010000),
