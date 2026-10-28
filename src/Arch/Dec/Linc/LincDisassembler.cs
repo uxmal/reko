@@ -315,8 +315,10 @@ public class LincDisassembler : DisassemblerBase<LincInstruction, Mnemonic>
             (0b110_010_011_100, Instr(Mnemonic.rib)),
             (0b110_010_100_100, Instr(Mnemonic.rmf))));
 
-    var alpha1010 = Sparse(0, 4, "  alpha 1010", nyi,
+        var alpha1010 = Sparse(0, 4, "  alpha 1010", nyi,
             (0b0000, iob),
+            (0b1100, Instr(Mnemonic.typ)),
+            (0b1101, Instr(Mnemonic.kbd)),
             (0b1110, Instr(Mnemonic.rsw)),
             (0b1111, Instr(Mnemonic.lsw)));
 

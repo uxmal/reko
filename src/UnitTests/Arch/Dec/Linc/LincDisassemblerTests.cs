@@ -23,6 +23,7 @@ using Reko.Arch.Dec;
 using Reko.Arch.Dec.Linc;
 using Reko.Core;
 using Reko.Core.Memory;
+using System.Drawing;
 
 namespace Reko.UnitTests.Arch.Dec.Linc;
 
@@ -194,6 +195,13 @@ public class LincDisassemblerTests : DisassemblerTestBase<LincInstruction>
         // PDP-12
         AssertCode("ION", "0500 6001");
     }
+
+    [Test]
+    public void LincDis_kbd()
+    {
+        AssertCode("KBD", "0515");
+    }
+
 
     [Test]
     public void LincDis_kst()
@@ -471,6 +479,12 @@ public class LincDisassemblerTests : DisassemblerTestBase<LincInstruction>
     {
         AssertCode("TWC", "0417");
         AssertCode("TWC i", "0437");
+    }
+
+    [Test]
+    public void LincDis_typ()
+    {
+        AssertCode("TYP", "0514");
     }
 
     [Test]

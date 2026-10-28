@@ -334,6 +334,15 @@ public class LincRewriterTests : RewriterTestBase
     }
 
     [Test]
+    public void LincRw_kbd()
+    {
+        Given_OctalBytes4("0515");      // KBD
+        AssertCode(
+            "0|L--|0020(1): 1 instructions",
+            "1|L--|AC = __keyboard_read()");
+    }
+
+    [Test]
     public void LincRw_kst()
     {
         Given_OctalBytes4("0415");      // KST
@@ -925,6 +934,15 @@ public class LincRewriterTests : RewriterTestBase
         AssertCode(
             "0|L--|0020(1): 1 instructions",
             "1|T--|if (!__is_tape_word_complete()) branch 0022");
+    }
+
+    [Test]
+    public void LincRw_typ()
+    {
+        Given_OctalBytes4("0514");      // TYP
+        AssertCode(
+            "0|L--|0020(1): 1 instructions",
+            "1|L--|__type_character(AC)");
     }
 
     [Test]

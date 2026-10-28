@@ -98,6 +98,7 @@ public class LincRewriter : IEnumerable<RtlInstructionCluster>
             case Mnemonic.iof: RewriteIof(instr); break;
             case Mnemonic.ion: RewriteIon(instr); break;
             case Mnemonic.jmp: RewriteJmp(instr); break;
+            case Mnemonic.kbd: RewriteKbd(instr); break;
             case Mnemonic.kst: RewriteKst(instr); break;
             case Mnemonic.lam: RewriteLam(instr); break;
             case Mnemonic.lda: RewriteLda(instr); break;
@@ -140,6 +141,7 @@ public class LincRewriter : IEnumerable<RtlInstructionCluster>
             case Mnemonic.tac: RewriteTac(instr); break;
             case Mnemonic.tma: RewriteTma(instr); break;
             case Mnemonic.twc: RewriteTwc(instr); break;
+            case Mnemonic.typ: RewriteTyp(instr); break;
             case Mnemonic.wcg: RewriteWcg(instr); break;
             case Mnemonic.wrc: RewriteWrc(instr); break;
             case Mnemonic.wri: RewriteWri(instr); break;
@@ -427,6 +429,12 @@ public class LincRewriter : IEnumerable<RtlInstructionCluster>
     {
         var mem = (MemoryOperand) instr.Operands[0];
         m.Goto(LincArchitecture.Ptr12(mem.Offset));
+    }
+
+    private void RewriteKbd(LincInstruction instr)
+    {
+        var ac = Ac();
+        m.Assign(ac, m.Fn(kbd_intrinsic));
     }
 
     private void RewriteKst(LincInstruction instr)
@@ -867,6 +875,12 @@ public class LincRewriter : IEnumerable<RtlInstructionCluster>
         RewriteSkip(instr, m.Fn(twc_intrinsic));
     }
 
+    private void RewriteTyp(LincInstruction instr)
+    {
+        var ac = Ac();
+        m.SideEffect(m.Fn(typ_intrinsic, ac));
+    }
+
     private void RewriteWcg(LincInstruction instr)
     {
         var ac = Ac();
@@ -979,6 +993,8 @@ public class LincRewriter : IEnumerable<RtlInstructionCluster>
     private static readonly IntrinsicProcedure ion_intrinsic = IntrinsicBuilder.SideEffect("__interrupts_on")
         .Void();
 
+    private static readonly IntrinsicProcedure kbd_intrinsic = IntrinsicBuilder.SideEffect("__keyboard_read")
+        .Returns(PdpTypes.Word12);
     private static readonly IntrinsicProcedure kst_intrinsic = IntrinsicBuilder.SideEffect("__is_key_struck")
         .Returns(PrimitiveType.Bool);
 
@@ -1057,6 +1073,9 @@ public class LincRewriter : IEnumerable<RtlInstructionCluster>
         .Void();
     private static readonly IntrinsicProcedure twc_intrinsic = IntrinsicBuilder.SideEffect("__is_tape_word_complete")
         .Returns(PrimitiveType.Bool);
+    private static readonly IntrinsicProcedure typ_intrinsic = IntrinsicBuilder.SideEffect("__type_character")
+        .Param(PdpTypes.Word12)
+        .Void();
 
     private static readonly IntrinsicProcedure wcg_intrinsic = IntrinsicBuilder.SideEffect("__write_and_check_consecutive")
         .Param(PrimitiveType.Bool)
