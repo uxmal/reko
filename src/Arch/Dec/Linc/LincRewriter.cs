@@ -76,6 +76,10 @@ public class LincRewriter : IEnumerable<RtlInstructionCluster>
             case Mnemonic.Invalid:
                 m.Invalid();
                 break;
+            case Mnemonic.Nyi:
+                m.SideEffect(m.Fn(nyi_intrinsic));
+                iclass = InstrClass.Linear;
+                break;
             case Mnemonic.ada: RewriteAdd(instr); break;
             case Mnemonic.add: RewriteAdd(instr); break;
             case Mnemonic.adm: RewriteAdm(instr); break;
@@ -153,6 +157,7 @@ public class LincRewriter : IEnumerable<RtlInstructionCluster>
             {
                 Class = iclass
             };
+            rtls.Clear();
         }
     }
 
@@ -1098,4 +1103,8 @@ public class LincRewriter : IEnumerable<RtlInstructionCluster>
 
     private static readonly IntrinsicProcedure xoa_intrinsic = IntrinsicBuilder.SideEffect("__read_from_xob")
         .Returns(PdpTypes.Word12);
+
+
+    private static readonly IntrinsicProcedure nyi_intrinsic = IntrinsicBuilder.SideEffect("__not_yet_implemented")
+        .Void();
 }
