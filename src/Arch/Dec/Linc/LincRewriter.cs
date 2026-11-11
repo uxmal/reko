@@ -433,7 +433,14 @@ public class LincRewriter : IEnumerable<RtlInstructionCluster>
     private void RewriteJmp(LincInstruction instr)
     {
         var mem = (MemoryOperand) instr.Operands[0];
-        m.Goto(LincArchitecture.Ptr12(mem.Offset));
+        if (mem.Offset == 0)
+        {
+            // Linc puts the return address at memory address 0(!)
+            // so consider jumps to 0 as returning. There is no
+            // stack register and no stack.
+            m.Return(0, 0);
+        }
+        m.Call(LincArchitecture.Ptr12(mem.Offset), 0, InstrClass.Call);
     }
 
     private void RewriteKbd(LincInstruction instr)

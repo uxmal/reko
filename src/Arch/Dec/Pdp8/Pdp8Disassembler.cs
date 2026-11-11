@@ -25,8 +25,6 @@ using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace Reko.Arch.Dec.Pdp8;
@@ -148,6 +146,40 @@ public class Pdp8Disassembler : DisassemblerBase<Pdp8Instruction, Mnemonic>
         return new InstrDecoder<Pdp8Disassembler, Mnemonic, Pdp8Instruction>(InstrClass.Linear, mnemonic, mutators);
     }
 
+    private static Decoder<Pdp8Disassembler, Mnemonic, Pdp8Instruction> Eae(
+        Decoder<Pdp8Disassembler, Mnemonic, Pdp8Instruction> modeA,
+        Decoder<Pdp8Disassembler, Mnemonic, Pdp8Instruction> modeB)
+    {
+        return new EaeDecoder(modeA, modeB);
+    }
+
+    private class EaeDecoder : Decoder<Pdp8Disassembler, Mnemonic, Pdp8Instruction>
+    {
+        private readonly Decoder<Pdp8Disassembler, Mnemonic, Pdp8Instruction> modeA;
+        private readonly Decoder<Pdp8Disassembler, Mnemonic, Pdp8Instruction> modeB;
+
+        public EaeDecoder(
+            Decoder<Pdp8Disassembler, Mnemonic, Pdp8Instruction> modeA,
+            Decoder<Pdp8Disassembler, Mnemonic, Pdp8Instruction> modeB)
+        {
+            this.modeA = modeA;
+            this.modeB = modeB;
+        }
+
+        public override Pdp8Instruction Decode(uint uInstr, Pdp8Disassembler dasm)
+        {
+            throw new NotImplementedException();
+            //switch (dasm.EaeMode)
+            //{
+            //case EaeMode.ModeA:
+            //    return modeA.Decode(uInstr, dasm);
+            //case EaeMode.ModeB:
+            //    return modeB.Decode(uInstr, dasm);
+            //default:
+            //    return dasm.CreateInvalidInstruction();
+            //}
+        }
+    }
     static Pdp8Disassembler()
     {
         var nyi = Instr(Mnemonic.Nyi, InstrClass.Invalid, []);
@@ -173,11 +205,17 @@ public class Pdp8Disassembler : DisassemblerBase<Pdp8Instruction, Mnemonic>
             (0b00_010_000, Instr(Mnemonic.cml)),
             (0b00_100_000, Instr(Mnemonic.cma)),
             (0b00_100_001, Instr(Mnemonic.cia)),
-            (0b01_000_001, Instr(Mnemonic.cll)),
+            (0b01_000_000, Instr(Mnemonic.cll)),
+            (0b01_000_100, Instr(Mnemonic.cll_ral)),
+            (0b01_000_110, Instr(Mnemonic.cll_rtl)),
+            (0b01_001_000, Instr(Mnemonic.cll_rar)),
             (0b01_010_000, Instr(Mnemonic.stl)),
             (0b10_000_000, Instr(Mnemonic.cla)),
+            (0b10_000_001, Instr(Mnemonic.cla_iac)),
             (0b10_000_100, Instr(Mnemonic.glk)),
-            (0b10_100_000, Instr(Mnemonic.sta)));
+            (0b10_100_000, Instr(Mnemonic.sta)),
+            (0b11_000_000, Instr(Mnemonic.cla_cll)),
+            (0b11_010_000, Instr(Mnemonic.cla_swp)));
         var group2 = Sparse(1, 7, "  group2", nyi,
             (0b00_000_01, Instr(Mnemonic.hlt)),
             (0b00_000_10, Instr(Mnemonic.osr)),
@@ -186,18 +224,48 @@ public class Pdp8Disassembler : DisassemblerBase<Pdp8Instruction, Mnemonic>
             (0b00_011_00, Instr(Mnemonic.szl)),
             (0b00_100_00, Instr(Mnemonic.sza)),
             (0b00_101_00, Instr(Mnemonic.sna)),
+            (0b00_110_00, Instr(Mnemonic.sza_snl)),
+            (0b00_111_00, Instr(Mnemonic.sna_szl)),
             (0b01_000_00, Instr(Mnemonic.sma)),
             (0b01_001_00, Instr(Mnemonic.spa)),
-            (0b10_000_00, Instr(Mnemonic.cla)));
+            (0b01_010_00, Instr(Mnemonic.sma_snl)),
+            (0b01_011_00, Instr(Mnemonic.spa_szl)),
+            (0b01_100_00, Instr(Mnemonic.sma_sza)),
+            (0b01_101_00, Instr(Mnemonic.spa_sna)),
+            (0b10_000_00, Instr(Mnemonic.cla)),
+            (0b10_100_00, Instr(Mnemonic.sza_cla)),
+            (0b10_101_00, Instr(Mnemonic.sna_cla)),
+            (0b10_000_10, Instr(Mnemonic.las)),
+            (0b11_000_00, Instr(Mnemonic.sma_cla)),
+            (0b11_001_00, Instr(Mnemonic.spa_cla)));
         var group3 = Sparse(1, 7, "  group3", nyi,
+            (0b00_000_00, Instr(Mnemonic.nop)),
+            (0b00_000_01, Instr(Mnemonic.scl)),
+            (0b00_000_10, Instr(Mnemonic.muy)),
+            (0b00_000_11, Instr(Mnemonic.dvi)),
+            (0b00_001_00, Instr(Mnemonic.nmi)),
+            (0b00_001_01, Instr(Mnemonic.shl)),
+            (0b00_001_10, Instr(Mnemonic.asr)),
+            (0b00_001_11, Instr(Mnemonic.lsr)),
             (0b00_010_00, Instr(Mnemonic.mql)),
             (0b00_011_00, Instr(Mnemonic.swab)),
+            (0b00_100_00, Eae(
+                Instr(Mnemonic.sca),
+                nyi)),
             (0b00_100_11, Instr(Mnemonic.swba)),
+            (0b00_100_01, Instr(Mnemonic.dad)),
             (0b00_101_00, Instr(Mnemonic.dpsz)),
-            (0b10_000_00, Instr(Mnemonic.cla)),
+            (0b00_111_00, Instr(Mnemonic.skb)),
             (0b01_000_00, Instr(Mnemonic.mqa)),
+            (0b01_000_10, Instr(Mnemonic.dst)),
             (0b01_010_00, Instr(Mnemonic.swp)),
-            (0b10_010_00, Instr(Mnemonic.cam)));
+            (0b01_111_01, Instr(Mnemonic.dpic)),
+            (0b01_111_10, Instr(Mnemonic.dcm)),
+            (0b10_000_00, Instr(Mnemonic.cla)),
+            (0b10_010_00, Instr(Mnemonic.cam)),
+            (0b10_100_00, Instr(Mnemonic.sca_cla)),
+            (0b11_000_00, Instr(Mnemonic.acl)),
+            (0b11_010_00, Instr(Mnemonic.cla_swp)));
 
         var operate = Mask(8, 1, "  operate",
             group1,

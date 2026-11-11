@@ -56,18 +56,11 @@ namespace Reko.UnitTests.Arch
             this.mem = Architecture.CreateCodeMemoryArea(LoadAddress, bytes);
         }
 
-        public void Given_OctalBytes6(string octalBytes)
+        public void Given_LeOctalBytes4(string octalBytes)
         {
-            var bytes = OctalStringToBytes(octalBytes, 6);
+            var bytes = OctalStringToBytes(octalBytes, 4, new LeImageWriter());
             this.mem = Architecture.CreateCodeMemoryArea(LoadAddress, bytes);
         }
-
-        public void Given_OctalBytes4(string octalBytes)
-        {
-            var bytes = OctalStringToBytes(octalBytes, 4);
-            this.mem = Architecture.CreateCodeMemoryArea(LoadAddress, bytes);
-        }
-
 
         public void Given_UInt16s(params ushort[] opcodes)
         {

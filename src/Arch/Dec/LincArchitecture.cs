@@ -109,8 +109,8 @@ public class LincArchitecture : ProcessorArchitecture
 
     public override MemoryArea CreateCodeMemoryArea(Address addr, byte[] bytes)
     {
-        // NOTE: assumes the bytes are provided in big-endian form.
-        return Word16MemoryArea.CreateFromBeBytes(addr, bytes);
+        // NOTE: assumes the bytes are provided in little-endian form.
+        return Word12MemoryArea.CreateFromLeBytes(addr, bytes);
     }
 
     public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, ulong grf)

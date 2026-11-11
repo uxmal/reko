@@ -25,6 +25,7 @@ using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
 
 namespace Reko.Arch.Dec.Memory;
 
@@ -37,6 +38,28 @@ public class Word12MemoryArea : MemoryArea
         : base(addr, words.Length, 12, new Word12MemoryFormatter(8, 4, 2))
     {
         Words = words;
+    }
+
+    /// <summary>
+    /// Creates a <see cref="Word12MemoryArea"/> from a byte array
+    /// containing 12-bit words stored as 16-bit little-endian values.
+    /// </summary>
+    /// <param name="address">Base address of the resulting memory area.</param>
+    /// <param name="bytes">Byte array containing 12-bit words stored as 16-bit little-endian values.</param>
+    /// <returns>A <see cref="Word12MemoryArea"/> representing the specified bytes as 12-bit words.</returns>
+    public static MemoryArea CreateFromLeBytes(Address address, byte[] bytes)
+    {
+        static ushort[] CreateFromLeBytes(byte[] bytes)
+        {
+            var words = new ushort[bytes.Length / 2];
+            for (int i = 0; i < words.Length; ++i)
+            {
+                words[i] = (ushort) ((bytes[i * 2 + 1] << 8) | bytes[i * 2]);
+            }
+            return words;
+        }
+        var words = CreateFromLeBytes(bytes);
+        return new Word12MemoryArea(address, words);
     }
 
     public ushort[] Words { get; }
@@ -54,12 +77,12 @@ public class Word12MemoryArea : MemoryArea
 
     public override EndianImageReader CreateBeReader(long offset)
     {
-        throw new NotImplementedException();
+        return new Word12BeImageReader(this, offset);
     }
 
     public override EndianImageReader CreateBeReader(long offsetBegin, long offsetEnd)
     {
-        throw new NotImplementedException();
+        return new Word12BeImageReader(this, offsetBegin, offsetEnd);
     }
 
     public override BeImageWriter CreateBeWriter(Address addr)
@@ -84,7 +107,7 @@ public class Word12MemoryArea : MemoryArea
 
     public override EndianImageReader CreateLeReader(long offset)
     {
-        throw new NotImplementedException();
+        return new Word12BeImageReader(this, offset);
     }
 
     public override EndianImageReader CreateLeReader(long offsetBegin, long offsetEnd)

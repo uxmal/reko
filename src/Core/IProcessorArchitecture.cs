@@ -359,6 +359,9 @@ namespace Reko.Core
         /// Create a <see cref="MemoryArea"/> appropriate for storing the
         /// machine code for this processor.
         /// </summary>
+        /// <remarks>
+        /// On some architectures (e.g Cray), the bit granularity of executable 
+        /// memory differs from that of data memory.</remarks>
         MemoryArea CreateCodeMemoryArea(Address baseAddress, byte[] bytes);
 
         /// <summary>

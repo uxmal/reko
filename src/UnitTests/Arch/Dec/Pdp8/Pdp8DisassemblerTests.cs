@@ -27,7 +27,6 @@ using Reko.Core.Memory;
 namespace Reko.UnitTests.Arch.Dec.Pdp8;
 
 [TestFixture]
-[Ignore("Not ready yet")]
 public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
 {
     private readonly Pdp8Architecture arch;
@@ -52,24 +51,13 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     }
 
     [Test]
-    public void Pdp8Dis__cac()
-    {
-        AssertCode("_cac", "6702");
-    }
-
-    [Test]
-    public void Pdp8Dis__osr()
-    {
-        AssertCode("_osr", "6704");
-    }
-
-    [Test]
     public void Pdp8Dis_acl()
     {
         AssertCode("acl", "7701");
     }
 
     [Test]
+    [Ignore("PDP-8 I/O instruction")]
     public void Pdp8Dis_acs()
     {
         AssertCode("acs", "7403");
@@ -85,60 +73,6 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     public void Pdp8Dis_bsw()
     {
         AssertCode("bsw", "7002");
-    }
-
-    [Test]
-    public void Pdp8Dis_caf()
-    {
-        AssertCode("caf", "6007");
-    }
-
-    [Test]
-    public void Pdp8Dis_cam()
-    {
-        AssertCode("cam", "7621");
-    }
-
-    [Test]
-    public void Pdp8Dis_ccar()
-    {
-        AssertCode("ccar", "6704");
-    }
-
-    [Test]
-    public void Pdp8Dis_cdf()
-    {
-        AssertCode("cdf", "62n1");
-    }
-
-    [Test]
-    public void Pdp8Dis_cdi()
-    {
-        AssertCode("cdi", "62n3");
-    }
-
-    [Test]
-    public void Pdp8Dis_cep()
-    {
-        AssertCode("cep", "6106");
-    }
-
-    [Test]
-    public void Pdp8Dis_cia()
-    {
-        AssertCode("cia", "7041");
-    }
-
-    [Test]
-    public void Pdp8Dis_cif()
-    {
-        AssertCode("cif", "62n2");
-    }
-
-    [Test]
-    public void Pdp8Dis_cint()
-    {
-        AssertCode("cint", "6204");
     }
 
     [Test]
@@ -178,6 +112,442 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     }
 
     [Test]
+    public void Pdp8Dis_cll_ral()
+    {
+        AssertCode("cll ral", "7104");
+    }
+
+    [Test]
+    public void Pdp8Dis_cll_rar()
+    {
+        AssertCode("cll rar", "7110");
+    }
+
+    [Test]
+    public void Pdp8Dis_cll_rtl()
+    {
+        AssertCode("cll rtl", "7106");
+    }
+
+    [Test]
+    public void Pdp8Dis_cll()
+    {
+        AssertCode("cll", "7100");
+    }
+
+    [Test]
+    public void Pdp8Dis_cma()
+    {
+        AssertCode("cma", "7040");
+    }
+
+    [Test]
+    public void Pdp8Dis_cml()
+    {
+        AssertCode("cml", "7020");
+    }
+
+    [Test]
+    public void Pdp8Dis_dad()
+    {
+        AssertCode("dad", "7443");
+    }
+
+
+    [Test]
+    public void Pdp8Dis_dcm()
+    {
+        AssertCode("dcm", "7575");
+    }
+
+
+    [Test]
+    public void Pdp8Dis_dpic()
+    {
+        AssertCode("dpic", "7573");
+    }
+
+    [Test]
+    public void Pdp8Dis_dpsz()
+    {
+        AssertCode("dpsz", "7451");
+    }
+
+
+    [Test]
+    [Ignore("PDP-8 I/O instruction")]
+    public void Pdp8Dis_dst()
+    {
+        AssertCode("dst", "7445");
+    }
+
+
+    [Test]
+    public void Pdp8Dis_dvi()
+    {
+        AssertCode("dvi", "7407");
+    }
+
+    [Test]
+    public void Pdp8Dis_glk()
+    {
+        AssertCode("glk", "7204");
+    }
+
+    [Test]
+    public void Pdp8Dis_hlt()
+    {
+        AssertCode("hlt", "7402");
+    }
+
+    [Test]
+    public void Pdp8Dis_iac()
+    {
+        AssertCode("iac", "7001");
+    }
+
+    [Test]
+    [Ignore("PDP-8 I/O instruction")]
+    public void Pdp8Dis_iof()
+    {
+        AssertCode("iof", "6002");
+    }
+
+    [Test]
+    [Ignore("PDP-8 I/O instruction")]
+    public void Pdp8Dis_ion()
+    {
+        AssertCode("ion", "6001");
+    }
+
+    [Test]
+    public void Pdp8Dis_isz()
+    {
+        AssertCode("isz i 0524", "2724");
+    }
+
+    [Test]
+    public void Pdp8Dis_las()
+    {
+        AssertCode("las", "7604");
+    }
+
+    [Test]
+    public void Pdp8Dis_lsr()
+    {
+        AssertCode("lsr", "7417");
+    }
+
+    [Test]
+    public void Pdp8Dis_mqa()
+    {
+        AssertCode("mqa", "7501");
+    }
+
+    [Test]
+    public void Pdp8Dis_mql()
+    {
+        AssertCode("mql", "7421");
+    }
+
+    [Test]
+    public void Pdp8Dis_muy()
+    {
+        AssertCode("muy", "7405");
+    }
+
+    [Test]
+    public void Pdp8Dis_nmi()
+    {
+        AssertCode("nmi", "7411");
+    }
+
+    [Test]
+    public void Pdp8Dis_nop()
+    {
+        AssertCode("nop", "7000");
+    }
+
+    [Test]
+    public void Pdp8Dis_nop_7401()
+    {
+        AssertCode("nop", "7401");
+    }
+
+    [Test]
+    public void Pdp8Dis_osr()
+    {
+        AssertCode("osr", "7404");
+    }
+
+    [Test]
+    public void Pdp8Dis_ral()
+    {
+        AssertCode("ral", "7004");
+    }
+
+    [Test]
+    public void Pdp8Dis_rar()
+    {
+        AssertCode("rar", "7010");
+    }
+
+    [Test]
+    public void Pdp8Dis_rtl()
+    {
+        AssertCode("rtl", "7006");
+    }
+
+    [Test]
+    public void Pdp8Dis_rtr()
+    {
+        AssertCode("rtr", "7012");
+    }
+
+    [Test]
+    public void Pdp8Dis_sca_cla()
+    {
+        AssertCode("sca cla", "7641");
+    }
+
+    [Test]
+    [Ignore("PDP-8 I/O instruction")]
+    public void Pdp8Dis_sca()
+    {
+        AssertCode("sca", "7441");
+    }
+
+    [Test]
+    public void Pdp8Dis_scl()
+    {
+        AssertCode("scl", "7403");
+    }
+
+    [Test]
+    public void Pdp8Dis_shl()
+    {
+        AssertCode("shl", "7413");
+    }
+
+    [Test]
+    public void Pdp8Dis_skb()
+    {
+        AssertCode("skb", "7471");
+    }
+
+    [Test]
+    public void Pdp8Dis_skp()
+    {
+        AssertCode("skp", "7410");
+    }
+
+
+    [Test]
+    public void Pdp8Dis_sma_cla()
+    {
+        AssertCode("sma cla", "7700");
+    }
+
+    [Test]
+    public void Pdp8Dis_sma_snl()
+    {
+        AssertCode("sma snl", "7520");
+    }
+
+    [Test]
+    public void Pdp8Dis_sma_sza()
+    {
+        AssertCode("sma sza", "7540");
+    }
+
+    [Test]
+    public void Pdp8Dis_sma()
+    {
+        AssertCode("sma", "7500");
+    }
+
+
+    [Test]
+    public void Pdp8Dis_sna_cla()
+    {
+        AssertCode("sna cla", "7650");
+    }
+
+    [Test]
+    public void Pdp8Dis_sna_szl()
+    {
+        AssertCode("sna szl", "7470");
+    }
+
+    [Test]
+    public void Pdp8Dis_sna()
+    {
+        AssertCode("sna", "7450");
+    }
+
+    [Test]
+    public void Pdp8Dis_snl()
+    {
+        AssertCode("snl", "7420");
+    }
+
+    [Test]
+    public void Pdp8Dis_spa_cla()
+    {
+        AssertCode("spa cla", "7710");
+    }
+
+    [Test]
+    public void Pdp8Dis_spa_sna()
+    {
+        AssertCode("spa sna", "7550");
+    }
+
+    [Test]
+    public void Pdp8Dis_spa_szl()
+    {
+        AssertCode("spa szl", "7530");
+    }
+
+    [Test]
+    public void Pdp8Dis_spa()
+    {
+        AssertCode("spa", "7510");
+    }
+
+    [Test]
+    public void Pdp8Dis_sta()
+    {
+        AssertCode("sta", "7240");
+    }
+
+    [Test]
+    public void Pdp8Dis_stl()
+    {
+        AssertCode("stl", "7120");
+    }
+
+    [Test]
+    public void Pdp8Dis_swab()
+    {
+        AssertCode("swab", "7431");
+    }
+
+    [Test]
+    public void Pdp8Dis_swba()
+    {
+        AssertCode("swba", "7447");
+    }
+
+    [Test]
+    public void Pdp8Dis_swp()
+    {
+        AssertCode("swp", "7521");
+    }
+
+    [Test]
+    public void Pdp8Dis_sza_cla()
+    {
+        AssertCode("sza cla", "7640");
+    }
+
+    [Test]
+    public void Pdp8Dis_sza_snl()
+    {
+        AssertCode("sza snl", "7460");
+    }
+
+    [Test]
+    public void Pdp8Dis_sza()
+    {
+        AssertCode("sza", "7440");
+    }
+
+    [Test]
+    public void Pdp8Dis_szl()
+    {
+        AssertCode("szl", "7430");
+    }
+
+    [Test]
+    public void Pdp8Dis_tad()
+    {
+        AssertCode("tad\t0042", "1042");
+    }
+
+    /**
+     * 
+    [Test]
+    public void Pdp8Dis__cac()
+    {
+        AssertCode("_cac", "6702");
+    }
+
+    [Test]
+    public void Pdp8Dis__osr()
+    {
+        AssertCode("_osr", "6704");
+    }
+
+    
+    [Test]
+    public void Pdp8Dis_caf()
+    {
+        AssertCode("caf", "6007");
+    }
+
+    [Test]
+    public void Pdp8Dis_cam()
+    {
+        AssertCode("cam", "7621");
+    }
+
+    [Test]
+    public void Pdp8Dis_ccar()
+    {
+        AssertCode("ccar", "6704");
+    }
+
+
+
+    [Test]
+    public void Pdp8Dis_cep()
+    {
+        AssertCode("cep", "6106");
+    }
+
+    [Test]
+    public void Pdp8Dis_cia()
+    {
+        AssertCode("cia", "7041");
+    }
+
+    [Test]
+    public void Pdp8Dis_cif()
+    {
+        AssertCode("cif", "62n2");
+    }
+
+    [Test]
+    public void Pdp8Dis_cint()
+    {
+        AssertCode("cint", "6204");
+    }
+
+
+    [Test]
+    public void Pdp8Dis_cdf()
+    {
+        AssertCode("cdf", "62n1");
+    }
+
+    [Test]
+    public void Pdp8Dis_cdi()
+    {
+        AssertCode("cdi", "62n3");
+    }
+
+        [Test]
     public void Pdp8Dis_clab()
     {
         AssertCode("clab", "6133");
@@ -219,31 +589,7 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
         AssertCode("clf", "6725");
     }
 
-    [Test]
-    public void Pdp8Dis_cll_ral()
-    {
-        AssertCode("cll ral", "7104");
-    }
-
-    [Test]
-    public void Pdp8Dis_cll_rar()
-    {
-        AssertCode("cll rar", "7110");
-    }
-
-    [Test]
-    public void Pdp8Dis_cll_rtl()
-    {
-        AssertCode("cll rtl", "7106");
-    }
-
-    [Test]
-    public void Pdp8Dis_cll()
-    {
-        AssertCode("cll", "7100");
-    }
-
-    [Test]
+        [Test]
     public void Pdp8Dis_cloe()
     {
         AssertCode("cloe", "6132");
@@ -279,19 +625,7 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
         AssertCode("clze", "6130");
     }
 
-    [Test]
-    public void Pdp8Dis_cma()
-    {
-        AssertCode("cma", "7040");
-    }
-
-    [Test]
-    public void Pdp8Dis_cml()
-    {
-        AssertCode("cml", "7020");
-    }
-
-    [Test]
+        [Test]
     public void Pdp8Dis_cmp()
     {
         AssertCode("cmp", "6104");
@@ -309,11 +643,7 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
         AssertCode("cwcr", "6702");
     }
 
-    [Test]
-    public void Pdp8Dis_dad()
-    {
-        AssertCode("dad", "7443");
-    }
+
 
     [Test]
     public void Pdp8Dis_dbcd()
@@ -321,7 +651,7 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
         AssertCode("dbcd", "65x7");
     }
 
-    [Test]
+        [Test]
     public void Pdp8Dis_dbci()
     {
         AssertCode("dbci", "65x3");
@@ -435,13 +765,7 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
         AssertCode("dcls", "6742");
     }
 
-    [Test]
-    public void Pdp8Dis_dcm()
-    {
-        AssertCode("dcm", "7575");
-    }
-
-    [Test]
+        [Test]
     public void Pdp8Dis_dcma()
     {
         AssertCode("dcma", "6601");
@@ -616,18 +940,6 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     }
 
     [Test]
-    public void Pdp8Dis_dpic()
-    {
-        AssertCode("dpic", "7573");
-    }
-
-    [Test]
-    public void Pdp8Dis_dpsz()
-    {
-        AssertCode("dpsz", "7451");
-    }
-
-    [Test]
     public void Pdp8Dis_drca()
     {
         AssertCode("drca", "6757");
@@ -675,13 +987,7 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
         AssertCode("dske", "6747");
     }
 
-    [Test]
-    public void Pdp8Dis_dst()
-    {
-        AssertCode("dst", "7445");
-    }
-
-    [Test]
+        [Test]
     public void Pdp8Dis_dtca()
     {
         AssertCode("dtca", "6762");
@@ -724,12 +1030,6 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     }
 
     [Test]
-    public void Pdp8Dis_dvi()
-    {
-        AssertCode("dvi", "7407");
-    }
-
-    [Test]
     public void Pdp8Dis_dxac()
     {
         AssertCode("dxac", "6645");
@@ -765,13 +1065,7 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
         AssertCode("gcuser", "6564");
     }
 
-    [Test]
-    public void Pdp8Dis_glk()
-    {
-        AssertCode("glk", "7204");
-    }
-
-    [Test]
+[Test]
     public void Pdp8Dis_grdb()
     {
         AssertCode("grdb", "6374");
@@ -793,36 +1087,6 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     public void Pdp8Dis_gtsf()
     {
         AssertCode("gtsf", "6361");
-    }
-
-    [Test]
-    public void Pdp8Dis_hlt()
-    {
-        AssertCode("hlt", "7402");
-    }
-
-    [Test]
-    public void Pdp8Dis_iac()
-    {
-        AssertCode("iac", "7001");
-    }
-
-    [Test]
-    public void Pdp8Dis_iof()
-    {
-        AssertCode("iof", "6002");
-    }
-
-    [Test]
-    public void Pdp8Dis_ion()
-    {
-        AssertCode("ion", "6001");
-    }
-
-    [Test]
-    public void Pdp8Dis_isz()
-    {
-        AssertCode("isz i ", "2724");
     }
 
 
@@ -863,12 +1127,6 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     }
 
     [Test]
-    public void Pdp8Dis_las()
-    {
-        AssertCode("las", "7604");
-    }
-
-    [Test]
     public void Pdp8Dis_lcar()
     {
         AssertCode("lcar", "6703");
@@ -890,12 +1148,6 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     public void Pdp8Dis_lfgr()
     {
         AssertCode("lfgr", "6706");
-    }
-
-    [Test]
-    public void Pdp8Dis_lsr()
-    {
-        AssertCode("lsr", "7417");
     }
 
     [Test]
@@ -934,19 +1186,7 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
         AssertCode("mksf", "6111");
     }
 
-    [Test]
-    public void Pdp8Dis_mqa()
-    {
-        AssertCode("mqa", "7501");
-    }
-
-    [Test]
-    public void Pdp8Dis_mql()
-    {
-        AssertCode("mql", "7421");
-    }
-
-    [Test]
+        [Test]
     public void Pdp8Dis_mtaf()
     {
         AssertCode("mtaf", "6712");
@@ -1043,18 +1283,6 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     }
 
     [Test]
-    public void Pdp8Dis_muy()
-    {
-        AssertCode("muy", "7405");
-    }
-
-    [Test]
-    public void Pdp8Dis_nmi()
-    {
-        AssertCode("nmi", "7411");
-    }
-
-    [Test]
     public void Pdp8Dis_none()
     {
         AssertCode("none", "6116");
@@ -1065,25 +1293,6 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     {
         AssertCode("none", "6126");
     }
-
-    [Test]
-    public void Pdp8Dis_nop()
-    {
-        AssertCode("nop", "7000");
-    }
-
-    [Test]
-    public void Pdp8Dis_nop_7401()
-    {
-        AssertCode("nop", "7401");
-    }
-
-    [Test]
-    public void Pdp8Dis_osr()
-    {
-        AssertCode("osr", "7404");
-    }
-
     [Test]
     public void Pdp8Dis_pce()
     {
@@ -1202,18 +1411,6 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     public void Pdp8Dis_pstb()
     {
         AssertCode("pstb", "6664");
-    }
-
-    [Test]
-    public void Pdp8Dis_ral()
-    {
-        AssertCode("ral", "7004");
-    }
-
-    [Test]
-    public void Pdp8Dis_rar()
-    {
-        AssertCode("rar", "7010");
     }
 
     [Test]
@@ -1433,39 +1630,9 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     }
 
     [Test]
-    public void Pdp8Dis_rtl()
-    {
-        AssertCode("rtl", "7006");
-    }
-
-    [Test]
-    public void Pdp8Dis_rtr()
-    {
-        AssertCode("rtr", "7012");
-    }
-
-    [Test]
     public void Pdp8Dis_rwcr()
     {
         AssertCode("rwcr", "6711");
-    }
-
-    [Test]
-    public void Pdp8Dis_sca_cla()
-    {
-        AssertCode("sca cla", "7641");
-    }
-
-    [Test]
-    public void Pdp8Dis_sca()
-    {
-        AssertCode("sca", "7441");
-    }
-
-    [Test]
-    public void Pdp8Dis_scl()
-    {
-        AssertCode("scl", "7403");
     }
 
     [Test]
@@ -1499,21 +1666,9 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     }
 
     [Test]
-    public void Pdp8Dis_shl()
-    {
-        AssertCode("shl", "7413");
-    }
-
-    [Test]
     public void Pdp8Dis_sint()
     {
         AssertCode("sint", "6254");
-    }
-
-    [Test]
-    public void Pdp8Dis_skb()
-    {
-        AssertCode("skb", "7471");
     }
 
     [Test]
@@ -1541,12 +1696,6 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     }
 
     [Test]
-    public void Pdp8Dis_skp()
-    {
-        AssertCode("skp", "7410");
-    }
-
-    [Test]
     public void Pdp8Dis_sktr()
     {
         AssertCode("sktr", "6724");
@@ -1565,30 +1714,6 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     }
 
     [Test]
-    public void Pdp8Dis_sma_cla()
-    {
-        AssertCode("sma cla", "7700");
-    }
-
-    [Test]
-    public void Pdp8Dis_sma_snl()
-    {
-        AssertCode("sma snl", "7520");
-    }
-
-    [Test]
-    public void Pdp8Dis_sma_sza()
-    {
-        AssertCode("sma sza", "7540");
-    }
-
-    [Test]
-    public void Pdp8Dis_sma()
-    {
-        AssertCode("sma", "7500");
-    }
-
-    [Test]
     public void Pdp8Dis_smp_cmp()
     {
         AssertCode("smp cmp", "6105");
@@ -1598,57 +1723,7 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     public void Pdp8Dis_smp()
     {
         AssertCode("smp", "6101");
-    }
-
-    [Test]
-    public void Pdp8Dis_sna_cla()
-    {
-        AssertCode("sna cla", "7650");
-    }
-
-    [Test]
-    public void Pdp8Dis_sna_szl()
-    {
-        AssertCode("sna szl", "7470");
-    }
-
-    [Test]
-    public void Pdp8Dis_sna()
-    {
-        AssertCode("sna", "7450");
-    }
-
-    [Test]
-    public void Pdp8Dis_snl()
-    {
-        AssertCode("snl", "7420");
-    }
-
-    [Test]
-    public void Pdp8Dis_spa_cla()
-    {
-        AssertCode("spa cla", "7710");
-    }
-
-    [Test]
-    public void Pdp8Dis_spa_sna()
-    {
-        AssertCode("spa sna", "7550");
-    }
-
-    [Test]
-    public void Pdp8Dis_spa_szl()
-    {
-        AssertCode("spa szl", "7530");
-    }
-
-    [Test]
-    public void Pdp8Dis_spa()
-    {
-        AssertCode("spa", "7510");
-    }
-
-    [Test]
+    }    [Test]
     public void Pdp8Dis_spl()
     {
         AssertCode("spl", "6102");
@@ -1727,69 +1802,9 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     }
 
     [Test]
-    public void Pdp8Dis_sta()
-    {
-        AssertCode("sta", "7240");
-    }
-
-    [Test]
-    public void Pdp8Dis_stl()
-    {
-        AssertCode("stl", "7120");
-    }
-
-    [Test]
     public void Pdp8Dis_suf()
     {
         AssertCode("suf", "6274");
-    }
-
-    [Test]
-    public void Pdp8Dis_swab()
-    {
-        AssertCode("swab", "7431");
-    }
-
-    [Test]
-    public void Pdp8Dis_swba()
-    {
-        AssertCode("swba", "7447");
-    }
-
-    [Test]
-    public void Pdp8Dis_swp()
-    {
-        AssertCode("swp", "7521");
-    }
-
-    [Test]
-    public void Pdp8Dis_sza_cla()
-    {
-        AssertCode("sza cla", "7640");
-    }
-
-    [Test]
-    public void Pdp8Dis_sza_snl()
-    {
-        AssertCode("sza snl", "7460");
-    }
-
-    [Test]
-    public void Pdp8Dis_sza()
-    {
-        AssertCode("sza", "7440");
-    }
-
-    [Test]
-    public void Pdp8Dis_szl()
-    {
-        AssertCode("szl", "7430");
-    }
-
-    [Test]
-    public void Pdp8Dis_tad()
-    {
-        AssertCode("tad", "1042");
     }
 
     [Test]
@@ -1919,6 +1934,8 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     }
 
 
+
+     */
 
     string q =
 @"

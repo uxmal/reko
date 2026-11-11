@@ -48,11 +48,20 @@ public class Pdp8InstructionComparer : InstructionComparer
 
     public override bool DoCompareOperands(MachineOperand op1, MachineOperand op2)
     {
+        switch (op1)
+        {
+        case Address a1:
+            return CompareAddresses(a1, (Address) op2);
+        }
         throw new NotImplementedException($"DoCompareOperands for {op1.GetType().Name} is not implemented yet.");
     }
 
     public override int GetOperandHash(MachineOperand op)
     {
-        throw new NotImplementedException();
+        return op switch
+        {
+            Address a => base.GetAddressHash(a),
+            _ => throw new NotImplementedException($"DoCompareOperands for {op.GetType().Name} is not implemented yet.")
+        };
     }
 }

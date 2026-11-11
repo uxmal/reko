@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Dec;
 using Reko.Arch.Dec.Linc;
+using Reko.Arch.Dec.Memory;
 using Reko.Core;
 using Reko.Core.Memory;
 using System.Drawing;
@@ -41,7 +42,7 @@ public class LincDisassemblerTests : DisassemblerTestBase<LincInstruction>
     private void AssertCode(string sExp, string octalwords)
     {
         var words = LincArchitecture.OctalStringToWords(octalwords);
-        var mem = new Word16MemoryArea(addrLoad, words);
+        var mem = new Word12MemoryArea(addrLoad, words);
         var instr = Disassemble(mem);
         Assert.AreEqual(sExp, instr.ToString());
     }
