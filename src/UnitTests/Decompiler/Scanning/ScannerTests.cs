@@ -62,8 +62,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
         public class TestScanner : Scanner
         {
             public TestScanner(Program program, TypeLibrary metadata, IDynamicLinker dynamicLinker,
-                IServiceProvider services)
-                : base(program, metadata, dynamicLinker, services)
+                IServiceProvider services,
+                IDecompilerEventListener listener)
+                : base(program, metadata, dynamicLinker, services, listener)
             {
             }
 
@@ -173,7 +174,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 this.program,
                 project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
-                this.sc);
+                this.sc,
+                eventListener);
             sc.EnqueueImageSymbol(ImageSymbol.Procedure(arch, Address.Ptr32(0x12314)), true);
             sc.ScanImage();
 
@@ -245,7 +247,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 program,
                 new TypeLibrary(),
                 dynamicLinker.Object,
-                sc);
+                sc,
+                eventListener);
         }
 
         private TestScanner CreateScanner(Program program)
@@ -255,7 +258,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 program, 
                 new TypeLibrary(),
                 dynamicLinker.Object,
-                sc);
+                sc,
+                eventListener);
         }
 
         private TestScanner CreateScanner(Program program, uint startAddress, int imageSize)
@@ -269,7 +273,12 @@ namespace Reko.UnitTests.Decompiler.Scanning
             program.Platform = new FakePlatform(null, arch);
             program.SegmentMap = segmentMap;
             program.Memory = new ByteProgramMemory(segmentMap);
-            return new TestScanner(program, project.LoadedMetadata, dynamicLinker.Object, sc);
+            return new TestScanner(
+                program, 
+                project.LoadedMetadata,
+                dynamicLinker.Object,
+                sc,
+                eventListener);
         }
 
         private DataScanner CreateDataScanner(Program program)
@@ -373,7 +382,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 program,
                 project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
-                sc);
+                sc,
+                eventListener);
             var sym = ImageSymbol.Procedure(arch, addr);
             scan.EnqueueImageSymbol(sym, true);
             scan.ScanImage();
@@ -995,7 +1005,8 @@ fn00001200_exit:
                 this.program,
                 project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
-                this.sc
+                this.sc,
+                eventListener
             );
 
             var ft1 = Given_Serialized_Signature(new SerializedSignature
@@ -1062,7 +1073,8 @@ fn00001200_exit:
                 this.program,
                 project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
-                this.sc
+                this.sc,
+                eventListener
             );
 
             var ft = Given_Serialized_Signature(new SerializedSignature
@@ -1117,7 +1129,8 @@ fn00001200_exit:
                 this.program,
                 project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
-                this.sc);
+                this.sc,
+                eventListener);
             scanner.EnqueueUserGlobalData(Address.Ptr32(0x43210000), str, null);
             scanner.ScanImage();
 
@@ -1142,7 +1155,8 @@ fn00001200_exit:
                 this.program,
                 project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
-                this.sc);
+                this.sc,
+                eventListener);
             var proc = scanner.ScanProcedure(
                 program.Architecture,
                 Address.Ptr32(0x00100010),
@@ -1178,7 +1192,7 @@ fn00001200_exit:
             var sym = ImageSymbol.DataObject(arch, Address.Ptr32(0x00100000), "data_blob", dt);
             program.ImageSymbols.Add(sym.Address, sym);
 
-            var scanner = new Scanner(program, project.LoadedMetadata, dynamicLinker.Object, sc);
+            var scanner = new Scanner(program, project.LoadedMetadata, dynamicLinker.Object, sc, eventListener);
             var sr = scanner.ScanDataItems();
             Assert.AreEqual(1, sr.KnownProcedures.Count);
             Assert.AreEqual("00100010", sr.KnownProcedures.First().ToString());
@@ -1196,7 +1210,8 @@ fn00001200_exit:
                 this.program,
                 project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
-                this.sc);
+                this.sc,
+                eventListener);
             scanner.ScanImage();
 
             Assert.AreEqual(1, program.Procedures.Count);

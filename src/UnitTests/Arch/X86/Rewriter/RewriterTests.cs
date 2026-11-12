@@ -103,7 +103,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 this.program,
                 project.LoadedMetadata,
                 new DynamicLinker(project, this.program, eventListener),
-                sc);
+                sc,
+                eventListener);
             var ep = ImageSymbol.Procedure(this.program.Architecture, baseAddress);
             this.program.EntryPoints.Add(ep.Address, ep);
             var program = project.Programs[0];

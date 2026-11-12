@@ -262,7 +262,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 program,
                 project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
-                sc);
+                sc,
+                eventListener);
 
             scan.EnqueueImageSymbol(ImageSymbol.Procedure(program.Architecture, asm.StartAddress), true);
             foreach (var f in project.Programs)
@@ -295,7 +296,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 program,
                 project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
-                sc);
+                sc,
+                eventListener);
 
             scan.EnqueueImageSymbol(ImageSymbol.Location(program.Architecture, asm.StartAddress), true);
             foreach (var f in project.Programs)

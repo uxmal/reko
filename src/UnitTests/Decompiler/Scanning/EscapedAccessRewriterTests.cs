@@ -22,13 +22,12 @@ using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Loading;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Loading;
 using Reko.Scanning;
-using System;
+using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 
@@ -84,10 +83,13 @@ namespace Reko.UnitTests.Decompiler.Scanning
                  new DefaultPlatform(sc, arch),
                 addr);
             var project = new Project { Programs = { program } };
+            var eventListener = new FakeDecompilerEventListener();
 			var scan = new Scanner(
                 program, 
                 project.LoadedMetadata,
-                new DynamicLinker(project, program, null), null);
+                new DynamicLinker(project, program, eventListener),
+                null,
+                eventListener);
 			foreach (ImageSymbol ep in program.EntryPoints.Values)
 			{
 				scan.EnqueueImageSymbol(ep, true);

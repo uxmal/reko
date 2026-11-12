@@ -692,9 +692,10 @@ namespace Reko
 #else
             return new Scanner(
                 program,
-                project!.LoadedMetadata,
+                project.LoadedMetadata,
                 new DynamicLinker(project!, program, eventListener),
-                services);
+                services,
+                eventListener);
 #endif
         }
 

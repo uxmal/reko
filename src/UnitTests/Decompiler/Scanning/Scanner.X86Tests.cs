@@ -79,7 +79,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 program,
                 project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
-                sc);
+                sc,
+                eventListener);
             scanner.EnqueueImageSymbol(ImageSymbol.Procedure(arch, addrBase), true);
             scanner.ScanImage();
         }

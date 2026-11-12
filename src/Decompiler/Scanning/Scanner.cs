@@ -89,20 +89,21 @@ namespace Reko.Scanning
         /// <param name="metadata">Metada provided by the <see cref="IPlatform"/>.</param>
         /// <param name="dynamicLinker"><see cref="IDynamicLinker"/> used to resolve
         /// references to dynamically linked external procedures.</param>
-        /// <param name="services"><see cref="IServiceProvider"/> providing runtime services.
-        /// </param>
+        /// <param name="services"><see cref="IServiceProvider"/> providing runtime services.</param>
+        /// <param name="listener"><see cref="IDecompilerEventListener"/> instance to which diagnostic messages are reported.</param>
         public Scanner(
             Program program,
             TypeLibrary metadata,
             IDynamicLinker dynamicLinker,
-            IServiceProvider services)
-            : base(program, services.RequireService<IDecompilerEventListener>())
+            IServiceProvider services,
+            IDecompilerEventListener listener)
+            : base(program, listener)
         {
             this.metadata = metadata;
             this.segmentMap = program.SegmentMap;
             this.dynamicLinker = dynamicLinker;
             this.Services = services;
-            this.eventListener = services.RequireService<IDecompilerEventListener>();
+            this.eventListener = listener;
             this.cancelSvc = services.GetService<CancellationTokenSource>();
             if (segmentMap is null)
                 throw new InvalidOperationException("Program must have an segment map.");

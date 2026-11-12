@@ -91,11 +91,13 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void RunTest(Address addrBase)
         {
             var project = new Project { Programs = { program } };
+            var listener = new FakeDecompilerEventListener();
             scanner = new Scanner(
                 program,
                 project.LoadedMetadata,
-                new DynamicLinker(project, program, new FakeDecompilerEventListener()),
-                sc);
+                new DynamicLinker(project, program, listener),
+                sc,
+                listener);
             scanner.EnqueueImageSymbol(ImageSymbol.Procedure(arch, addrBase), true);
             scanner.ScanImage();
         }

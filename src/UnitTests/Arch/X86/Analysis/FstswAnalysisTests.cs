@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Arch.X86.Analysis
             sc.AddService<IDecompilerEventListener>(listener);
             sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             var dynlinker = new Mock<IDynamicLinker>().Object;
-            var scanner = new Scanner(program, new TypeLibrary(), dynlinker, sc);
+            var scanner = new Scanner(program, new TypeLibrary(), dynlinker, sc, listener);
             scanner.ScanImage();
             var proc = program.Procedures.Values.First();
             var sst = new SsaTransform(program, proc, new HashSet<Procedure> { proc }, dynlinker, new());

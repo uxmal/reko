@@ -40,12 +40,14 @@ namespace Reko.UnitTests.Decompiler.Structure
 	{
 		protected Program program;
         private ServiceContainer sc;
+        private FakeDecompilerEventListener eventListener;
 
         protected Program RewriteProgramMsdos(string sourceFilename, Address addrBase)
 		{
             var cfgSvc = new Mock<IConfigurationService>();
             var env = new Mock<PlatformDefinition>();
             var tlSvc = new Mock<ITypeLibraryLoaderService>();
+            this.eventListener = new FakeDecompilerEventListener();
             cfgSvc.Setup(c => c.GetEnvironment("ms-dos")).Returns(env.Object);
             cfgSvc.Setup(c => c.GetSignatureFiles()).Returns(new List<SignatureFileDefinition>());
             env.Setup(e => e.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
@@ -53,9 +55,8 @@ namespace Reko.UnitTests.Decompiler.Structure
             sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
-            var decompilerEventListener = new FakeDecompilerEventListener();
-            sc.AddService<IEventListener>(decompilerEventListener);
-            sc.AddService<IDecompilerEventListener>(decompilerEventListener);
+            sc.AddService<IEventListener>(eventListener);
+            sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemService());
             sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
@@ -75,7 +76,6 @@ namespace Reko.UnitTests.Decompiler.Structure
             sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(new FakeDecompilerConfiguration());
             sc.AddService<IFileSystemService>(new FileSystemService());
-            var eventListener = new FakeDecompilerEventListener();
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
             var ldr = new Loader(sc);
@@ -91,7 +91,6 @@ namespace Reko.UnitTests.Decompiler.Structure
         protected Program RewriteX86RealFragment(string asmFragment, Address addrBase)
         {
             sc = new ServiceContainer();
-            var eventListener = new FakeDecompilerEventListener();
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IPluginLoaderService>(new PluginLoaderService());
@@ -107,7 +106,6 @@ namespace Reko.UnitTests.Decompiler.Structure
         protected Program RewriteX86_32Fragment(string asmFragment, Address addrBase)
         {
             sc = new ServiceContainer();
-            var eventListener = new FakeDecompilerEventListener();
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IPluginLoaderService>(new PluginLoaderService());
@@ -129,7 +127,8 @@ namespace Reko.UnitTests.Decompiler.Structure
                 program,
                 new TypeLibrary(),
                 dynamicLinker.Object,
-                sc);
+                sc,
+                eventListener);
             foreach (ImageSymbol ep in program.EntryPoints.Values)
             {
                 scan.EnqueueImageSymbol(ep, true);

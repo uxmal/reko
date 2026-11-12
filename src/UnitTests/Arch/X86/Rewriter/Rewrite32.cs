@@ -165,7 +165,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 program,
                 project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
-                services);
+                services,
+                eventListener);
             foreach (var ep in asm.EntryPoints)
             {
                 scan.EnqueueImageSymbol(ep, true);
