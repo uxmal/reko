@@ -39,6 +39,9 @@ namespace Reko.Environments.SysV.ArchSpecific
             if (dst.Item1 is not null)
                 return dst;
             dst = Arm32_variant2(arch, host, instrs);
+            if (dst.Item1 is not null)
+                return dst;
+            dst = Arm32_variant3(arch, host, instrs);
             return dst;
         }
 
@@ -253,6 +256,69 @@ namespace Reko.Environments.SysV.ArchSpecific
                 return addr;
             }
             return null;
+        }
+
+        
+        private static (Expression?, Address) Arm32_variant3(IProcessorArchitecture arch, IRewriterHost host, List<RtlInstructionCluster> stubInstrs)
+        {
+            // add ip,pc,#0
+            // add ip,ip,#&35000
+            // ldr pc,[ip,#&400]!
+            if (stubInstrs.Count < 3)
+                return (null, default);
+
+//            ip = 0x00011DE4<p32> + 0<32>
+
+
+            if (stubInstrs[^3].Instructions[0] is RtlAssignment assIp &&
+                assIp.Dst is Identifier id &&
+                assIp.Src is BinaryExpression bin && 
+                bin.Operator == Operator.IAdd && 
+                bin.Left is Address addr &&
+                bin.Right is Constant c)
+            {
+                addr += c.ToInt32();
+            }
+            else 
+                return default;
+
+            // ip = ip + 0x35000<32>
+
+            if (stubInstrs[^2].Instructions[0] is RtlAssignment assAdd &&
+                assAdd.Dst == id &&
+                assAdd.Src is BinaryExpression add &&
+                add.Operator == Operator.IAdd &&
+                add.Left == id && 
+                add.Right is Constant offset)
+            {
+                addr += offset.ToInt32();
+            }
+
+            if (stubInstrs[^1].Instructions.Length != 2)
+                return default;
+
+            // ip = ip + 1024<i32>
+
+            if (stubInstrs[^1].Instructions[0] is RtlAssignment assAdd2 &&
+                assAdd2.Dst == id &&
+                assAdd2.Src is BinaryExpression add2 &&
+                add2.Operator == Operator.IAdd &&
+                add2.Left == id &&
+                add2.Right is Constant offset2)
+            {
+                addr += offset2.ToInt32();
+            }
+            else
+                return default;
+
+            // goto Mem0[ip:word32]
+            if (stubInstrs[^1].Instructions[1] is RtlGoto g &&
+                g.Target is MemoryAccess mem &&
+                mem.EffectiveAddress == id)
+            {
+                return (addr, stubInstrs[^3].Address);
+            }
+            return default;
         }
 
         public static (Expression?, Address) AArch64(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
