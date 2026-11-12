@@ -42,14 +42,12 @@ namespace Reko.Environments.SysV
     public class SysVPlatform : Platform
     {
         private static readonly Dictionary<string, SerializedSignature> gccIntrinsicSignatures;
-        private readonly IEventListener listener;
         private readonly ArchSpecificFactory archSpecificFactory;
         private ICallingConvention? defaultCc;
 
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "elf-neutral")
         {
-            this.listener = services.RequireService<IEventListener>();
             archSpecificFactory = new ArchSpecificFactory(services, arch);
             this.defaultCc = archSpecificFactory.CreateCallingConvention(arch, "");
             //$REVIEW: examine this carefully! It may well be arch-dependent

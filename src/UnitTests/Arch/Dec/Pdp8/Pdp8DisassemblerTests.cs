@@ -472,7 +472,7 @@ public class Pdp8DisassemblerTests : DisassemblerTestBase<Pdp8Instruction>
     [Test]
     public void Pdp8Dis_tad()
     {
-        AssertCode("tad\t0042", "1042");
+        AssertCode("tad   0042", "1042");
     }
 
     /**

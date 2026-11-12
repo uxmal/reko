@@ -812,7 +812,7 @@ safe_read: error: An error occurred while rewriting procedure to high-level lang
    at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 100
    at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 66
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 89
-   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 723
+   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 724
 Rewriting procedures to high-level language. [Done]
 00017540: warning: Expected sizes of arrays to have been determined by now
 0002B411: warning: Expected sizes of arrays to have been determined by now
@@ -1313,7 +1313,7 @@ fn00000000: error: An error occurred while rewriting procedure to high-level lan
    at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1079
    at Reko.Structure.StructureAnalysis.Execute() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 174
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 91
-   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 723
+   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 724
 Rewriting procedures to high-level language. [Done]
 00003CA8: warning: Expected sizes of arrays to have been determined by now
 000100B8: warning: Expected sizes of arrays to have been determined by now
@@ -1896,10 +1896,12 @@ fn0001B1D0: warning: Structure analysis stopped making progress, quitting. Pleas
 fn0001B1F8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0001B2AC: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-       at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 159
+       at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in c:\dev\uxmal\reko\master\src\Core\Block.cs:line 106
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 100
    at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 66
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 89
-   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 723
+   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 724
 fn0001B2CC: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 Rewriting procedures to high-level language. [Done]
 00000083: warning: Expected sizes of arrays to have been determined by now
@@ -2034,7 +2036,7 @@ fn084F: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 100
    at Reko.Structure.CompoundConditionCoalescer.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 66
    at Reko.Structure.StructureAnalysis.Structure() in c:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 89
-   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 723
+   at Reko.Decompiler.StructureProgram() in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 724
 Rewriting procedures to high-level language. [Done]
 
 === Raw\TriCore\bootloader
@@ -2071,11 +2073,11 @@ Error: An error occurred while writing assembly language output.
    at Reko.Core.Memory.BeImageReader..ctor(ByteMemoryArea image, Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 642
    at Reko.Core.Memory.ByteMemoryArea.CreateBeReader(Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 108
    at Reko.Core.EndianServices.BeServices.CreateImageReader(MemoryArea mem, Address addr, Int64 cUnits) in c:\dev\uxmal\reko\master\src\Core\EndianServices.cs:line 418
-   at Reko.Core.ProcessorArchitecture.CreateImageReader(MemoryArea mem, Address addr, Int64 cbUnits) in c:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 791
-   at Reko.Core.Output.Dumper.DumpData(IProcessorArchitecture arch, MemoryArea mem, Address address, Int64 cUnits, Boolean condenseZeroLines, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 265
-   at Reko.Core.Output.Dumper.DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, Int64 cUnits, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 238
-   at Reko.Core.Output.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 157
-   at Reko.Core.Output.Dumper.Dump(Dictionary`2 segmentItems, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 101
+   at Reko.Core.ProcessorArchitecture.CreateImageReader(MemoryArea mem, Address addr, Int64 cbUnits) in c:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 794
+   at Reko.Core.Output.Dumper.DumpData(IProcessorArchitecture arch, MemoryArea mem, Address address, Int64 cUnits, Boolean condenseZeroLines, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 267
+   at Reko.Core.Output.Dumper.DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, Int64 cUnits, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 240
+   at Reko.Core.Output.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 159
+   at Reko.Core.Output.Dumper.Dump(Dictionary`2 segmentItems, Formatter formatter) in c:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 103
    at Reko.Decompiler.DumpAssembler(Program program, Dictionary`2 segmentItems, Formatter wr) in c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 222
 Rewriting procedures. [Done]
 Building expressions. [Done]
@@ -2132,33 +2134,25 @@ fn0800_8F97: error: An internal error occurred while building the expressions of
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(IReadOnlyCollection`1 ssts) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 289
 fn0800_1CF6: error: An error occurred while renaming variables.
     The given key 'l0800_1D54' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 134
+       at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 175
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 160
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
 fn0800_67BF: error: An error occurred while renaming variables.
     The given key 'l0800_6A7C' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 134
+       at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 175
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 160
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
 fn0800_4F2C: error: An error occurred while renaming variables.
     The given key 'l0800_4F67' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 134
+       at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 175
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 160
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
 fn0800_C177: error: An error occurred while renaming variables.
     The given key 'l0800_C22D' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
-   at Reko.Analysis.LiveCopyInserter.IsLiveAtCopyPoint(Identifier id, Block b) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 134
+       at Reko.Analysis.SsaLivenessAnalysis.IsLiveIn(Identifier id, Statement stm) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 157
    at Reko.Analysis.LiveCopyInserter.Transform(Statement stm, PhiAssignment phi) in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 175
    at Reko.Analysis.LiveCopyInserter.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 160
    at Reko.Analysis.WebBuilder.Worker.Transform() in c:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 119
@@ -3046,4 +3040,4 @@ Collecting data types. [Done]
 Rewriting expressions. [Done]
 Rewriting procedures to high-level language. [Done]
 
-Decompiled 101 binaries in 128.53 seconds.
+Decompiled 101 binaries in 74.18 seconds.

@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Arch.Ctc;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
