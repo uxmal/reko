@@ -29,7 +29,7 @@ using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 
-namespace Reko.Arch.PaRisc
+namespace Reko.Arch.Hp.PaRisc
 {
     public partial class PaRiscRewriter
     {

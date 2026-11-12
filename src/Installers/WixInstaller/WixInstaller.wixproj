@@ -241,8 +241,8 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\arch\PaRisc\PaRisc.csproj">
-      <Name>PaRisc</Name>
+    <ProjectReference Include="..\arch\Hp\Hp.csproj">
+      <Name>Hp</Name>
       <Project>{c57b1ad7-336a-4ce6-8a8c-836760029ebb}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>

@@ -19,7 +19,7 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Arch.PaRisc;
+using Reko.Arch.Hp;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -31,7 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UnitTests.Arch.PaRisc
+namespace Reko.UnitTests.Arch.Hp.PaRisc
 {
     [TestFixture]
     public partial class PaRiscRewriterTests : RewriterTestBase

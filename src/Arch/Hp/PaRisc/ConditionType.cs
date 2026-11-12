@@ -18,7 +18,7 @@
  */
 #endregion
 
-namespace Reko.Arch.PaRisc
+namespace Reko.Arch.Hp.PaRisc
 {
     public enum ConditionType
     {

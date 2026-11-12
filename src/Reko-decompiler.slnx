@@ -78,6 +78,10 @@
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
+    <Project Path="Arch/Hp/Hp.csproj">
+      <BuildType Solution="UnixDebug|*" Project="Release" />
+      <BuildType Solution="UnixRelease|*" Project="Release" />
+    </Project>
     <Project Path="Arch/i8051/i8051.csproj">
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
@@ -184,10 +188,6 @@
       <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
     <Project Path="Arch/Padauk/Padauk.csproj">
-      <BuildType Solution="UnixDebug|*" Project="Debug" />
-      <BuildType Solution="UnixRelease|*" Project="Release" />
-    </Project>
-    <Project Path="Arch/PaRisc/PaRisc.csproj">
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
@@ -400,6 +400,7 @@
       <BuildDependency Project="Arch/Etrax/Etrax.csproj" />
       <BuildDependency Project="Arch/Fujitsu/Fujitsu.csproj" />
       <BuildDependency Project="Arch/H8/H8.csproj" />
+      <BuildDependency Project="Arch/Hp/Hp.csproj" />
       <BuildDependency Project="Arch/i8051/i8051.csproj" />
       <BuildDependency Project="Arch/IA64/IA64.csproj" />
       <BuildDependency Project="Arch/Infineon/Infineon.csproj" />
@@ -423,7 +424,6 @@
       <BuildDependency Project="Arch/Oki/Oki.csproj" />
       <BuildDependency Project="Arch/OpenRISC/OpenRISC.csproj" />
       <BuildDependency Project="Arch/Padauk/Padauk.csproj" />
-      <BuildDependency Project="Arch/PaRisc/PaRisc.csproj" />
       <BuildDependency Project="Arch/PowerPC/PowerPC.csproj" />
       <BuildDependency Project="Arch/Qualcomm/Qualcomm.csproj" />
       <BuildDependency Project="Arch/Rca/Rca.csproj" />

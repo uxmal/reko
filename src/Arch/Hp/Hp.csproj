@@ -4,8 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OutputType>Library</OutputType>
-    <AssemblyName>Reko.Arch.PaRisc</AssemblyName>
-    <RootNamespace>Reko.Arch.PaRisc</RootNamespace>
+    <AssemblyName>Reko.Arch.Hp</AssemblyName>
+    <RootNamespace>Reko.Arch.Hp</RootNamespace>
     <Nullable>enable</Nullable>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>

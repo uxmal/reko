@@ -19,13 +19,14 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Arch.PaRisc;
+using Reko.Arch.Hp;
+using Reko.Arch.Hp.PaRisc;
 using Reko.Core;
 using Reko.Core.Machine;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 
-namespace Reko.UnitTests.Arch.PaRisc
+namespace Reko.UnitTests.Arch.Hp.PaRisc
 {
     [TestFixture]
     public class PaRiscDisassemblerTests : DisassemblerTestBase<PaRiscInstruction>

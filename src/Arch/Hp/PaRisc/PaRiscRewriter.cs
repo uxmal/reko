@@ -30,7 +30,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Reko.Arch.PaRisc
+namespace Reko.Arch.Hp.PaRisc
 {
     public partial class PaRiscRewriter : IEnumerable<RtlInstructionCluster>
     {

@@ -23,7 +23,7 @@ using System.Text;
 using Reko.Core;
 using Reko.Core.Machine;
 
-namespace Reko.Arch.PaRisc
+namespace Reko.Arch.Hp.PaRisc
 {
     public class PaRiscInstruction : MachineInstruction
     {

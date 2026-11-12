@@ -23,7 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 
-namespace Reko.Arch.PaRisc;
+namespace Reko.Arch.Hp.PaRisc;
 
 internal class PaRiscInstructionComparer : InstructionComparer
 {

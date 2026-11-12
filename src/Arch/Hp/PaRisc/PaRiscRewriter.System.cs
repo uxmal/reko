@@ -19,7 +19,7 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -27,66 +27,60 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Arch.PaRisc
+namespace Reko.Arch.Hp.PaRisc
 {
     public partial class PaRiscRewriter
     {
-        private void RewriteFcpy()
+        private void RewriteDiag()
         {
             var src = RewriteOp(0);
-            var dst = RewriteOp(1);
-            m.Assign(dst, src);
+            m.SideEffect(m.Fn(diag_intrinsic.MakeInstance(src.DataType), src));
         }
 
-        private void RewriteFid()
-        {
-            m.SideEffect(m.Fn(fid_intrinsic));
-        }
-
-        private void RewriteFcnv()
-        {
-
-        }
-
-        private void RewriteFcnvxf()
+        private void RewriteMfctl()
         {
             var src = RewriteOp(0);
-            if (instr.FpFmt == FpFormat.w)
+            var rDst = (RegisterStorage) instr.Operands[1];
+            var n = rDst.Number - Registers.ControlRegisters[0].Number;
+            if (1 <= n && n <= 7)
             {
-                var t = binder.CreateTemporary(PrimitiveType.Int32);
-                if (instr.FpFmtDst == FpFormat.dbl)
-                {
-                    m.Assign(t, m.Slice(src, t.DataType, 0));
-                    m.Assign(RewriteOp(1), m.Convert(t, t.DataType, PrimitiveType.Real64));
-                    return;
-                }
+                m.Invalid();
+                return;
             }
-            EmitUnitTest();
-            iclass = InstrClass.Invalid;
-            m.Invalid();
+            if (!(n == 11 || n == 26 || n == 27 || n == 16))
+            {
+                iclass |= InstrClass.Privileged;
+            }
+            m.Assign(binder.EnsureRegister(rDst), src);
         }
 
-        private void RewriteFld(PrimitiveType dt)
+        private void RewriteMtctl()
+        {
+            var src = RewriteOp(0);
+            var rDst = (RegisterStorage) instr.Operands[1];
+            var n = rDst.Number - Registers.ControlRegisters[0].Number;
+            if (1 <= n && n <= 7)
+            {
+                m.Invalid();
+                return;
+            }
+            if (n != 11)
+            {
+                iclass |= InstrClass.Privileged;
+            }
+            m.Assign(binder.EnsureRegister(rDst), src);
+        }
+
+        private void RewriteMtsm()
+        {
+            var src = RewriteOp(0);
+            m.SideEffect(m.Fn(mtsm_intrinsic.MakeInstance(src.DataType), src));
+        }
+
+        private void RewriteMtsp()
         {
             var src = RewriteOp(0);
             var dst = RewriteOp(1);
-            ((MemoryAccess) src).DataType = dt;
-            m.Assign(dst, src);
-        }
-
-        private void RewriteFpArithmetic(Func<Expression, Expression, Expression> fn)
-        {
-            var src1 = RewriteOp(0);
-            var src2 = RewriteOp(1);
-            var dst = RewriteOp(2);
-            m.Assign(dst, fn(src1, src2));
-        }
-
-        private void RewriteFst(PrimitiveType dt)
-        {
-            var src = RewriteOp(0);
-            var dst = RewriteOp(1);
-            ((MemoryAccess) dst).DataType = dt;
             m.Assign(dst, src);
         }
     }

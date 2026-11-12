@@ -1,13 +1,12 @@
 using Reko;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("HP PA-RISC architecture")]
-[assembly: AssemblyDescription("Reko decompiler support for HP PA-RISC architecture")]
+[assembly: AssemblyTitle("HP architectures")]
+[assembly: AssemblyDescription("Reko decompiler support for HP architectures")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(AssemblyMetadata.Product)]

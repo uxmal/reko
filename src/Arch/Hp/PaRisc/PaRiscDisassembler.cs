@@ -30,7 +30,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Reko.Arch.PaRisc
+namespace Reko.Arch.Hp.PaRisc
 {
     using Decoder = Decoder<PaRiscDisassembler, Mnemonic, PaRiscInstruction>;
 #pragma warning disable IDE1006

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Hp.PaRisc;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -30,7 +31,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace Reko.Arch.PaRisc
+namespace Reko.Arch.Hp
 {
     public class PaRiscArchitecture : ProcessorArchitecture
     {
