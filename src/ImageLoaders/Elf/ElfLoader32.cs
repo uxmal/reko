@@ -172,7 +172,7 @@ namespace Reko.ImageLoaders.Elf
             return a;
         }
 
-        public override ElfObjectLinker CreateLinker(IProcessorArchitecture arch)
+        public override ElfObjectLinker CreateLinker(IProcessorArchitecture arch, byte[] rawImage)
         {
             return new ElfObjectLinker32(this, arch, rawImage);
         }

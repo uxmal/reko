@@ -89,8 +89,6 @@ namespace Reko.ImageLoaders.Elf
             var fmt = this.CreateBinaryFormatter(binaryImage);
             var sw = new StringWriter();
             fmt.FormatDynamicRelocations(sw);
-            Debug.WriteLine(sw.ToString());
-
 
             //innerLoader.Dump();           // This spews a lot into the unit test output.
             Program program;
@@ -110,7 +108,7 @@ namespace Reko.ImageLoaders.Elf
 
                 // The file we're loading is an object file, and needs to be 
                 // linked before we can load it.
-                var linker = innerLoader.CreateLinker(arch);
+                var linker = innerLoader.CreateLinker(arch, RawImage);
                 program = linker.LinkObject(platform, addrLoad, RawImage);
                 plt = linker.PltEntries;
             }

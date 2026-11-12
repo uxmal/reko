@@ -87,7 +87,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     program,
                     program.SegmentMap.BaseAddress,
                     relSection,
-                    new());
+                    []);
                 foreach (var relocation in relocations)
                 {
                     var elfsym = relocation.Symbol;
@@ -134,7 +134,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// <param name="program"></param>
         /// <param name="addrEntry"></param>
         /// <returns></returns>
-        public Address? FindMainFunction(Program program, Address addrEntry)
+        public virtual Address? FindMainFunction(Program program, Address addrEntry)
         {
             if (!program.SegmentMap.TryFindSegment(addrEntry, out var seg))
                 return null;
@@ -193,7 +193,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         public List<ElfSymbol> RelocateDynamicSymbols(Program program)
         {
             var result = new List<ElfSymbol>();
-            var ctx = CreateRelocationContext(program, program.SegmentMap.BaseAddress, null, new());
+            var ctx = CreateRelocationContext(program, program.SegmentMap.BaseAddress, null, []);
             foreach (var relocation in Loader.BinaryImage.DynamicRelocations)
             {
                 var elfSym = relocation.Symbol;
@@ -211,7 +211,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     var imgSym = Loader.CreateImageSymbol(elfSym, program.Architecture, true);
                     // Symbols need to refer to the loaded image, if their value is 0,
                     // they are imported symbols.
-                    if (imgSym is null || imgSym.Address!.ToLinear() == 0)
+                    if (imgSym is null || imgSym.Address.ToLinear() == 0)
                         continue;
                     imageSymbols[imgSym.Address] = imgSym;
                 }

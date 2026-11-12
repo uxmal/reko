@@ -26,18 +26,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class Sparc64Relocator : ElfRelocator64
     {
-        private Dictionary<Address, ImportReference> importReferences;
-
         public Sparc64Relocator(ElfLoader64 elfLoader, SortedList<Address, ImageSymbol> symbols) : 
             base(elfLoader, symbols)
         {
-            importReferences = null!;
-        }
-
-        public override void Relocate(Program program, Address addrBase, Dictionary<ElfSymbol, Address> pltEntries)
-        {
-            this.importReferences = program.ImportReferences;
-            base.Relocate(program, addrBase, pltEntries);
         }
 
         public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)

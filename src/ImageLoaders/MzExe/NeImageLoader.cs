@@ -431,7 +431,7 @@ namespace Reko.ImageLoaders.MzExe
         void LoadModuleTable(uint offset, int cModules)
         {
             var rdr = new LeImageReader(RawImage, offset);
-            this.moduleNames = new List<string>();
+            this.moduleNames = [];
             for (int i = 0; i < cModules; ++i)
             {
                 uint nameOffset = rdr.ReadLeUInt16();

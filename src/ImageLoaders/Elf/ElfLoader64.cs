@@ -32,7 +32,6 @@ using Reko.Core.Types;
 using Reko.ImageLoaders.Elf.Relocators;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -49,7 +48,6 @@ namespace Reko.ImageLoaders.Elf
             : base(services, elfImage, rawImage)
         {
             this.osAbi = elfImage.Header.OsAbi;
-            base.rawImage = rawImage;
         }
 
         public override Address DefaultAddress => Address.Ptr64(0x8048000);
@@ -79,8 +77,10 @@ namespace Reko.ImageLoaders.Elf
 
         public override IProcessorArchitecture CreateArchitecture(ElfMachine elfMachine, EndianServices endianness)
         {
-            var options = new Dictionary<string, object>();
-            options[ProcessorOption.Endianness] = endianness == EndianServices.Little ? "le" : "be";
+            Dictionary<string, object> options = [];
+            options[ProcessorOption.Endianness] = endianness == EndianServices.Little
+                ? "le"
+                : "be";
             string archName;
             switch (elfMachine)
             {
@@ -134,7 +134,7 @@ namespace Reko.ImageLoaders.Elf
             return arch;
         }
 
-        public override ElfObjectLinker CreateLinker(IProcessorArchitecture arch)
+        public override ElfObjectLinker CreateLinker(IProcessorArchitecture arch, byte[] rawImage)
         {
             return new ElfObjectLinker64(this, arch, rawImage);
         }

@@ -28,17 +28,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
     // https://docs.oracle.com/cd/E23824_01/html/819-0690/chapter6-1235.html
     public class Sparc32Relocator : ElfRelocator32
     {
-        private Dictionary<Address,ImportReference> importReferences;
-
         public Sparc32Relocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
-            importReferences = null!;
-        }
-
-        public override void Relocate(Program program, Address addrBase, Dictionary<ElfSymbol, Address> pltEntries)
-        {
-            this.importReferences = program.ImportReferences;
-            base.Relocate(program, addrBase, pltEntries);
         }
 
         public override (Address?, ElfSymbol?) RelocateEntry(RelocationContext ctx, ElfRelocation rela, ElfSymbol symbol)

@@ -94,9 +94,8 @@ namespace Reko.ImageLoaders.Elf
         public const uint PF_W = 2;
         public const uint PF_X = 1;
 
-        protected ulong flags;
         protected IPlatform? platform;
-        protected byte[] rawImage;
+        private byte[] rawImage;
         private SegmentMap? segmentMap;
 
         protected ElfLoader(
@@ -106,7 +105,6 @@ namespace Reko.ImageLoaders.Elf
         {
             this.Services = services;
             this.BinaryImage = binary;
-            this.flags = binary.Header.Flags;
             this.Endianness = binary.Endianness;
             this.rawImage = rawImage;
         }
@@ -129,7 +127,7 @@ namespace Reko.ImageLoaders.Elf
 
         public abstract Address CreateAddress(ulong uAddr);
 
-        public abstract ElfObjectLinker CreateLinker(IProcessorArchitecture arch);
+        public abstract ElfObjectLinker CreateLinker(IProcessorArchitecture arch, byte[] rawImage);
 
         public abstract SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred);
 
@@ -159,7 +157,7 @@ namespace Reko.ImageLoaders.Elf
 
         public IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic)
         {
-            var rdr = Endianness!.CreateImageReader(this.rawImage!, (long) offsetDynamic);
+            var rdr = Endianness.CreateImageReader(this.rawImage!, (long) offsetDynamic);
             return GetDynamicEntries(rdr);
         }
 
@@ -240,7 +238,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_MSP430: arch = "msp430"; break;
             case ElfMachine.EM_SH:
                 arch = "superH";
-                if (superHModels.TryGetValue((SuperHFlags)this.flags & SuperHFlags.EF_MODEL_MASK, out var model))
+                if (superHModels.TryGetValue((SuperHFlags)this.BinaryImage.Header.Flags & SuperHFlags.EF_MODEL_MASK, out var model))
                 {
                     options[ProcessorOption.Model] = model;
                 }
@@ -651,30 +649,26 @@ namespace Reko.ImageLoaders.Elf
             foreach (var reloc in BinaryImage.DynamicRelocations)
             {
                 var symbol = reloc.Symbol;
+                if (symbol is null || (symbol.Type != ElfSymbolType.STT_FUNC))
+                    continue;
                 var addrGot = CreateAddress(reloc.Offset);
-                if (symbol is not null && 
-                    (symbol.Type == ElfSymbolType.STT_FUNC))
-                    // || symbol.Type == ElfSymbolType.STT_OBJECT))
+                var name = symbol.Name;
+                ImageSymbol gotSym = CreateGotSymbol(program.Architecture, addrGot, name);
+                symbols[addrGot] = gotSym;
+                var symType = symbol.Type == ElfSymbolType.STT_FUNC
+                    ? SymbolType.ExternalProcedure
+                    : SymbolType.Data;
+                if (symbol.SectionIndex == 0) // An external thing
                 {
-                    var name = symbol.Name;
-                    ImageSymbol gotSym = CreateGotSymbol(program.Architecture, addrGot, name);
-                    symbols[addrGot] = gotSym;
-                    var symType = symbol.Type == ElfSymbolType.STT_FUNC
-                        ? SymbolType.ExternalProcedure
-                        : SymbolType.Data;
-                    if (symbol.SectionIndex == 0) // An external thing
+                    ++cSymbols;
+                    if (!program.ImportReferences.TryGetValue(addrGot, out var oldImpRef))
                     {
-                        ++cSymbols;
-                        if (!program.ImportReferences.TryGetValue(addrGot, out var oldImpRef))
-                        {
-                            program.ImportReferences.Add(
-                                addrGot,
-                                new NamedImportReference(
-                                    addrGot,
-                                    null,
-                                    name,
-                                    symType));
-                        }
+                        var impRef = new NamedImportReference(
+                            addrGot,
+                            null,
+                            name,
+                            symType);
+                        program.ImportReferences.Add(addrGot, impRef);
                     }
                 }
             }

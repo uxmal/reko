@@ -22,10 +22,12 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Hll.C;
+using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
 using System;
@@ -40,13 +42,14 @@ namespace Reko.Environments.SysV
     public class SysVPlatform : Platform
     {
         private static readonly Dictionary<string, SerializedSignature> gccIntrinsicSignatures;
-
+        private readonly IEventListener listener;
         private readonly ArchSpecificFactory archSpecificFactory;
         private ICallingConvention? defaultCc;
 
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "elf-neutral")
         {
+            this.listener = services.RequireService<IEventListener>();
             archSpecificFactory = new ArchSpecificFactory(services, arch);
             this.defaultCc = archSpecificFactory.CreateCallingConvention(arch, "");
             //$REVIEW: examine this carefully! It may well be arch-dependent
@@ -76,6 +79,14 @@ namespace Reko.Environments.SysV
         {
             return base.DetermineCallingConvention(signature, arch);
         }
+
+        /* //$TODO: finding 'main' by finding uses in _start()
+        public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
+        {
+            var finder = new SysVMainProcedureFinder(program, this.listener);
+            return finder.Find(addrStart);
+        }
+        */
 
         public override ICallingConvention GetCallingConvention(string? ccName)
         {
