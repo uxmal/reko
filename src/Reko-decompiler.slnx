@@ -54,6 +54,10 @@
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
+    <Project Path="Arch/Datapoint/Datapoint.csproj">
+      <BuildType Solution="UnixDebug|*" Project="Debug" />
+      <BuildType Solution="UnixRelease|*" Project="Release" />
+    </Project>
     <Project Path="Arch/Dec/Dec.csproj">
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
@@ -390,6 +394,7 @@
       <BuildDependency Project="Arch/CompactRisc/CompactRisc.csproj" />
       <BuildDependency Project="Arch/Cray/Cray.csproj" />
       <BuildDependency Project="Arch/CSky/CSky.csproj" />
+      <BuildDependency Project="Arch/Datapoint/Datapoint.csproj" />
       <BuildDependency Project="Arch/Dec/Dec.csproj" />
       <BuildDependency Project="Arch/Epson/Epson.csproj" />
       <BuildDependency Project="Arch/Etrax/Etrax.csproj" />
