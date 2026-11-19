@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Arch
 
         public void ReportMissingDecoder(string testPrefix, Address addrStart, string message, string opcodeAsText)
         {
-            var test = TestGenerationService.GenerateDecoderUnitTest(testPrefix, addrStart, message, opcodeAsText);
+            var test = TestGenerationService.GenerateDecoderUnitTest(testPrefix, addrStart, opcodeAsText, message);
             Console.WriteLine(test);
         }
 

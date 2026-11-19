@@ -25,7 +25,7 @@ using System;
 
 namespace Reko.Arch.CSky;
 
-internal class CSkyInstructionComparer : InstructionComparer
+public class CSkyInstructionComparer : InstructionComparer
 {
     private const int MemCode = 0x10;
     private const int RegListCode = 0x11;

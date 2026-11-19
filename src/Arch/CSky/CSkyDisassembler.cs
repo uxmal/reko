@@ -33,7 +33,7 @@ namespace Reko.Arch.CSky
 
     public class CSkyDisassembler : DisassemblerBase<CSkyInstruction, Mnemonic>
     {
-        private static Decoder<CSkyDisassembler, Mnemonic, CSkyInstruction> rootDecoder;
+        private static readonly Decoder<CSkyDisassembler, Mnemonic, CSkyInstruction> rootDecoder;
 
         private readonly CSkyArchitecture arch;
         private readonly EndianImageReader rdr;
@@ -45,8 +45,7 @@ namespace Reko.Arch.CSky
         {
             this.arch = arch;
             this.rdr = rdr;
-            this.ops = new List<MachineOperand>();
-            this.addr = default!;
+            this.ops = [];
         }
 
         public override CSkyInstruction? DisassembleInstruction()

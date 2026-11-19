@@ -93,7 +93,6 @@ namespace Reko.Core.Machine
     /// function on 64-bit opcodes.
     /// </summary>
     public class WideMaskDecoder<TDasm, TMnemonic, TInstr> : WideDecoder<TDasm, TMnemonic, TInstr>
-        where TDasm : DisassemblerBase<TInstr, TMnemonic>
         where TMnemonic : struct
         where TInstr : MachineInstruction
     {

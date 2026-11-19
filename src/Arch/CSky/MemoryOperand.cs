@@ -56,8 +56,6 @@ namespace Reko.Arch.CSky
             return new MemoryOperand(dt, baseRegister, indexRegister, 0, shift);
         }
 
-
-
         public RegisterStorage? Base { get; }
         public RegisterStorage? Index { get; }
         public int Offset { get; }
@@ -71,25 +69,13 @@ namespace Reko.Arch.CSky
             }
             else if (Index is not null)
             {
-                if (Shift > 0)
-                {
-                    renderer.WriteFormat("({0},{1}<<{2})", Base, Index, Shift);
-                }
-                else
-                {
-                    renderer.WriteFormat("({0},{1})", Base, Index);
-                }
+                string format = Shift > 0 ? "({0},{1}<<{2})" : "({0},{1})";
+                renderer.WriteFormat(format, Base, Index, Shift);
             }
             else
             {
-                if (Offset == 0)
-                {
-                    renderer.WriteFormat("({0})", Base);
-                }
-                else
-                {
-                    renderer.WriteFormat("({0},{1})", Base, Offset);
-                }
+                string format = Offset == 0 ? "({0})" : "({0},{1})";
+                renderer.WriteFormat(format, Base, Offset);
             }
         }
     }

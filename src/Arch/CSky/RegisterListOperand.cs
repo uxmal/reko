@@ -22,8 +22,6 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Numerics;
 
 namespace Reko.Arch.CSky
 {

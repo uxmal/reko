@@ -24,7 +24,6 @@ using Reko.Arch.Dec.Linc;
 using Reko.Arch.Dec.Memory;
 using Reko.Core;
 using Reko.Core.Memory;
-using System.Drawing;
 
 namespace Reko.UnitTests.Arch.Dec.Linc;
 
