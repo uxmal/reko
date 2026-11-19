@@ -159,7 +159,10 @@ namespace Reko.Core.Memory
         /// <inheritdoc/>
         public bool TryReadUInt16(out ushort value)
         {
-            throw new System.NotImplementedException();
+            if (!mem.TryReadBeUInt16(Offset, out value))
+                return false;
+            Offset += 1;
+            return true;
         }
 
         /// <inheritdoc/>
@@ -174,7 +177,10 @@ namespace Reko.Core.Memory
         /// <inheritdoc/>
         public bool TryReadUInt64(out ulong value)
         {
-            throw new System.NotImplementedException();
+            if (!mem.TryReadBeUInt64(Offset, out value))
+                return false;
+            Offset += 1;
+            return true;
         }
     }
 }

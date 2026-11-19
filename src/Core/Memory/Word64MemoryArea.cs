@@ -163,7 +163,13 @@ namespace Reko.Core.Memory
         /// <inheritdoc/>
         public override bool TryReadBeUInt64(long off, out ulong retvalue)
         {
-            throw new System.NotImplementedException();
+            if (0 <= off && off < Words.Length)
+            {
+                retvalue = Words[off];
+                return true;
+            }
+            retvalue = 0;
+            return false;
         }
 
         /// <inheritdoc/>

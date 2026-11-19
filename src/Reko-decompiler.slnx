@@ -46,6 +46,10 @@
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
+    <Project Path="Arch/ControlData/ControlData.csproj">
+      <BuildType Solution="UnixDebug|*" Project="Release" />
+      <BuildType Solution="UnixRelease|*" Project="Release" />
+    </Project>
     <Project Path="Arch/Cray/Cray.csproj">
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />

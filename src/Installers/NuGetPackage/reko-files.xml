@@ -24,6 +24,7 @@
         <var id="var.C166.TargetPath">$SolutionDir$/Arch/C166/$TargetDir$/Reko.Arch.C166.dll</var>
         <var id="var.Cil.TargetPath">$SolutionDir$/Arch/Cil/$TargetDir$/Reko.Arch.Cil.dll</var>
         <var id="var.CompactRisc.TargetPath">$SolutionDir$/Arch/CompactRisc/$TargetDir$/Reko.Arch.CompactRisc.dll</var>
+        <var id="var.ControlData.TargetPath">$SolutionDir$/Arch/ControlData/$TargetDir$/Reko.Arch.ControlData.dll</var>
         <var id="var.Cray.TargetPath">$SolutionDir$/Arch/Cray/$TargetDir$/Reko.Arch.Cray.dll</var>
         <var id="var.CSky.TargetPath">$SolutionDir$/Arch/CSky/$TargetDir$/Reko.Arch.CSky.dll</var>
         <var id="var.Epson.TargetPath">$SolutionDir$/Arch/Epson/$TargetDir$/Reko.Arch.Epson.dll</var>
@@ -303,6 +304,7 @@
         <File Source="$(var.C166.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Cil.TargetPath)" nuget_target="f:" />
         <File Source="$(var.CompactRisc.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.ControlData.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Cray.TargetPath)" nuget_target="f:" />
         <File Source="$(var.CSky.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Dec.TargetPath)" nuget_target="f:" />

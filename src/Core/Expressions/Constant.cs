@@ -128,6 +128,7 @@ namespace Reko.Core.Expressions
             case 40:
             case 48:
             case 56:
+            case 60:
                 value &= (long) Bits.Mask(0, bitSize);
                 goto case 64;
             case 64:
