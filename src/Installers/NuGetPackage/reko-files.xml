@@ -312,6 +312,7 @@
         <File Source="$(var.Etrax.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Fujitsu.TargetPath)" nuget_target="f:" />
         <File Source="$(var.H8.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.Hp.TargetPath)" nuget_target="f:" />
         <File Source="$(var.i8051.TargetPath)" nuget_target="f:" />
         <File Source="$(var.IA64.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Infineon.TargetPath)" nuget_target="f:" />
@@ -338,7 +339,6 @@
         <File Source="$(var.Oki.ProjectDir)NX8_500/nx8_500_memory_map.xml" nuget_target="c:" />
         <File Source="$(var.OpenRISC.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Padauk.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.PaRisc.TargetPath)" nuget_target="f:" />
         <File Source="$(var.PowerPC.TargetPath)" nuget_target="f:" />
         <File Source="$(var.PowerPC.Design.TargetPath)" />
         <File Source="$(var.Qualcomm.TargetPath)" nuget_target="f:" />
