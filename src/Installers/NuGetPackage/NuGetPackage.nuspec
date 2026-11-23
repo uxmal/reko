@@ -151,6 +151,7 @@
 <file src="../../Arch/Qualcomm/bin/$Configuration$/net8.0/Reko.Arch.Qualcomm.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/RiscV/bin/$Configuration$/net8.0/Reko.Arch.RiscV.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/Rl78/bin/$Configuration$/net8.0/Reko.Arch.Rl78.dll" target="lib\netstandard2.0" />
+<file src="../../Arch/Sharp/bin/$Configuration$/net8.0/Reko.Arch.Sharp.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/Sparc/bin/$Configuration$/net8.0/Reko.Arch.Sparc.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/SuperH/bin/$Configuration$/net8.0/Reko.Arch.SuperH.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/Tlcs/bin/$Configuration$/net8.0/Reko.Arch.Tlcs.dll" target="lib\netstandard2.0" />

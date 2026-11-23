@@ -65,6 +65,7 @@
         <var id="var.Renesas.TargetPath" >$SolutionDir$/Arch/Renesas/$TargetDir$/Reko.Arch.Renesas.dll</var>
         <var id="var.RiscV.TargetPath">$SolutionDir$/Arch/RiscV/$TargetDir$/Reko.Arch.RiscV.dll</var>
         <var id="var.Sanyo.TargetPath">$SolutionDir$/Arch/Sanyo/$TargetDir$/Reko.Arch.Sanyo.dll</var>
+        <var id="var.Sharp.TargetPath">$SolutionDir$/Arch/Sharp/$TargetDir$/Reko.Arch.Sharp.dll</var>
         <var id="var.Sparc.TargetPath">$SolutionDir$/Arch/Sparc/$TargetDir$/Reko.Arch.Sparc.dll</var>
         <var id="var.SuperH.TargetPath">$SolutionDir$/Arch/SuperH/$TargetDir$/Reko.Arch.SuperH.dll</var>
         <var id="var.Telink.TargetPath">$SolutionDir$/Arch/Telink/$TargetDir$/Reko.Arch.Telink.dll</var>
@@ -346,6 +347,7 @@
         <File Source="$(var.Renesas.TargetPath)" nuget_target="f:" />
         <File Source="$(var.RiscV.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Sanyo.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.Sharp.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Sparc.TargetPath)" nuget_target="f:" />
         <File Source="$(var.SuperH.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Telink.TargetPath)" nuget_target="f:" />

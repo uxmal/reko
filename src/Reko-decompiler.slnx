@@ -228,6 +228,10 @@
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />
     </Project>
+    <Project Path="Arch/Sharp/Sharp.csproj">
+      <BuildType Solution="UnixDebug|*" Project="Release" />
+      <BuildType Solution="UnixRelease|*" Project="Release" />
+    </Project>
     <Project Path="Arch/Sparc/Sparc.csproj">
       <BuildType Solution="UnixDebug|*" Project="Debug" />
       <BuildType Solution="UnixRelease|*" Project="Release" />

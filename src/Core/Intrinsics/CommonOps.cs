@@ -184,6 +184,14 @@ namespace Reko.Core.Intrinsics
             .GenericTypes("TData", "TCount")
             .Param("TData").Param("TCount")
             .Returns("TData");
+
+        /// <summary>
+        /// Intrinsic procedure that rotate left through carry.
+        /// </summary>
+        /// <remarks>
+        /// Commonly used to make longer shifts out of an initial left-shift
+        /// followed by an arbitrary number of RolC's.
+        /// </remarks>
         public static readonly IntrinsicProcedure RolC = new IntrinsicBuilder("__rcl", false)
             .GenericTypes("TData", "TCount")
             .Param("TData").Param("TCount").Param(PrimitiveType.Bool)
